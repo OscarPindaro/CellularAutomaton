@@ -67,12 +67,24 @@ public abstract class Entity implements Movable, Showable {
         this.position.y = ypos;
     }
 
+    public void incrementPosition(PVector speed){
+        position.add(speed);
+    }
+
     public PVector getSpeed() {
         return new PVector(speed.x, speed.y);
     }
 
     public void setSpeed(PVector speed) {
         this.speed = speed;
+    }
+
+    public void setSpeedMangitude(float linearVelocity){
+        speed.setMag(linearVelocity);
+    }
+
+    public void rotateSpeed(float angle){
+        speed.rotate(angle);
     }
 
     public float getEntityRadius(){

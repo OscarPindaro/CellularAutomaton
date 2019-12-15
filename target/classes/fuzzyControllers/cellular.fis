@@ -1,21 +1,21 @@
 [System]
-Name='cellularProd'
+Name='cellular'
 Type='mamdani'
 Version=2.0
 NumInputs=2
 NumOutputs=2
 NumRules=15
-AndMethod='prod'
-OrMethod='probor'
-ImpMethod='prod'
-AggMethod='probor'
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
 DefuzzMethod='centroid'
 
 [Input1]
 Name='cellDistance'
 Range=[0 1]
 NumMFs=3
-MF1='NEAR':'trapmf',[-0.375 -0.0417 0.2 0.3]
+MF1='NEAR':'trapmf',[0 0 0.2 0.3]
 MF2='MID':'trapmf',[0.2 0.3 0.5 0.6]
 MF3='FAR':'trapmf',[0.5 0.6 1.042 1.375]
 

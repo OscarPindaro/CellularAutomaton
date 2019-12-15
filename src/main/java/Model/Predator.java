@@ -7,6 +7,10 @@ import java.awt.*;
 public class Predator extends Entity {
     private final Color PREDATOR_COLOR = Color.RED;
 
+    public Predator(){
+        super();
+    }
+
     public Predator(int posx, int posy, int speedx, int speedy){
         super(posx, posy, speedx, speedy);
         this.setColor(PREDATOR_COLOR);
