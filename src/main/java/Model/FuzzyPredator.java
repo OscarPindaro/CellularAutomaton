@@ -26,7 +26,7 @@ public class FuzzyPredator extends Predator {
     public FuzzyPredator(int posx, int posy, int speedx, int speedy) throws IOException {
         super(posx, posy, speedx, speedy);
         ImportMatlab fis= new ImportMatlab();
-        fuzzySystem = fis.importFuzzySystem(getClass().getResource("fuzzyControllers/cellular.fis").getPath());
+        fuzzySystem = fis.importFuzzySystem(getClass().getResource("fuzzyControllers/cellularProd.fis").getPath());
 
     }
 
@@ -55,8 +55,14 @@ public class FuzzyPredator extends Predator {
     private void updateFuzzySystem(){
         PVector differenceVector = prey.getPosition().sub(this.getPosition());
         fuzzySystem.setVariableValue(PREY_DISTANCE, differenceVector.mag()/MAX_WORLD_DISTANCE);
-        fuzzySystem.setVariableValue(PREY_THETA, PVector.angleBetween(getSpeed(), differenceVector)*180/ Automata.getInstance().PI);
-        System.out.println(PVector.angleBetween(getSpeed(), differenceVector)*180/ 3.14);
+        float differenceVectorHeading = differenceVector.heading();
+        float speedHeading = getSpeed().heading();
+        float deltaAngle = (differenceVectorHeading - speedHeading)*180/3.14f;
+        if(deltaAngle < -180)
+            deltaAngle = 360 +deltaAngle;
+        if(deltaAngle > 180)
+            deltaAngle = deltaAngle - 360;
+        fuzzySystem.setVariableValue(PREY_THETA, deltaAngle);
         fuzzySystem.evaluate();
     }
 
@@ -67,6 +73,7 @@ public class FuzzyPredator extends Predator {
 
     private float calculateAngularSpeed(){
         float angularPercentage = fuzzySystem.getVariable(ANGULAR_VEL).getValue();
+        //System.out.println(angularPercentage);
         return angularPercentage*MAX_ANGULAR_VEL;
     }
 }
