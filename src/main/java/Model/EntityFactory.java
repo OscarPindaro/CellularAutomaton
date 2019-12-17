@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.MovementBehaviour;
+import Controller.RandomMovementBehaviour;
 import Model.Entity;
 import Model.Predator;
 import Model.Prey;
@@ -12,22 +14,26 @@ import java.util.List;
 public class EntityFactory {
 
 
-    public static List<Entity> createRandomPredators(int numberOfPredators){
+    public static List<Entity> createRandomPredators(int numberOfPredators, MovementBehaviour movementBehaviour){
         List<Entity> predators = new LinkedList<>();
         for(int i = 0; i < numberOfPredators; i++){
             PVector position = createRandomPositionPVector();
             PVector speed = createRandomSpeedPVector();
-            predators.add(new Predator(position, speed));
+            Predator newPredator = new Predator(position, speed);
+            predators.add(newPredator);
+            movementBehaviour.addEntity(newPredator);
         }
         return predators;
     }
 
-    public static List<Entity> createPreys(int numberOfPreys){
+    public static List<Entity> createRandomPreys(int numberOfPreys, MovementBehaviour movementBehaviour){
         List<Entity> preys = new LinkedList<>();
         for(int i = 0; i < numberOfPreys; i++){
             PVector position = createRandomPositionPVector();
             PVector speed = createRandomSpeedPVector();
-            preys.add(new Prey(position, speed));
+            Prey newPrey = new Prey(position, speed);
+            preys.add(newPrey);
+            movementBehaviour.addEntity(newPrey);
         }
         return preys;
     }

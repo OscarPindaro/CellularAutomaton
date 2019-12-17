@@ -2,17 +2,26 @@ package Controller;
 
 import Model.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class MovementController {
 
     private final Model model;
 
+    private final List<MovementBehaviour> movementBehaviours = new LinkedList<>();
+
     public MovementController(Model model){
         this.model = model;
     }
 
-    public void updateAllEntitiesMovement(){
+    public void updateAllEntitiesSpeed(){
+        for(MovementBehaviour m : movementBehaviours){
+            m.updateAllEntitiesSpeed();
+        }
+    }
+
+    public void updateAllEntitiesPosition(){
         List<Entity> entities = model.getEntities();
         for(Entity e: entities){
             e.move();
@@ -21,6 +30,10 @@ public class MovementController {
         }
     }
 
+    /**
+     * checks boundaries only for round cells
+     * @param e
+     */
     private void checkXBoundaries(Entity e){
         float threshold = e.getEntityRadius();
         if( e.getPosition().x < 0 + threshold){
@@ -31,6 +44,9 @@ public class MovementController {
         }
     }
 
+    /*
+    checks boundaries only for round cells
+     */
     private void checkYBoundaries(Entity e){
         float threshold = e.getEntityRadius();
 
@@ -40,5 +56,9 @@ public class MovementController {
         else if(e.getPosition().y > model.getWorldHeight() - threshold){
             e.setYposition(model.getWorldHeight()- threshold);
         }
+    }
+
+    public void addMovementBehaviour(MovementBehaviour m){
+        movementBehaviours.add(m);
     }
 }

@@ -1,6 +1,7 @@
-package Model;
+package Controller;
 
-import Model.MovementBehaviour;
+import Controller.MovementBehaviour;
+import Model.Entity;
 import processing.core.PVector;
 
 import java.util.Random;
@@ -16,7 +17,15 @@ public class RandomMovementBehaviour extends MovementBehaviour {
     private static final float MIN_SPEED = 0.5f;
 
     @Override
-    public PVector calculateSpeed(PVector oldSpeed) {
+    public void updateAllEntitiesSpeed() {
+        for(Entity e : entityList){
+            PVector oldSpeed = e.getSpeed();
+            PVector newSpeed = calculateSpeed(oldSpeed);
+            e.setSpeed(newSpeed);
+        }
+    }
+
+    private PVector calculateSpeed(PVector oldSpeed) {
         if (isRandomThresholdMet()){
             return createRandomSpeed();
         }

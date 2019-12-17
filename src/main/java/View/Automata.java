@@ -1,8 +1,12 @@
 package View;
 
+import Controller.MovementBehaviour;
 import Controller.MovementController;
+import Controller.RandomMovementBehaviour;
 import Model.*;
 import processing.core.PApplet;
+
+import java.util.Random;
 
 public class Automata extends PApplet {
 
@@ -39,9 +43,8 @@ public class Automata extends PApplet {
 
     public void draw(){
         background(51);
-        movementController.updateAllEntitiesMovement();
-        p.setXPosition(mouseX);
-        p.setYposition(mouseY);
+        movementController.updateAllEntitiesSpeed();
+        movementController.updateAllEntitiesPosition();
         for(Entity entity: model.getEntities()){
             entity.show();
         }
@@ -51,18 +54,24 @@ public class Automata extends PApplet {
 
     }
 
-    public static void main1(String[] args) {
+    public static void main(String[] args) {
         String[] appletArgs= new String[]{Automata.class.getName()};
         Automata mySketch= getInstance();
         Model model = new Model(mySketch.width, mySketch.height);
         mySketch.model = model;
-        model.addEntities(EntityFactory.createRandomPredators(mySketch.NUM_OF_PREDATORS));
-        model.addEntities(EntityFactory.createPreys(mySketch.NUM_OF_PREYS));
-        mySketch.movementController = new MovementController(model);
+        MovementBehaviour randomMovementBehaviour = new RandomMovementBehaviour();
+        model.addEntities(EntityFactory.createRandomPredators(mySketch.NUM_OF_PREDATORS, randomMovementBehaviour));
+        model.addEntities(EntityFactory.createRandomPreys(mySketch.NUM_OF_PREYS, randomMovementBehaviour));
+        setMovementController(mySketch, model);
+        mySketch.movementController.addMovementBehaviour(randomMovementBehaviour);
         PApplet.runSketch(appletArgs, mySketch );
     }
 
-    public static void main(String[] args) {
+    private static void setMovementController(Automata mySketch, Model model){
+        mySketch.movementController = new MovementController(model);
+    }
+
+    public static void main1(String[] args) {
         String[] appletArgs= new String[]{Automata.class.getName()};
         Automata mySketch= getInstance();
         Model model = new Model(mySketch.width, mySketch.height);

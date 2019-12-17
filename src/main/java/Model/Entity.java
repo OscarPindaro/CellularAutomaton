@@ -1,4 +1,6 @@
 package Model;
+import Controller.MovementBehaviour;
+import Controller.RandomMovementBehaviour;
 import View.Automata;
 import processing.core.PVector;
 
@@ -13,7 +15,6 @@ public abstract class Entity implements Movable, Showable {
 
     private PVector position;
     private PVector speed;
-    private MovementBehaviour movementBehaviour;
 
     private Color color;
 
@@ -24,17 +25,14 @@ public abstract class Entity implements Movable, Showable {
     public Entity(int posx, int posy, int speedx, int speedy){
         position = new PVector(posx, posy);
         speed = new PVector(speedx, speedy);
-        movementBehaviour = new RandomMovementBehaviour();
     }
 
     public Entity(PVector position, PVector speed){
         this.position = position;
         this.speed = speed;
-        movementBehaviour = new RandomMovementBehaviour();
     }
 
     public void move() {
-        speed = movementBehaviour.calculateSpeed(speed);
         position.add(speed);
     }
 

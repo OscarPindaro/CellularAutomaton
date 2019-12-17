@@ -1,12 +1,13 @@
 package Model;
 
+import Controller.MovementBehaviour;
 import jfml.FuzzyInferenceSystem;
 import jfml.compatibility.ImportMatlab;
 import processing.core.PVector;
 
 import java.io.IOException;
 
-public class FuzzyMovementBehaviour extends MovementBehaviour {
+public class FuzzyMovementBehaviour  {
 
     public FuzzyMovementBehaviour() throws IOException {
         ImportMatlab fis= new ImportMatlab();
@@ -15,7 +16,6 @@ public class FuzzyMovementBehaviour extends MovementBehaviour {
     }
 
 
-    @Override
     public PVector calculateSpeed(PVector oldSpeed) {
         return null;
     }
