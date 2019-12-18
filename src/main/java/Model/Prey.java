@@ -16,4 +16,7 @@ public class Prey extends Entity {
         super(position, speed);
         this.setColor(PREY_COLOR);
     }
+
+    public Prey() {
+    }
 }

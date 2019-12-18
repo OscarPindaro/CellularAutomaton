@@ -21,19 +21,15 @@ public class FuzzyPredatorMovementBehaviour extends MovementBehaviour {
     private static final int MAX_WORLD_DISTANCE = 708;
 
     private final Model model;
-    private HashMap<Predator, Prey> targets;
+    private HashMap<Predator, Prey> targets = new HashMap<Predator, Prey>();
     private final FuzzyInferenceSystem fuzzySystem;
 
     public FuzzyPredatorMovementBehaviour(Model m, String path) throws IOException {
         ImportMatlab fis= new ImportMatlab();
-        fuzzySystem = fis.importFuzzySystem("/home/oscar/IdeaProjects/cellularAutomata/src/main/resources/fuzzyControllers/cellular.fis");
+        fuzzySystem = fis.importFuzzySystem(path);
         model = m;
     }
 
-    @Override
-    public void addEntity(Entity e) {
-        throw new RuntimeException("cant add entities in this way in a fuzzy predator movement behaviour");
-    }
 
     @Override
     public void removeEntity(Entity e) {
@@ -52,9 +48,12 @@ public class FuzzyPredatorMovementBehaviour extends MovementBehaviour {
 
     @Override
     public void updateAllEntitiesSpeed() {
+
         calculateTargets();
+
         for(Predator predator: targets.keySet()){
             updateFuzzySystem(predator, targets.get(predator));
+
             float linearSpeed = calculateLinearSpeed(predator);
             float w = calculateAngularSpeed(predator);
             predator.setSpeedMagnitude(linearSpeed);
@@ -111,4 +110,6 @@ public class FuzzyPredatorMovementBehaviour extends MovementBehaviour {
         //System.out.println(angularPercentage);
         return angularPercentage*predator.getMAX_ANGULAR_VEL();
     }
+
+
 }

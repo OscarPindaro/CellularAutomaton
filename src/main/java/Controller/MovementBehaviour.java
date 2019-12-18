@@ -13,7 +13,7 @@ public abstract class MovementBehaviour {
 
     public abstract void updateAllEntitiesSpeed();
 
-    public void addEntity(Entity e){
+    private void addEntity(Entity e){
         if(entityList.contains(e)) throw new RuntimeException("Entity already present");
 
         entityList.add(e);

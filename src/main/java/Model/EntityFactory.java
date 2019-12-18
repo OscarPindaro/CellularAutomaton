@@ -9,6 +9,8 @@ import java.util.List;
 
 public class EntityFactory {
 
+    public static Model model;
+
 
     public static List<Entity> createRandomPredators(int numberOfPredators, MovementBehaviour movementBehaviour){
         List<Entity> predators = new LinkedList<>();
@@ -17,7 +19,8 @@ public class EntityFactory {
             PVector speed = createRandomSpeedPVector();
             Predator newPredator = new Predator(position, speed);
             predators.add(newPredator);
-            movementBehaviour.addEntity(newPredator);
+            movementBehaviour.addPredator(newPredator);
+            model.addPredator(newPredator);
         }
         return predators;
     }
@@ -29,7 +32,8 @@ public class EntityFactory {
             PVector speed = createRandomSpeedPVector();
             Prey newPrey = new Prey(position, speed);
             preys.add(newPrey);
-            movementBehaviour.addEntity(newPrey);
+            movementBehaviour.addPrey(newPrey);
+            model.addPrey(newPrey);
         }
         return preys;
     }
