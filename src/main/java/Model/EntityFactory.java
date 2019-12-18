@@ -1,10 +1,6 @@
 package Model;
 
 import Controller.MovementBehaviour;
-import Controller.RandomMovementBehaviour;
-import Model.Entity;
-import Model.Predator;
-import Model.Prey;
 import View.Automata;
 import processing.core.PVector;
 

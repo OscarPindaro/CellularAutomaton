@@ -6,8 +6,6 @@ import Controller.RandomMovementBehaviour;
 import Model.*;
 import processing.core.PApplet;
 
-import java.util.Random;
-
 public class Automata extends PApplet {
 
     private static  Automata mySketch;

@@ -1,6 +1,4 @@
 package Model;
-import Controller.MovementBehaviour;
-import Controller.RandomMovementBehaviour;
 import View.Automata;
 import processing.core.PVector;
 
@@ -77,7 +75,7 @@ public abstract class Entity implements Movable, Showable {
         this.speed = speed;
     }
 
-    public void setSpeedMangitude(float linearVelocity){
+    public void setSpeedMagnitude(float linearVelocity){
         speed.setMag(linearVelocity);
     }
 

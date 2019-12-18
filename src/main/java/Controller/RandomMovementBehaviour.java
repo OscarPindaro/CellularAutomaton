@@ -1,6 +1,5 @@
 package Controller;
 
-import Controller.MovementBehaviour;
 import Model.Entity;
 import processing.core.PVector;
 
@@ -12,11 +11,9 @@ import java.util.Random;
 public class RandomMovementBehaviour extends MovementBehaviour {
 
     private static final double CHANGE_CHANCE = 0.1;
-
     private static final float MAX_SPEED = 3;
     private static final float MIN_SPEED = 0.5f;
 
-    @Override
     public void updateAllEntitiesSpeed() {
         for(Entity e : entityList){
             PVector oldSpeed = e.getSpeed();
