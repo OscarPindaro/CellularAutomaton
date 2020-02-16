@@ -1,5 +1,6 @@
-package Controller;
+package Controller.MovementBehaviours;
 
+import Controller.Controller;
 import Model.Entity;
 import Model.Model;
 import Model.Predator;

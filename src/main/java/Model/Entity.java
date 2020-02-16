@@ -1,13 +1,13 @@
 package Model;
+
 import View.Automata;
 import processing.core.PVector;
 
-
 import java.awt.*;
 
-public abstract class Entity implements Movable, Showable {
+public abstract class Entity implements Movable {
 
-    private final int SIZE = 20;
+    private final int SIZE = 40;
     private float size = SIZE;
 
 
@@ -51,6 +51,9 @@ public abstract class Entity implements Movable, Showable {
         mySketch.fill(color.getRed(), color.getGreen(), color.getBlue());
     }
 
+    public Color getColor(){
+        return new Color(color.getRed(), color.getGreen(), color.getBlue());
+    }
     public PVector getPosition() {
         return new PVector(position.x, position.y);
     }

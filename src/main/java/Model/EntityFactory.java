@@ -1,6 +1,6 @@
 package Model;
 
-import Controller.MovementBehaviour;
+import Controller.MovementBehaviours.MovementBehaviour;
 import View.Automata;
 import processing.core.PVector;
 
@@ -9,31 +9,26 @@ import java.util.List;
 
 public class EntityFactory {
 
-    public static Model model;
-
-
-    public static List<Entity> createRandomPredators(int numberOfPredators, MovementBehaviour movementBehaviour){
-        List<Entity> predators = new LinkedList<>();
+    public static List<Predator> createRandomPredators(int numberOfPredators, MovementBehaviour movementBehaviour){
+        List<Predator> predators = new LinkedList<>();
         for(int i = 0; i < numberOfPredators; i++){
             PVector position = createRandomPositionPVector();
             PVector speed = createRandomSpeedPVector();
             Predator newPredator = new Predator(position, speed);
             predators.add(newPredator);
             movementBehaviour.addPredator(newPredator);
-            model.addPredator(newPredator);
         }
         return predators;
     }
 
-    public static List<Entity> createRandomPreys(int numberOfPreys, MovementBehaviour movementBehaviour){
-        List<Entity> preys = new LinkedList<>();
+    public static List<Prey> createRandomPreys(int numberOfPreys, MovementBehaviour movementBehaviour){
+        List<Prey> preys = new LinkedList<>();
         for(int i = 0; i < numberOfPreys; i++){
             PVector position = createRandomPositionPVector();
             PVector speed = createRandomSpeedPVector();
             Prey newPrey = new Prey(position, speed);
             preys.add(newPrey);
             movementBehaviour.addPrey(newPrey);
-            model.addPrey(newPrey);
         }
         return preys;
     }

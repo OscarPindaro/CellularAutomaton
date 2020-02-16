@@ -1,28 +1,33 @@
 package View;
 
-import Controller.FuzzyPredatorMovementBehaviour;
-import Controller.MovementBehaviour;
-import Controller.MovementController;
-import Controller.RandomMovementBehaviour;
-import Model.*;
+import Controller.*;
+import Controller.MovementBehaviours.MovementBehaviour;
+import Model.Model;
 import processing.core.PApplet;
-
-import java.io.IOException;
 
 public class Automata extends PApplet {
 
     private static  Automata mySketch;
-    private int width = 500;
-    private  int height = 500;
-    private MovementController movementController;
+
+    //parameters
+    private int width = 1000;
+    private  int height = 1000;
+    private final int NUM_OF_PREDATORS = 20;
+    private final int NUM_OF_PREYS = 20;
+
+    //controller
+    private Controller controller;
+
+    //model
     private Model model;
-    private final int NUM_OF_PREDATORS = 1;
-    private final int NUM_OF_PREYS = 100;
-    public static Prey p;
+
+    //view
+    private EntityDrawer entityDrawer;
 
     public Automata(){
         super();
     }
+
     public static Automata getInstance(){
         if(mySketch == null){
             mySketch = new Automata();
@@ -44,77 +49,37 @@ public class Automata extends PApplet {
 
     public void draw(){
         background(51);
-        movementController.updateAllEntitiesSpeed();
-        movementController.updateAllEntitiesPosition();
-        for(Entity entity: model.getEntities()){
-            entity.show();
-        }
+        controller.update();
+        entityDrawer.drawEntities();
         textSize(26);
         fill(255, 0, 255);
         text(frameRate, 0,26);
 
     }
 
-    public static void main1(String[] args) {
-        String[] appletArgs= new String[]{Automata.class.getName()};
-        Automata mySketch= getInstance();
-        Model model = new Model(mySketch.width, mySketch.height);
-        mySketch.model = model;
-        setModelToFactory();
-        MovementBehaviour randomMovementBehaviour = new RandomMovementBehaviour();
-        String path = Automata.class.getResource("/fuzzyControllers/cellular.fis").getPath();
-        MovementBehaviour fuzzyBehaviour;
-        try{
-            fuzzyBehaviour = new FuzzyPredatorMovementBehaviour(mySketch.model, path);
-        }
-        catch (IOException ioe){
-            System.out.println(ioe.getMessage());
-            fuzzyBehaviour = new RandomMovementBehaviour();
-        }
-        EntityFactory.createRandomPredators(mySketch.NUM_OF_PREDATORS, fuzzyBehaviour);
-        EntityFactory.createRandomPreys(mySketch.NUM_OF_PREYS, randomMovementBehaviour);
-        setMovementController(mySketch, model);
-        mySketch.movementController.addMovementBehaviour(randomMovementBehaviour);
-        mySketch.movementController.addMovementBehaviour(fuzzyBehaviour);
-        PApplet.runSketch(appletArgs, mySketch );
-    }
-
-    private static void setMovementController(Automata mySketch, Model model){
-        mySketch.movementController = new MovementController(model);
-    }
-
-    private static void setModelToFactory(){
-        EntityFactory.model = mySketch.model;
-    }
-
-
     public static void main(String[] args) {
         String[] appletArgs= new String[]{Automata.class.getName()};
         Automata mySketch= getInstance();
-        Model model = new Model(mySketch.width, mySketch.height);
-        mySketch.model = model;
-        setModelToFactory();
-        MovementBehaviour randomMovementBehaviour = new RandomMovementBehaviour();
-        String path = Automata.class.getResource("/fuzzyControllers/cellular.fis").getPath();
-        EntityFactory.createRandomPreys(mySketch.NUM_OF_PREYS, randomMovementBehaviour);
-        setMovementController(mySketch, model);
-        assignFuzzyController(path);
-        mySketch.movementController.addMovementBehaviour(randomMovementBehaviour);
+        createModel();
+        assignController();
+        MovementBehaviour randomMovementBehaviour = mySketch.controller.getRandomMovementBehaviour();
+        mySketch.controller.createRandomPredators(mySketch.NUM_OF_PREDATORS, randomMovementBehaviour);
+        mySketch.controller.createRandomPreys(mySketch.NUM_OF_PREYS, randomMovementBehaviour);
+        createEntityDrawer();
         PApplet.runSketch(appletArgs, mySketch );
     }
 
-    private static void assignFuzzyController(String path){
-        MovementBehaviour fuzzyBehaviour;
-        for(int i = 0; i < 3; i++){
-            try{
-                fuzzyBehaviour = new FuzzyPredatorMovementBehaviour(mySketch.model, path);
-            }
-            catch (IOException ioe){
-                System.out.println(ioe.getMessage());
-                fuzzyBehaviour = new RandomMovementBehaviour();
-            }
-            EntityFactory.createRandomPredators(mySketch.NUM_OF_PREDATORS, fuzzyBehaviour);
-            mySketch.movementController.addMovementBehaviour(fuzzyBehaviour);
-        }
+    private static void createModel(){
+        Model model = new Model(mySketch.width, mySketch.height);
+        mySketch.model = model;
     }
+
+    private static void assignController(){
+        mySketch.controller = new Controller(mySketch.model);
+    }
+
+    private static void createEntityDrawer(){
+        mySketch.entityDrawer = new EntityDrawer(mySketch.model);
+    }
+
 }

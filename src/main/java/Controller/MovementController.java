@@ -1,6 +1,8 @@
 package Controller;
 
-import Model.*;
+import Controller.MovementBehaviours.MovementBehaviour;
+import Model.Entity;
+import Model.Model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +61,7 @@ public class MovementController {
     }
 
     public void addMovementBehaviour(MovementBehaviour m){
-        movementBehaviours.add(m);
+        if(!movementBehaviours.contains(m))
+            movementBehaviours.add(m);
     }
 }

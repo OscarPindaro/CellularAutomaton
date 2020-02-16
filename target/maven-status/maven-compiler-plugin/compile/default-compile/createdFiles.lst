@@ -1,0 +1,13 @@
+View/Automata.class
+Controller/FuzzyPredatorMovementBehaviour.class
+Model/Entity.class
+Model/Model.class
+Model/EntityFactory.class
+Controller/RandomMovementBehaviour.class
+Controller/Odometry.class
+Controller/MovementBehaviour.class
+Model/Prey.class
+Model/Movable.class
+Model/Predator.class
+Model/Showable.class
+Controller/MovementController.class

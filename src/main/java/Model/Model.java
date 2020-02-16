@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,7 +57,11 @@ public class Model {
     }
 
     public List<Prey> getPreys(){
-        return new LinkedList<>(preys);
+        return new ArrayList<Prey>(preys);
+    }
+
+    public List<Predator> getPredators(){
+        return new ArrayList<>(predators);
     }
 
     public int getWorldWidth() {
