@@ -1,10 +1,13 @@
 package Model.Genetic;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class Node {
     private List<Integer> variables;
+
+    private final int MAX_CONSTANT = 100;
 
     private static String[] operations = {"add" , "sub", "mult"};
     private String operation;
@@ -47,7 +50,7 @@ public class Node {
         }
         else if (Math.random() >= 0.66){
             this.operation = null;
-            this.constant = new Random().nextFloat()*100;
+            this.constant = new Random().nextFloat()*MAX_CONSTANT;
             this.variable = -1;
             leftChildren = null;
             rightChildren = null;
@@ -115,5 +118,88 @@ public class Node {
         if (rightChildren != null){
             rightChildren.setVariables(variables);
         }
+    }
+
+    public List<Node> toList(){
+        if(this.operation != null){
+            List<Node> listOfNodes = new LinkedList<>();
+            listOfNodes.add(this);
+            listOfNodes.addAll(leftChildren.toList());
+            listOfNodes.addAll(rightChildren.toList());
+            return listOfNodes;
+        }
+        else{
+            List<Node> list = new LinkedList<>();
+            list.add(this);
+            return list;
+        }
+    }
+
+    public void setRandomOperation(){
+        this.operation = operations[new Random().nextInt(operations.length)];
+        leftChildren = new Node(variables);
+        rightChildren = new Node(variables);
+        this.variable = -1;
+        this.constant = -1;
+    }
+
+    public void setVariable(){
+        this.operation = null;
+        this.variable = new Random().nextInt(variables.size());
+        this.constant = -1;
+        leftChildren = null;
+        rightChildren = null;
+    }
+
+    public void setConstant(){
+        this.operation = null;
+        this.variable = -1;
+        this.constant = new Random().nextFloat()*MAX_CONSTANT;
+        leftChildren = null;
+        rightChildren = null;
+    }
+
+    public static Node getFather(Node tree, Node child){
+        Node current;
+        current = tree;
+        if (current == child){
+            return null;
+        }
+        if (current.rightChildren == null && current.leftChildren== null){
+            return null;
+        }
+
+        if(current.rightChildren == child){
+            return current;
+        }
+        if(current.leftChildren == child){
+            return current;
+        }
+
+        Node left = getFather(current.leftChildren, child);
+        Node right = getFather(current.rightChildren, child);
+
+        if (right == null){
+            return left;
+        }
+        else{
+            return right;
+        }
+    }
+
+    public boolean isLeftChild(Node child){
+        return child == leftChildren;
+    }
+
+    public boolean isRightChild(Node child){
+        return child == rightChildren;
+    }
+
+    public void setLeftChildren(Node newChild){
+        leftChildren = newChild;
+    }
+
+    public void setRightChildren(Node newChild){
+        rightChildren = newChild;
     }
 }

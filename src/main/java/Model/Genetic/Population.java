@@ -25,7 +25,9 @@ public class Population {
     }
 
     public void evaluateFitness(){
-        return;
+        for(Individual i : individuals){
+            i.evaluateFitnessFunction();
+        }
     }
 
     public float maxFitness(){

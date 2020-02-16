@@ -28,7 +28,7 @@ public class Individual implements MutationInterface{
 
     @Override
     public void mutate() {
-
+        chromosome.mutate();
     }
 
     public float getFitness(){
@@ -46,5 +46,17 @@ public class Individual implements MutationInterface{
 
     public void setEntity(Entity e){
         this.entity = e;
+    }
+
+    public void evaluateFitnessFunction(){
+        fitness = energy;
+    }
+
+    public Node getTree(){
+        return chromosome.getRoot();
+    }
+
+    public void setTree(Node root){
+        chromosome.setRoot(root);
     }
 }
