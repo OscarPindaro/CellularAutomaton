@@ -40,4 +40,13 @@ public class Chromosome {
     public void setRoot(Node root){
         this.root = root;
     }
+
+    public float computeFunction(){
+        return root.getValue();
+    }
+
+    @Override
+    public String toString() {
+        return root.toString();
+    }
 }

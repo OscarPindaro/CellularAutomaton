@@ -40,7 +40,7 @@ public class Individual implements MutationInterface{
         variables.add(0f);
         variables.add(0f);
         variables.add(0f);
-        variables.add(energy)
+        variables.add(energy);
         this.chromosome = new Chromosome(variables);
     }
 
@@ -96,5 +96,19 @@ public class Individual implements MutationInterface{
 
     public PVector getPosition(){
         return new PVector(entity.getPosition().x, entity.getPosition().y);
+    }
+
+    public int chooseAction(){
+        int functionValue = (int) chromosome.computeFunction();
+        return functionValue % variables.size();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("individuo");
+        builder.append(":\t");
+        builder.append(this.chromosome);
+        return builder.toString();
     }
 }

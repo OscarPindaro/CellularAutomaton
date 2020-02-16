@@ -2,6 +2,7 @@ package Controller.Genetic;
 
 import Model.*;
 import Model.Genetic.Individual;
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
 
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class GeneticController {
 
     //NB suppone che ci siano sempre prede!
     public void computeDecision(){
+        computeTarget();
+        computeAction();
+    }
+
+    private void computeTarget(){
         List<Individual> individuals = ga.getIndividuals();
         List<Prey> preys = model.getPreys();
         for(Individual i : individuals){
@@ -34,6 +40,15 @@ public class GeneticController {
                 }
             }
             i.setTargetPosition(nearestPrey.getPosition().x, nearestPrey.getPosition().y);
+        }
+    }
+
+    private void computeAction(){
+        List<Individual> individuals = ga.getIndividuals();
+        int action;
+        for(Individual i : individuals){
+            action = i.chooseAction();
+            //System.out.println(i + "\t\t" + action);
         }
     }
 }

@@ -12,7 +12,7 @@ public class Automata extends PApplet {
     //parameters
     private int width = 1000;
     private  int height = 1000;
-    private final int NUM_OF_PREDATORS = 20;
+    private final int NUM_OF_PREDATORS = 100;
     private final int NUM_OF_PREYS = 20;
 
     //controller

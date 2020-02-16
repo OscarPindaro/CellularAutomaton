@@ -62,6 +62,7 @@ public class Controller {
         i++;
         if( i > 10000){
             geneticController.createNextGeneration();
+            i = 0;
         }
         geneticController.computeDecision();
         movementController.updateAllEntitiesSpeed();

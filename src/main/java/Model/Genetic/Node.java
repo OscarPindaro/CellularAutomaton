@@ -202,4 +202,33 @@ public class Node {
     public void setRightChildren(Node newChild){
         rightChildren = newChild;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        if (operation != null){
+            builder.append(leftChildren);
+            builder.append(rightChildren);
+            switch (operation) {
+                case "add":
+                    builder.append(" +");
+                    break;
+                case "sub":
+                    builder.append(" -");
+                    break;
+                case "mult":
+                    builder.append(" *");
+                    break;
+                default:
+                    throw new RuntimeException("Wrong operation");
+            }
+        }
+        else if(variable>=0){
+            builder.append(" x" + variable);
+        }
+        else{
+            builder.append(" " + (int) constant);
+        }
+        return builder.toString();
+    }
 }

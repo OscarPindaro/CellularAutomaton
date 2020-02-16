@@ -18,6 +18,9 @@ public class Population {
             individuals.add(new Individual(e));
         }
         populationSize = entities.size();
+        for(Individual i : individuals){
+            System.out.println(i);
+        }
     }
 
     public Individual selectIndividual(){
