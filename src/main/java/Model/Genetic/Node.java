@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Node {
-    private List<Integer> variables;
+    private List<Float> variables;
 
     private final int MAX_CONSTANT = 100;
 
@@ -17,13 +17,13 @@ public class Node {
     private Node leftChildren;
     private Node rightChildren;
 
-    public Node(String operation, List<Integer> variables){
+    public Node(String operation, List<Float> variables){
         this.operation = operation;
         variable = -1;
         this.variables = variables;
     }
 
-    public Node(float constant, List<Integer> variables){
+    public Node(float constant, List<Float> variables){
         this.operation = null;
         this.constant = constant;
         this.variable = -1;
@@ -32,7 +32,7 @@ public class Node {
         this.variables = variables;
     }
 
-    public Node(int variable, List<Integer> variables){
+    public Node(int variable, List<Float> variables){
         this.operation = null;
         this.constant = -1;
         this.variable = variable;
@@ -41,7 +41,7 @@ public class Node {
         this.variables = variables;
     }
 
-    public Node(List<Integer> variables){
+    public Node(List<Float> variables){
         if( Math.random() <0.33){
             this.operation = operations[(int)(Math.random()*operations.length)];
             variable = -1;
@@ -110,7 +110,7 @@ public class Node {
         }
     }
 
-    public void setVariables(List<Integer> variables){
+    public void setVariables(List<Float> variables){
         this.variables = variables;
         if(leftChildren != null){
             leftChildren.setVariables(variables);

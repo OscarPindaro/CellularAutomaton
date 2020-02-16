@@ -11,23 +11,26 @@ public class GeneticAlghoritm {
 
     private Population population;
     private CrossOverManager crossover;
+    private int generation;
+
     private final int iterations = 1000;
     private final int endFitness = 1000;
     private int currentIteration;
     private final float crossoverProbability = 0.8f;
     private final float mutationProbability = 0.1f;
 
-    public GeneticAlghoritm(List<Entity> entities){
+    public GeneticAlghoritm(List<Predator> entities){
         population = new Population(new ArrayList<>(entities));
-
+        generation = 0;
     }
 
-    public void evolve(List<Entity> entities){
+    public void evolve(List<Predator> entities){
         evaluateFitnessFunction();
         if(endConditions()) {
             return;
         }
         createNewPopulation(entities);
+        generation++;
     }
 
     private void evaluateFitnessFunction(){
@@ -38,7 +41,15 @@ public class GeneticAlghoritm {
         return currentIteration >= iterations || population.maxFitness()>=endFitness;
     }
 
-    private void createNewPopulation(List<Entity> entities){
+    public void resetIndividuals(){
+        population.reset();
+    }
+
+    public List<Individual> getIndividuals(){
+        return population.getIndividuals();
+    }
+
+    private void createNewPopulation(List<Predator> entities){
         int i = 0;
         while(i < population.getPopulationSize()){
             Individual mother = population.selectIndividual();

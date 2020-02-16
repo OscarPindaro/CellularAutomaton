@@ -1,5 +1,9 @@
 package Model;
 
+import View.Automata;
+import processing.core.PVector;
+
+import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,5 +74,27 @@ public class Model {
 
     public int getWorldHeight() {
         return worldHeight;
+    }
+
+    public void resetExistingEntities(){
+        for(Entity e : getEntities()){
+            PVector randomPosition = Model.createRandomPositionPVector();
+            e.setXPosition(randomPosition.x);
+            e.setYposition(randomPosition.y);
+            PVector randomSpeed = Model.createRandomSpeedPVector();
+            e.setSpeed(randomSpeed);
+        }
+    }
+
+    private static PVector createRandomPositionPVector(){
+        Automata mySketch = Automata.getInstance();
+        return new PVector((float) Math.random()*mySketch.getWidth(), (float) Math.random()*mySketch.getHeight());
+    }
+
+    private static PVector createRandomSpeedPVector(){
+        Automata mySketch = Automata.getInstance();
+        PVector speed = PVector.random2D();
+        speed.mult(mySketch.random(2));
+        return speed;
     }
 }

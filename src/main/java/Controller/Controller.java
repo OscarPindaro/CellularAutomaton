@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.Genetic.GeneticController;
 import Controller.MovementBehaviours.FuzzyPredatorMovementBehaviour;
 import Controller.MovementBehaviours.MovementBehaviour;
 import Controller.MovementBehaviours.RandomMovementBehaviour;
@@ -13,6 +14,10 @@ public class Controller {
     private Model model;
     //controllers
     private MovementController movementController;
+    private GeneticController geneticController;
+
+    //modo stupido per controllare il tempo
+    private int i = 0;
 
 
     public Controller(Model model){
@@ -49,7 +54,16 @@ public class Controller {
         model.addPreys(preys);
     }
 
+    public void evolvePredators(){
+        geneticController = new GeneticController(model);
+    }
+
     public void update(){
+        i++;
+        if( i > 10000){
+            geneticController.createNextGeneration();
+        }
+        geneticController.computeDecision();
         movementController.updateAllEntitiesSpeed();
         movementController.updateAllEntitiesPosition();
     }

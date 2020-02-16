@@ -11,11 +11,11 @@ public class Chromosome {
         root = Node.copySubTree(chromosome.root);
     }
 
-    public Chromosome(List<Integer> variables){
+    public Chromosome(List<Float> variables){
         root = new Node(variables);
     }
 
-    public void setVariables(List<Integer> variables){
+    public void setVariables(List<Float> variables){
         root.setVariables(variables);
     }
 

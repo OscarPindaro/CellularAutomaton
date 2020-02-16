@@ -65,6 +65,7 @@ public class Automata extends PApplet {
         MovementBehaviour randomMovementBehaviour = mySketch.controller.getRandomMovementBehaviour();
         mySketch.controller.createRandomPredators(mySketch.NUM_OF_PREDATORS, randomMovementBehaviour);
         mySketch.controller.createRandomPreys(mySketch.NUM_OF_PREYS, randomMovementBehaviour);
+        mySketch.controller.evolvePredators();
         createEntityDrawer();
         PApplet.runSketch(appletArgs, mySketch );
     }

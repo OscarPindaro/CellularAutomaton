@@ -43,4 +43,14 @@ public class Population {
     public int getPopulationSize(){
         return populationSize;
     }
+
+    public void reset(){
+        for(Individual i: individuals){
+            i.reset();
+        }
+    }
+
+    public List<Individual> getIndividuals(){
+        return new ArrayList<>(individuals);
+    }
 }
