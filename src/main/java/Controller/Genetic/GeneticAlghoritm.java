@@ -22,6 +22,7 @@ public class GeneticAlghoritm {
     public GeneticAlghoritm(List<Predator> entities){
         population = new Population(new ArrayList<>(entities));
         generation = 0;
+        crossover = new CrossOverManager();
     }
 
     public void evolve(List<Predator> entities){
@@ -57,6 +58,7 @@ public class GeneticAlghoritm {
             List<Individual> children;
 
             if( Math.random() <=  crossoverProbability){
+                System.out.println(crossover);
                 children =crossover.cross(mother, father);
                 mother = children.get(0);
                 father = children.get(1);

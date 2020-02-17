@@ -3,12 +3,13 @@ package Model.Genetic;
 import Model.Entity;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Population {
 
     private List<Individual> individuals;
-    private SelectionInterface selection;
+    private SelectionInterface selection = new RankSelection();
     private int populationSize;
 
 
@@ -24,7 +25,9 @@ public class Population {
     }
 
     public Individual selectIndividual(){
-        return selection.extractIndividual(new ArrayList<>(individuals));
+        List<Individual> copy = new ArrayList<>(individuals);
+        copy.sort(new DescendingComparator());
+        return selection.extractIndividual(copy);
     }
 
     public void evaluateFitness(){
@@ -55,5 +58,18 @@ public class Population {
 
     public List<Individual> getIndividuals(){
         return new ArrayList<>(individuals);
+    }
+}
+
+class DescendingComparator implements Comparator<Individual>{
+
+    @Override
+    public int compare(Individual individual, Individual t1) {
+        if(individual.getFitness() > t1.getFitness()){
+            return 1;
+        }
+        else {
+            return -1;
+        }
     }
 }

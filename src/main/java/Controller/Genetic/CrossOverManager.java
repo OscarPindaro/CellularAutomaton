@@ -57,8 +57,8 @@ public class CrossOverManager {
     private Individual changeTree(Individual parent, Node parentNode, Node toSwapParent, Node toSwapOther){
         if(parentNode == null){
             parent.setTree(Node.copySubTree(toSwapOther));
+            return parent;
         }
-
         if(parentNode.isLeftChild(toSwapParent)){
             parentNode.setLeftChildren(Node.copySubTree(toSwapOther));
         }

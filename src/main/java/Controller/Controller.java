@@ -60,7 +60,7 @@ public class Controller {
 
     public void update(){
         i++;
-        if( i > 10000){
+        if( i > 100){
             geneticController.createNextGeneration();
             i = 0;
         }
