@@ -1,6 +1,6 @@
 package Model.Genetic;
 
-import Model.Entity;
+import Model.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Comparator;

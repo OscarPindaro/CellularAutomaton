@@ -1,25 +1,23 @@
 package Controller.Genetic;
 
-import Model.Entity;
 import Model.Genetic.Individual;
-import Model.Genetic.Node;
+import Model.Genetic.OldNode;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class CrossOverManager {
 
     public List<Individual> cross(Individual mother, Individual father){
-        Node motherTree = mother.getTree();
-        Node fatherTree = father.getTree();
-        List<Node> motherList = motherTree.toList();
-        List<Node> faterList = fatherTree.toList();
-        Node toSwapMother = motherList.get(new Random().nextInt(motherList.size()));
-        Node toSwapFather = motherList.get(new Random().nextInt(faterList.size()));
+        OldNode motherTree = mother.getTree();
+        OldNode fatherTree = father.getTree();
+        List<OldNode> motherList = motherTree.toList();
+        List<OldNode> faterList = fatherTree.toList();
+        OldNode toSwapMother = motherList.get(new Random().nextInt(motherList.size()));
+        OldNode toSwapFather = motherList.get(new Random().nextInt(faterList.size()));
 
-        Node parentMother = Node.getFather(motherTree, toSwapMother);
+        OldNode parentMother = OldNode.getFather(motherTree, toSwapMother);
 
         Individual newMother = changeTree(mother, parentMother, toSwapMother,toSwapFather);
 
@@ -36,7 +34,7 @@ public class CrossOverManager {
         }
          */
 
-        Node parentFather = Node.getFather(fatherTree, toSwapFather);
+        OldNode parentFather = OldNode.getFather(fatherTree, toSwapFather);
         Individual newFather = changeTree(father, parentFather, toSwapFather, toSwapMother);/*
         if( parentFather == null){
             father.setTree(Node.copySubTree(toSwapMother));
@@ -54,16 +52,16 @@ public class CrossOverManager {
         return children;
     }
 
-    private Individual changeTree(Individual parent, Node parentNode, Node toSwapParent, Node toSwapOther){
+    private Individual changeTree(Individual parent, OldNode parentNode, OldNode toSwapParent, OldNode toSwapOther){
         if(parentNode == null){
-            parent.setTree(Node.copySubTree(toSwapOther));
+            parent.setTree(OldNode.copySubTree(toSwapOther));
             return parent;
         }
         if(parentNode.isLeftChild(toSwapParent)){
-            parentNode.setLeftChildren(Node.copySubTree(toSwapOther));
+            parentNode.setLeftChildren(OldNode.copySubTree(toSwapOther));
         }
         else {
-            parentNode.setRightChildren(Node.copySubTree(toSwapOther));
+            parentNode.setRightChildren(OldNode.copySubTree(toSwapOther));
         }
         return parent;
     }

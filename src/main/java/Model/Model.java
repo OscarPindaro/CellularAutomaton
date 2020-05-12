@@ -1,9 +1,11 @@
 package Model;
 
+import Model.entity.Entity;
+import Model.entity.Predator;
+import Model.entity.Prey;
 import View.Automata;
 import processing.core.PVector;
 
-import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

@@ -1,9 +1,8 @@
 package Controller.MovementBehaviours;
 
-import Controller.Controller;
-import Model.Entity;
-import Model.Predator;
-import Model.Prey;
+import Model.entity.Entity;
+import Model.entity.Predator;
+import Model.entity.Prey;
 
 import java.util.LinkedList;
 import java.util.List;

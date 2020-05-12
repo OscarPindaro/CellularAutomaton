@@ -1,7 +1,6 @@
 package Controller.MovementBehaviours;
 
-import Controller.Controller;
-import Model.Entity;
+import Model.entity.Entity;
 import processing.core.PVector;
 
 import java.util.Random;

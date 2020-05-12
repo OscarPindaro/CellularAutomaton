@@ -1,4 +1,4 @@
-package Model;
+package Model.entity;
 
 import processing.core.PVector;
 

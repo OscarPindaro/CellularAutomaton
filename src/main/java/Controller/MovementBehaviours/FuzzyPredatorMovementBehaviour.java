@@ -1,10 +1,9 @@
 package Controller.MovementBehaviours;
 
-import Controller.Controller;
-import Model.Entity;
+import Model.entity.Entity;
 import Model.Model;
-import Model.Predator;
-import Model.Prey;
+import Model.entity.Predator;
+import Model.entity.Prey;
 import jfml.FuzzyInferenceSystem;
 import jfml.compatibility.ImportMatlab;
 import processing.core.PVector;

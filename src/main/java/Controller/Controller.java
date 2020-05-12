@@ -5,6 +5,9 @@ import Controller.MovementBehaviours.FuzzyPredatorMovementBehaviour;
 import Controller.MovementBehaviours.MovementBehaviour;
 import Controller.MovementBehaviours.RandomMovementBehaviour;
 import Model.*;
+import Model.entity.EntityFactory;
+import Model.entity.Predator;
+import Model.entity.Prey;
 
 import java.io.IOException;
 import java.util.List;

@@ -2,7 +2,7 @@ package Controller.Genetic;
 
 import Model.*;
 import Model.Genetic.Individual;
-import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
+import Model.entity.Prey;
 
 import java.util.List;
 

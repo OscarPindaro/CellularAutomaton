@@ -1,10 +1,9 @@
 package Model.Genetic;
 
-import Model.Entity;
+import Model.entity.Entity;
 import processing.core.PVector;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Individual implements MutationInterface{
@@ -70,11 +69,11 @@ public class Individual implements MutationInterface{
         fitness = energy;
     }
 
-    public Node getTree(){
+    public OldNode getTree(){
         return null; //chromosome.getRoot();
     }
 
-    public void setTree(Node root){
+    public void setTree(OldNode root){
         chromosome.setRoot(root);
     }
 

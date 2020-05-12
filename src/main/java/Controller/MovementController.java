@@ -1,7 +1,7 @@
 package Controller;
 
 import Controller.MovementBehaviours.MovementBehaviour;
-import Model.Entity;
+import Model.entity.Entity;
 import Model.Model;
 
 import java.util.LinkedList;

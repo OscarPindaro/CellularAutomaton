@@ -1,4 +1,4 @@
-package Model;
+package Model.entity;
 
 import Controller.MovementBehaviours.MovementBehaviour;
 import View.Automata;

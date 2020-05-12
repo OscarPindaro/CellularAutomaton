@@ -1,9 +1,9 @@
 package View;
 
 import Model.*;
+import Model.entity.Entity;
 
 import java.awt.*;
-import java.util.LinkedList;
 import java.util.List;
 
 public class EntityDrawer {

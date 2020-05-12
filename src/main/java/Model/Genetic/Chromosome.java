@@ -8,14 +8,14 @@ import java.util.Random;
  */
 public class Chromosome {
 
-    private Node root;
+    private OldNode root;
 
     public Chromosome(Chromosome chromosome){
-        root = Node.copySubTree(chromosome.root);
+        root = OldNode.copySubTree(chromosome.root);
     }
 
     public Chromosome(List<Float> variables){
-        root = new Node(variables);
+        root = new OldNode(variables);
     }
 
     public void setVariables(List<Float> variables){
@@ -24,8 +24,8 @@ public class Chromosome {
 
     public Chromosome mutate(){
         Chromosome newChromosome = new Chromosome(this);
-        List<Node> list = newChromosome.root.toList();
-        Node mutatedNode = list.get(new Random().nextInt(list.size()));
+        List<OldNode> list = newChromosome.root.toList();
+        OldNode mutatedNode = list.get(new Random().nextInt(list.size()));
         if( Math.random() <= 0.33){
             mutatedNode.setRandomOperation();
         }
@@ -39,7 +39,7 @@ public class Chromosome {
         return newChromosome;
     }
 
-    public void setRoot(Node root){
+    public void setRoot(OldNode root){
         this.root = root;
     }
 

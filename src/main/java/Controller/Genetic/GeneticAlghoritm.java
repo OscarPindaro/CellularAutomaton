@@ -2,7 +2,7 @@ package Controller.Genetic;
 
 import Model.Genetic.Individual;
 import Model.Genetic.Population;
-import Model.*;
+import Model.entity.Predator;
 
 import java.util.ArrayList;
 import java.util.List;
