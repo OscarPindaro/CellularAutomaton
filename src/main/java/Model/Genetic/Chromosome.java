@@ -3,6 +3,9 @@ package Model.Genetic;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * immutable class
+ */
 public class Chromosome {
 
     private Node root;
@@ -19,8 +22,9 @@ public class Chromosome {
         root.setVariables(variables);
     }
 
-    public void mutate(){
-        List<Node> list = root.toList();
+    public Chromosome mutate(){
+        Chromosome newChromosome = new Chromosome(this);
+        List<Node> list = newChromosome.root.toList();
         Node mutatedNode = list.get(new Random().nextInt(list.size()));
         if( Math.random() <= 0.33){
             mutatedNode.setRandomOperation();
@@ -31,10 +35,8 @@ public class Chromosome {
         else{
             mutatedNode.setConstant();
         }
-    }
 
-    public Node getRoot(){
-        return root;
+        return newChromosome;
     }
 
     public void setRoot(Node root){

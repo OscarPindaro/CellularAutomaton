@@ -68,6 +68,9 @@ class DescendingComparator implements Comparator<Individual>{
         if(individual.getFitness() > t1.getFitness()){
             return 1;
         }
+        else if(individual.getFitness() == t1.getFitness()){
+            return 0;
+        }
         else {
             return -1;
         }

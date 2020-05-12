@@ -71,7 +71,7 @@ public class Individual implements MutationInterface{
     }
 
     public Node getTree(){
-        return chromosome.getRoot();
+        return null; //chromosome.getRoot();
     }
 
     public void setTree(Node root){
