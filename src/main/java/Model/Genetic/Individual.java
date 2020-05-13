@@ -11,7 +11,7 @@ public class Individual implements MutationInterface{
     private Entity entity;
     private float fitness;
     private float energy;
-    private Chromosome chromosome;
+    private OldChromosome chromosome;
     private static final float STARTING_ENERGY = 100;
 
     //inputs
@@ -40,7 +40,7 @@ public class Individual implements MutationInterface{
         variables.add(0f);
         variables.add(0f);
         variables.add(energy);
-        this.chromosome = new Chromosome(variables);
+        this.chromosome = new OldChromosome(variables);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class Individual implements MutationInterface{
         return energy;
     }
 
-    public Chromosome getChromosome() {
-        return new Chromosome(chromosome);
+    public OldChromosome getChromosome() {
+        return new OldChromosome(chromosome);
     }
 
     public void setEntity(Entity e){

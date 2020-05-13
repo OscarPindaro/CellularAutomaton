@@ -58,6 +58,21 @@ public class OperationNode  extends Node{
     }
 
     @Override
+    public void propagateVariables(List<Float> variables) {
+        this.variables = variables;
+        rightChildren.propagateVariables(variables);
+        leftChildren.propagateVariables(variables);
+    }
+
+    @Override
+    public Node copyTree(List<Float> variables) {
+        OperationNode ret = new OperationNode(operation, variables);
+        ret.rightChildren = rightChildren.copyTree(variables);
+        ret.leftChildren = leftChildren.copyTree(variables);
+        return ret;
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("( ").append(leftChildren).append(" " + convertOperation(operation) + " ").append(rightChildren).append(" )");
@@ -76,4 +91,6 @@ public class OperationNode  extends Node{
                 throw new RuntimeException("Wrong operation");
         }
     }
+
+
 }

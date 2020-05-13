@@ -25,4 +25,14 @@ public class VariableNode extends Node {
     public String toString() {
         return "x" + selectedVariable;
     }
+
+    @Override
+    public void propagateVariables(List<Float> variables) {
+        this.variables = variables;
+    }
+
+    @Override
+    public Node copyTree(List<Float> variables) {
+        return new VariableNode(selectedVariable, variables);
+    }
 }

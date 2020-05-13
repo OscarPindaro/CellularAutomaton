@@ -1,54 +1,32 @@
 package Model.Genetic;
 
-import java.util.List;
-import java.util.Random;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-/**
- * immutable class
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Chromosome {
 
-    private OldNode root;
+    private final Node root;
 
-    public Chromosome(Chromosome chromosome){
-        root = OldNode.copySubTree(chromosome.root);
+    /**
+     * creates a random tree with no variables
+     */
+    public Chromosome(){
+        root = Node.createRandomTree(null);
     }
 
-    public Chromosome(List<Float> variables){
-        root = new OldNode(variables);
+    public Chromosome(Chromosome toCopy){
+        this.root = toCopy.root.copyTree(new ArrayList<>(null));
     }
 
     public void setVariables(List<Float> variables){
-        root.setVariables(variables);
+        root.propagateVariables(variables);
     }
+
 
     public Chromosome mutate(){
-        Chromosome newChromosome = new Chromosome(this);
-        List<OldNode> list = newChromosome.root.toList();
-        OldNode mutatedNode = list.get(new Random().nextInt(list.size()));
-        if( Math.random() <= 0.33){
-            mutatedNode.setRandomOperation();
-        }
-        else if ( Math.random() >= 0.66){
-            mutatedNode.setVariable();
-        }
-        else{
-            mutatedNode.setConstant();
-        }
-
-        return newChromosome;
+        throw new NotImplementedException();
     }
 
-    public void setRoot(OldNode root){
-        this.root = root;
-    }
-
-    public float computeFunction(){
-        return root.getValue();
-    }
-
-    @Override
-    public String toString() {
-        return root.toString();
-    }
 }

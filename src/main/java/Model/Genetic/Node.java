@@ -10,8 +10,8 @@ public abstract class Node {
 
     protected final int MAX_CONSTANT = 100;
 
-    protected Node rightChildren;
-    protected Node leftChildren;
+    protected  Node rightChildren;
+    protected  Node leftChildren;
 
     protected static Random generator = new Random();
 
@@ -27,7 +27,12 @@ public abstract class Node {
 
     public abstract float getValue();
 
-    public static Node createRandomCromosome(List<Float> variables){
+    public static Node createRandomTree(List<Float> variables){
         return new OperationNode(operations[generator.nextInt(operations.length)], variables);
     }
+
+    public abstract void propagateVariables(List<Float> variables);
+
+
+    public abstract Node copyTree(List<Float> variables);
 }
