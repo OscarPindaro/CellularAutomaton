@@ -26,6 +26,11 @@ public class ConstantNode  extends Node {
     }
 
     @Override
+    public int numberOfNodes() {
+        return 1;
+    }
+
+    @Override
     public String toString() {
         return ""+ constantValue;
     }

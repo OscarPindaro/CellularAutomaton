@@ -73,6 +73,11 @@ public class OperationNode  extends Node{
     }
 
     @Override
+    public int numberOfNodes() {
+        return 1 + rightChildren.numberOfNodes() + leftChildren.numberOfNodes();
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("( ").append(leftChildren).append(" " + convertOperation(operation) + " ").append(rightChildren).append(" )");

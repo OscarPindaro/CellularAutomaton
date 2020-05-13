@@ -67,4 +67,9 @@ public class NodeTest {
         root.propagateVariables(toPropagate);
         assertNotEquals(previousValue, root.getValue());
     }
+
+    @Test
+    public void testNumberOfNodes(){
+        assertDoesNotThrow(root::numberOfNodes);
+    }
 }
