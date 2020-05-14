@@ -28,6 +28,8 @@ public class ChromosomeTest {
     public void testMutation(){
         assertDoesNotThrow(()->chromosome.mutate());
 
+        assertNotSame(chromosome, chromosome.mutate());
+
         assertNotNull(chromosome.mutate());
 
     }

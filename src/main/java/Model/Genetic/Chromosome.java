@@ -22,11 +22,20 @@ public class Chromosome {
     }
 
     public Chromosome(Chromosome toCopy){
-        this.root = toCopy.root.copyTree(new ArrayList<>(null));
+        this.root = toCopy.root.copyTree(new ArrayList<>(Node.copyVariables(toCopy.root.variables)));
     }
 
     public void setVariables(List<Float> variables){
         root.propagateVariables(variables);
+    }
+
+
+    /**
+     * returns a copy!!!!
+     * @return
+     */
+    public Node getRoot(){
+        return root.copyTree(Node.copyVariables(root.variables));
     }
 
 
