@@ -13,8 +13,12 @@ public class Chromosome {
     /**
      * creates a random tree with no variables
      */
-    public Chromosome(){
-        root = Node.createRandomTree(null);
+    public Chromosome(List<Float> variables){
+        root = Node.createRandomTree(variables);
+    }
+
+    public Chromosome(Node root){
+        this.root = root;
     }
 
     public Chromosome(Chromosome toCopy){
@@ -30,9 +34,14 @@ public class Chromosome {
         Random generator = new Random();
 
         int position = generator.nextInt(root.numberOfNodes());
+        Node newNode = Node.createRandomTree(Node.copyVariables(root.variables));
+
+        Node newRoot = root.setNode(newNode, position);
+
+        Chromosome toRet = new Chromosome(newRoot);
 
 
-        return null;
+        return toRet;
     }
 
 }

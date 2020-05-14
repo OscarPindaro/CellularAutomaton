@@ -30,6 +30,15 @@ public abstract class Node {
         return new OperationNode(operations[generator.nextInt(operations.length)], variables);
     }
 
+    public static List<Float> copyVariables(List<Float> variables){
+        List<Float> newVar = new ArrayList<>(variables.size());
+        for(Float var: variables)
+            newVar.add(new Float(var));
+
+        return newVar;
+
+    }
+
     public abstract void propagateVariables(List<Float> variables);
 
     public abstract int numberOfNodes();
@@ -103,11 +112,6 @@ public abstract class Node {
         }
         return currentNode;
     }
-
-
-
-
-
 
     public abstract Node copyTree(List<Float> variables);
 }
