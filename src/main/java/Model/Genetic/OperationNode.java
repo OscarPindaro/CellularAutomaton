@@ -36,7 +36,7 @@ public class OperationNode  extends Node{
             return new VariableNode(generator.nextInt(variables.size()), variables);
         }
         else if (probabilty > 0.67){
-            return new ConstantNode(generator.nextFloat()*Node.HIGHERCONST);
+            return new ConstantNode(generator.nextFloat()*Node.HIGHERCONST, variables);
         }
         else return new OperationNode(operations[generator.nextInt(operations.length)], variables);
 

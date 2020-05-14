@@ -2,7 +2,7 @@ import Model.Genetic.ConstantNode;
 import Model.Genetic.Node;
 import Model.Genetic.OperationNode;
 import Model.Genetic.VariableNode;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ public class NodeTest {
     public void testCreationNode(){
         assertDoesNotThrow(()->(new VariableNode(1, variables)));
         assertDoesNotThrow(() -> (new OperationNode("mult", variables)));
-        assertDoesNotThrow(() ->new ConstantNode(52.4f));
+        assertDoesNotThrow(() ->new ConstantNode(52.4f, variables));
     }
 
     @Test
@@ -64,12 +64,29 @@ public class NodeTest {
     @Test
     public void testPropagationValues(){
         float previousValue = root.getValue();
+        String oldRoot = root.toString();
         root.propagateVariables(toPropagate);
-        assertNotEquals(previousValue, root.getValue());
+
+        if(!oldRoot.equals(root.toString()))
+            assertNotEquals(previousValue, root.getValue());
     }
 
     @Test
     public void testNumberOfNodes(){
         assertDoesNotThrow(root::numberOfNodes);
+    }
+
+    @Test
+    public void testGetNode(){
+        Node root = new ConstantNode(100f, variables);
+        Node newNode = new OperationNode("add", variables);
+
+        assertNotEquals(root.toString(), root.setNode(newNode, 0).toString());
+
+        root = new OperationNode("add", variables);
+        newNode = new OperationNode("mult", variables);
+
+        assertNotEquals(root.toString(), root.setNode(newNode, 1));
+
     }
 }

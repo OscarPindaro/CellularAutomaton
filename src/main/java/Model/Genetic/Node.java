@@ -20,7 +20,8 @@ public abstract class Node {
     public Node(){}
 
     public Node(List<Float> variables){
-        this.variables = new ArrayList<>(variables);
+            this.variables = new ArrayList<>(variables);
+
     }
 
     public abstract float getValue();
@@ -34,23 +35,33 @@ public abstract class Node {
     public abstract int numberOfNodes();
 
     /**
-     * Return a tree with the new node at the specified position. The structure of the tree may have changed.
+     * Return a new tree with the new node at the specified position. The structure of the tree may have changed.
+     * The list of variables is the same of the old tree.
      * @param i
      * @return
      */
     public Node setNode(Node node, int i){
-        Node toSubstitute = getNode(i);
-        if (toSubstitute == null)
+
+        List<Float> newVar = new ArrayList<>(variables.size());
+
+        for(Float var: variables)
+                newVar.add(new Float(var));
+
+        Node newRoot = this.copyTree(newVar);
+
+        Node toSubstitute = newRoot.getNode(i);
+
+        Node father = newRoot.getFather(toSubstitute);
+        if (father == null)
             return node;
 
-        Node father = getFather(toSubstitute);
         if (toSubstitute == father.leftChildren)
             father.leftChildren = node;
 
         if(toSubstitute == father.rightChildren)
             father.rightChildren = node;
 
-        return this;
+        return newRoot;
     }
 
     private Node getFather(Node child){
@@ -92,6 +103,8 @@ public abstract class Node {
         }
         return currentNode;
     }
+
+
 
 
 

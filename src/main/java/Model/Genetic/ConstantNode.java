@@ -6,7 +6,8 @@ public class ConstantNode  extends Node {
 
     private final float constantValue;
 
-    public ConstantNode(float constant){
+    public ConstantNode(float constant, List<Float> variables){
+        super(variables);
         constantValue = constant;
         leftChildren = null;
         rightChildren = null;
@@ -22,7 +23,7 @@ public class ConstantNode  extends Node {
 
     @Override
     public Node copyTree(List<Float> variables) {
-        return new ConstantNode(constantValue);
+        return new ConstantNode(constantValue, variables);
     }
 
     @Override

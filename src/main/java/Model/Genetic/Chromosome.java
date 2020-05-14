@@ -4,6 +4,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Chromosome {
 
@@ -26,7 +27,12 @@ public class Chromosome {
 
 
     public Chromosome mutate(){
-        throw new NotImplementedException();
+        Random generator = new Random();
+
+        int position = generator.nextInt(root.numberOfNodes());
+
+
+        return null;
     }
 
 }
