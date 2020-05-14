@@ -2,16 +2,17 @@ package Model.Genetic;
 
 import Model.entity.Entity;
 import processing.core.PVector;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Individual implements MutationInterface{
+public class Individual{
 
     private Entity entity;
     private float fitness;
     private float energy;
-    private OldChromosome chromosome;
+    private Chromosome chromosome;
     private static final float STARTING_ENERGY = 100;
 
     //inputs
@@ -40,10 +41,9 @@ public class Individual implements MutationInterface{
         variables.add(0f);
         variables.add(0f);
         variables.add(energy);
-        this.chromosome = new OldChromosome(variables);
+        this.chromosome = new Chromosome(variables);
     }
 
-    @Override
     public void mutate() {
         chromosome.mutate();
     }
@@ -57,8 +57,8 @@ public class Individual implements MutationInterface{
         return energy;
     }
 
-    public OldChromosome getChromosome() {
-        return new OldChromosome(chromosome);
+    public Chromosome getChromosome() {
+        return new Chromosome(chromosome);
     }
 
     public void setEntity(Entity e){
@@ -69,12 +69,12 @@ public class Individual implements MutationInterface{
         fitness = energy;
     }
 
-    public OldNode getTree(){
+    public Node getTree(){
         return null; //chromosome.getRoot();
     }
 
-    public void setTree(OldNode root){
-        chromosome.setRoot(root);
+    public void setTree(Node root){
+        throw new NotImplementedException();
     }
 
     public void reset(){

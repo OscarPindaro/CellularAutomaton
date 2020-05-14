@@ -1,7 +1,6 @@
 package Controller.Genetic;
 
 import Model.Genetic.Individual;
-import Model.Genetic.OldNode;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -58,11 +58,16 @@ public abstract class Node {
 
         Node newRoot = this.copyTree(newVar);
 
+//        System.out.println("Before " + newRoot + " i " +i);
         Node toSubstitute = newRoot.getNode(i);
+//        System.out.println("ToSubstitue" + toSubstitute);
 
         Node father = newRoot.getFather(toSubstitute);
-        if (father == null)
+//        System.out.println("father " + father);
+
+        if (father == null){
             return node;
+        }
 
         if (toSubstitute == father.leftChildren)
             father.leftChildren = node;
@@ -109,6 +114,10 @@ public abstract class Node {
             if (iterations == i)
                 return currentNode;
             iterations++;
+            if(currentNode.leftChildren != null)
+                queue.add(currentNode.leftChildren);
+            if(currentNode.rightChildren != null)
+                queue.add(currentNode.rightChildren);
         }
         return currentNode;
     }

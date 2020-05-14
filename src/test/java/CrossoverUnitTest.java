@@ -32,4 +32,14 @@ public class CrossoverUnitTest {
     public void testCrossover(){
         assertDoesNotThrow(()-> crossoverUnit.crossover(chromosome1,chromosome2));
     }
+
+
+    public void testCrossoverPrint(){
+        Chromosome[] returned = crossoverUnit.crossover(chromosome1,chromosome2);
+        System.out.println("Chromosome1 " + chromosome1.getRoot());
+        System.out.println("Chromosome2 " + chromosome2.getRoot());
+
+        System.out.println("Children1 " + returned[0].getRoot());
+        System.out.println("Children2 " + returned[1].getRoot());
+    }
 }

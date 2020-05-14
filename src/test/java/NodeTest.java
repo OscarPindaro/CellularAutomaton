@@ -82,11 +82,15 @@ public class NodeTest {
         Node newNode = new OperationNode("add", variables);
 
         assertNotEquals(root.toString(), root.setNode(newNode, 0).toString());
+        assertNotSame(root, root.setNode(newNode, 0));
 
         root = new OperationNode("add", variables);
         newNode = new OperationNode("mult", variables);
 
         assertNotEquals(root.toString(), root.setNode(newNode, 1));
+        assertNotSame(root, root.setNode(newNode, 1));
 
+        System.out.println(newNode);
+        System.out.println(root + "\n" +  root.setNode(newNode, 1));
     }
 }
