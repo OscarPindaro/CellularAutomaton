@@ -1,7 +1,7 @@
-import Model.Genetic.ConstantNode;
-import Model.Genetic.Node;
-import Model.Genetic.OperationNode;
-import Model.Genetic.VariableNode;
+import model.genetic.ConstantNode;
+import model.genetic.Node;
+import model.genetic.OperationNode;
+import model.genetic.VariableNode;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

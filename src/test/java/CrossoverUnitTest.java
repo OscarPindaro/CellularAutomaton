@@ -1,7 +1,5 @@
-import Model.Genetic.Chromosome;
-import Model.Genetic.CrossoverUnit;
-import com.sun.org.apache.xpath.internal.operations.Variable;
-import org.junit.jupiter.api.BeforeAll;
+import model.genetic.Chromosome;
+import model.genetic.CrossoverUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

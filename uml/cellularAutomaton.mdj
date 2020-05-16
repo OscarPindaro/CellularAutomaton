@@ -9,7 +9,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Model",
+			"name": "model",
 			"ownedElements": [
 				{
 					"_type": "UMLClassDiagram",
@@ -61,7 +61,7 @@
 											"top": 239,
 											"width": 62.11181640625,
 											"height": 13,
-											"text": "Controller"
+											"text": "controller"
 										},
 										{
 											"_type": "LabelView",
@@ -73,7 +73,7 @@
 											"font": "Arial;13;0",
 											"width": 73.67724609375,
 											"height": 13,
-											"text": "(from Model)"
+											"text": "(from model)"
 										},
 										{
 											"_type": "LabelView",
@@ -272,7 +272,7 @@
 											"top": 80,
 											"width": 73.67724609375,
 											"height": 13,
-											"text": "(from Model)"
+											"text": "(from model)"
 										},
 										{
 											"_type": "LabelView",
@@ -703,7 +703,7 @@
 											"top": 415,
 											"width": 41.919921875,
 											"height": 13,
-											"text": "Model"
+											"text": "model"
 										},
 										{
 											"_type": "LabelView",
@@ -717,7 +717,7 @@
 											"top": -256,
 											"width": 73.67724609375,
 											"height": 13,
-											"text": "(from Model)"
+											"text": "(from model)"
 										},
 										{
 											"_type": "LabelView",
@@ -1113,7 +1113,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Controller"
+					"name": "controller"
 				},
 				{
 					"_type": "UMLClass",
@@ -1159,7 +1159,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Model",
+					"name": "model",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",

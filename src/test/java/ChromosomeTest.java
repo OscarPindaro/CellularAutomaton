@@ -1,5 +1,4 @@
-import Model.Genetic.Chromosome;
-import com.sun.org.apache.xpath.internal.operations.Variable;
+import model.genetic.Chromosome;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
