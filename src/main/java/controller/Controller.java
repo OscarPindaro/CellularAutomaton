@@ -64,10 +64,10 @@ public class Controller {
     public void update(){
         i++;
         if( i > 100){
-            geneticController.createNextGeneration();
+            //geneticController.createNextGeneration();
             i = 0;
         }
-        geneticController.computeDecision();
+        //geneticController.computeDecision();
         movementController.updateAllEntitiesSpeed();
         movementController.updateAllEntitiesPosition();
     }

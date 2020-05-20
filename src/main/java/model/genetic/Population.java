@@ -39,7 +39,12 @@ public class Population {
         synchronized (individuals){
             copy = new ArrayList<>(individuals);
         }
-        copy.sort(new DescendingComparator());
+        copy.sort(new Comparator<Individual>() {
+            @Override
+            public int compare(Individual individual, Individual t1) {
+                return Float.compare(individual.fitness(), t1.fitness());
+            }
+        });
         return selection.extractIndividual(copy);
     }
 
@@ -64,13 +69,4 @@ public class Population {
             return new ArrayList<>(individuals);
         }
     }
-}
-
-class DescendingComparator implements Comparator<Individual>{
-
-    @Override
-    //TODO controllare che sia realmente descending
-    public int compare(Individual individual, Individual t1) {
-        return Float.compare(individual.fitness(), t1.fitness());
-        }
 }

@@ -28,19 +28,24 @@ public class Individual {
         variables.add(0f);
         variables.add(energy);
         this.chromosome = new Chromosome(variables);
+        this.chromosome.setVariables(variables);
+    }
+
+    public Individual(Entity entity, Chromosome chromosome){
+        this.entity = entity;
+        this.energy = STARTING_ENERGY;
+        variables.add(0f);
+        variables.add(0f);
+        variables.add(0f);
+        variables.add(energy);
+        this.chromosome = chromosome;
+        this.chromosome.setVariables(variables);
     }
 
     public float getEnergy(){return energy;}
 
     public synchronized Chromosome getChromosome(){
         return new Chromosome(chromosome);
-    }
-
-    public void setTargetPosition(float x, float y){
-        synchronized (variables){
-            variables.set(TARGET_POSY, y);
-            variables.set(TARGET_POSX, x);
-        }
     }
 
     public synchronized float fitness(){
