@@ -11,7 +11,7 @@ public class RankSelection implements SelectionInterface{
      * @return
      */
     @Override
-    public OldIndividual extractIndividual(List<OldIndividual> individuals) {
+    public Individual extractIndividual(List<Individual> individuals) {
         int gaussianSum = individuals.size()*(individuals.size()-1)/2;
         int selectionValue = new Random().nextInt(gaussianSum);
         int sum= 0;
@@ -20,6 +20,6 @@ public class RankSelection implements SelectionInterface{
             pos++;
             sum += pos;
         }
-        return new OldIndividual(individuals.get(pos-1));
+        return individuals.get(pos-1);
     }
 }

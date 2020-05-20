@@ -1,6 +1,7 @@
 package model.genetic;
 
 import model.entity.Entity;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class Population {
 
-    private List<OldIndividual> individuals;
+    private final List<Individual> individuals;
     private SelectionInterface selection = new RankSelection();
     private int populationSize;
 
@@ -16,63 +17,60 @@ public class Population {
     public Population(List<Entity> entities){
         individuals = new ArrayList<>(entities.size());
         for(Entity e: entities){
-            individuals.add(new OldIndividual(e));
+            individuals.add(new Individual(e));
         }
         populationSize = entities.size();
-        for(OldIndividual i : individuals){
-            System.out.println(i);
+    }
+
+    public void addIndividual(Individual individual){
+        // "Potrebbe creare problemi con thread Producer consumer"
+        throw new NotImplementedException();
+    }
+
+    public Individual getIndividual(int index){
+        synchronized (individuals){
+            return individuals.get(index);
         }
     }
 
-    public OldIndividual selectIndividual(){
-        List<OldIndividual> copy = new ArrayList<>(individuals);
+
+    public Individual selectIndividual(){
+        List<Individual> copy = null;
+        synchronized (individuals){
+            copy = new ArrayList<>(individuals);
+        }
         copy.sort(new DescendingComparator());
         return selection.extractIndividual(copy);
     }
 
-    public void evaluateFitness(){
-        for(OldIndividual i : individuals){
-            i.evaluateFitnessFunction();
-        }
-    }
-
     public float maxFitness(){
-        float max = individuals.get(0).getFitness();
-        for (OldIndividual i : individuals){
-            if(i.getFitness() > max){
-                max = i.getFitness();
+        synchronized (individuals) {
+            float max = individuals.get(0).fitness();
+            for (Individual i : individuals) {
+                if (i.fitness() > max) {
+                    max = i.fitness();
+                }
             }
+            return max;
         }
-        return max;
     }
 
-    public int getPopulationSize(){
+    public synchronized int getPopulationSize(){
         return populationSize;
     }
 
-    public void reset(){
-        for(OldIndividual i: individuals){
-            i.reset();
+    public List<Individual> getIndividuals(){
+        synchronized (individuals){
+            return new ArrayList<>(individuals);
         }
-    }
-
-    public List<OldIndividual> getIndividuals(){
-        return new ArrayList<>(individuals);
     }
 }
 
-class DescendingComparator implements Comparator<OldIndividual>{
+class DescendingComparator implements Comparator<Individual>{
 
     @Override
-    public int compare(OldIndividual individual, OldIndividual t1) {
-        if(individual.getFitness() > t1.getFitness()){
-            return 1;
+    //TODO controllare che sia realmente descending
+    public int compare(Individual individual, Individual t1) {
+        return Float.compare(individual.fitness(), t1.fitness());
         }
-        else if(individual.getFitness() == t1.getFitness()){
-            return 0;
-        }
-        else {
-            return -1;
-        }
-    }
 }

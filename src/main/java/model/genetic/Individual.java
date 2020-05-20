@@ -12,7 +12,7 @@ public class Individual {
     private Chromosome chromosome;
     private static final float STARTING_ENERGY = 100;
 
-    private List<Float> variables = new ArrayList<>(4);
+    private final List<Float> variables = new ArrayList<>(4);
 
     //inputs
     private final int MEMORY = 0;
@@ -37,8 +37,14 @@ public class Individual {
     }
 
     public void setTargetPosition(float x, float y){
-        variables.set(TARGET_POSX, x);
-        variables.set(TARGET_POSY, y);
+        synchronized (variables){
+            variables.set(TARGET_POSY, y);
+            variables.set(TARGET_POSX, x);
+        }
+    }
+
+    public synchronized float fitness(){
+        return energy;
     }
 
 
