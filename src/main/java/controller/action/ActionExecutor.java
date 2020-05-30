@@ -10,15 +10,15 @@ import java.util.logging.Logger;
 /**
  * Action are added. To execute them yhr method runActions should be called
  */
-public class ActionExecutor {
+public class ActionExecutor implements ActionExecutorInterface {
 
     private static final Logger logger = Logger.getLogger(ActionExecutor.class.getName());
 
     private final ExecutorService executor= Executors.newFixedThreadPool(4);
 
-    private final BlockingQueue<Action> queue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<ActionInterface> queue = new LinkedBlockingQueue<>();
 
-    public void addAction(Action a){
+    public void addAction(ActionInterface a){
         try{
             queue.put(a);
         }
@@ -33,7 +33,7 @@ public class ActionExecutor {
     public void runActions(){
         while(!queue.isEmpty()){
             executor.execute(() -> {
-                Action a = null;
+                ActionInterface a = null;
                 try{
                     a = queue.take();
                 }catch (InterruptedException ie){

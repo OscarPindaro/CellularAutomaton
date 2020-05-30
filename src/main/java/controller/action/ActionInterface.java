@@ -1,6 +1,6 @@
 package controller.action;
 
-public interface Action {
+public interface ActionInterface {
 
     public void perform();
 }
