@@ -5,7 +5,6 @@ import model.genetic.Individual;
 import model.genetic.Population;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sun.awt.image.ImageWatched;
 
 import java.util.LinkedList;
 import java.util.List;

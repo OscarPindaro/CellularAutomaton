@@ -1,7 +1,5 @@
 package model.genetic;
 
-import sun.awt.X11.XSizeHints;
-
 import java.util.List;
 import java.util.Random;
 

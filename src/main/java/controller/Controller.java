@@ -1,7 +1,7 @@
 package controller;
 
 import controller.Genetic.GeneticController;
-import controller.MovementBehaviours.FuzzyPredatorMovementBehaviour;
+
 import controller.MovementBehaviours.MovementBehaviour;
 import controller.MovementBehaviours.RandomMovementBehaviour;
 import model.*;
@@ -32,18 +32,18 @@ public class Controller {
         return new RandomMovementBehaviour();
     }
 
-    public FuzzyPredatorMovementBehaviour getFuzzyPredatorMovementBehaviour(){
-        String path = Controller.class.getResource("/fuzzyControllers/cellular.fis").getPath();
-        FuzzyPredatorMovementBehaviour fuzzyBehaviour;
-        try{
-            fuzzyBehaviour = new FuzzyPredatorMovementBehaviour(model, path);
-        }
-        catch (IOException ioe){
-            System.out.println(ioe.getMessage());
-            throw new RuntimeException("Controller non caricato");
-        }
-        return fuzzyBehaviour;
-    }
+//    public FuzzyPredatorMovementBehaviour getFuzzyPredatorMovementBehaviour(){
+//        String path = Controller.class.getResource("/fuzzyControllers/cellular.fis").getPath();
+//        FuzzyPredatorMovementBehaviour fuzzyBehaviour;
+//        try{
+//            fuzzyBehaviour = new FuzzyPredatorMovementBehaviour(model, path);
+//        }
+//        catch (IOException ioe){
+//            System.out.println(ioe.getMessage());
+//            throw new RuntimeException("Controller non caricato");
+//        }
+//        return fuzzyBehaviour;
+//    }
 
     public void createRandomPredators(int numPredators, MovementBehaviour movementBehaviour){
         List<Predator> predators = EntityFactory.createRandomPredators(numPredators, movementBehaviour);

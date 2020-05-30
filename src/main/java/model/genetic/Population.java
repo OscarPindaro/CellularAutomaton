@@ -1,7 +1,8 @@
 package model.genetic;
 
 import model.entity.Entity;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,7 +25,6 @@ public class Population {
 
     public void addIndividual(Individual individual){
         // "Potrebbe creare problemi con thread Producer consumer"
-        throw new NotImplementedException();
     }
 
     public Individual getIndividual(int index){
