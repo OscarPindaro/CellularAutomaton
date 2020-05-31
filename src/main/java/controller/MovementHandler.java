@@ -4,12 +4,13 @@ import model.Model;
 import model.interfaces.cinematic.Cinematic;
 import model.interfaces.cinematic.PositionBoundaryObserver;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class MovementHandler implements PositionBoundaryObserver {
 
-    final Model model;
-    List<Cinematic> movableObjects;
+    protected final Model model;
+    protected final List<Cinematic> movableObjects = new LinkedList<>();
 
     public MovementHandler(Model model){
         this.model = model;
@@ -21,6 +22,13 @@ public class MovementHandler implements PositionBoundaryObserver {
         }
     }
 
+    public void addCinematicObject(Cinematic cinematic){
+        if(!movableObjects.contains(cinematic))
+            movableObjects.add(cinematic);
+    }
+
+
+    /************** POSITION BOUNDARY OBSERVER *********************/
     @Override
     public void checkBoundary(Cinematic cinematic, float radius) {
         checkXBoundaries(cinematic, radius);

@@ -2,8 +2,11 @@ package view;
 
 import controller.*;
 import controller.MovementBehaviours.MovementBehaviour;
+import controller.MovementBehaviours.RandomMovementBehaviour;
 import model.Model;
 import processing.core.PApplet;
+
+import java.util.Random;
 
 public class Automata extends PApplet {
 
@@ -13,7 +16,7 @@ public class Automata extends PApplet {
     private int width = 1000;
     private  int height = 1000;
     private final int NUM_OF_PREDATORS = 100;
-    private final int NUM_OF_PREYS = 20;
+    private final int NUM_OF_PREYS = 100;
 
     //controller
     private Controller controller;
@@ -62,10 +65,10 @@ public class Automata extends PApplet {
         Automata mySketch= getInstance();
         createModel();
         assignController();
-        MovementBehaviour randomMovementBehaviour = mySketch.controller.getRandomMovementBehaviour();
+        MovementBehaviour randomMovementBehaviour = new RandomMovementBehaviour();
         mySketch.controller.createRandomPredators(mySketch.NUM_OF_PREDATORS, randomMovementBehaviour);
         mySketch.controller.createRandomPreys(mySketch.NUM_OF_PREYS, randomMovementBehaviour);
-        mySketch.controller.evolvePredators();
+        mySketch.controller.addMovementBehaviour(randomMovementBehaviour);
         createEntityDrawer();
         PApplet.runSketch(appletArgs, mySketch );
     }

@@ -16,6 +16,7 @@ public class RandomMovementBehaviour extends MovementBehaviour {
 
     public void updateAllEntitiesSpeed() {
         for(Entity e : entityList){
+
             PVector oldSpeed = e.getSpeed();
             PVector newSpeed = calculateSpeed(oldSpeed);
             e.setSpeed(newSpeed);
