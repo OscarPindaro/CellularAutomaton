@@ -1,4 +1,4 @@
-package model.interfaces;
+package model.interfaces.cinematic;
 
 import processing.core.PVector;
 

@@ -1,12 +1,16 @@
 package model.entity;
 
-import model.interfaces.Cinematic;
+import model.interfaces.cinematic.Cinematic;
+import model.interfaces.cinematic.PositionBoundaryObserver;
+import model.interfaces.cinematic.PositionObservable;
 import view.Automata;
 import processing.core.PVector;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
-public abstract class Entity implements Cinematic {
+public abstract class Entity implements Cinematic, PositionObservable {
 
     private final int SIZE = 40;
     private float size = SIZE;
@@ -14,6 +18,8 @@ public abstract class Entity implements Cinematic {
 
     private final PVector position;
     private final PVector speed;
+
+    private final List<PositionBoundaryObserver> observers = new LinkedList<>();
 
     private Color color;
 
@@ -31,10 +37,6 @@ public abstract class Entity implements Cinematic {
     public Entity(PVector position, PVector speed){
         this.position = position;
         this.speed = speed;
-    }
-
-    public synchronized void move() {
-        position.add(speed);
     }
 
     public void setColor(Color color){
@@ -57,6 +59,14 @@ public abstract class Entity implements Cinematic {
     public Color getColor(){
         return new Color(color.getRed(), color.getGreen(), color.getBlue());
     }
+
+/********* CINEMATIC ******************/
+
+    public synchronized void move() {
+        position.add(speed);
+        notifyPositionChange();
+    }
+
     public PVector getPosition() {
         synchronized (speed){
             return new PVector(position.x, position.y);
@@ -67,16 +77,19 @@ public abstract class Entity implements Cinematic {
         synchronized (position){
             this.position.x = xpos;
         }
+        notifyPositionChange();
     }
 
     public void setYPosition(float ypos){
         synchronized (position){
             this.position.y = ypos;
         }
+        notifyPositionChange();
     }
 
     public synchronized void incrementPosition(PVector speed){
         position.add(speed);
+        notifyPositionChange();
     }
 
     public PVector getSpeed() {
@@ -107,4 +120,28 @@ public abstract class Entity implements Cinematic {
     public synchronized float getEntityRadius(){
         return size/2;
     }
+
+    /********************* POSITION OBSERVABLE *************************/
+
+    @Override
+    public void attach(PositionBoundaryObserver observer) {
+        synchronized (observers){
+            if(!observers.contains(observer))
+                observers.add(observer);
+        }
+    }
+
+    @Override
+    public void remove(PositionBoundaryObserver observer) {
+        synchronized (observers){
+            observers.remove(observer);
+        }
+    }
+
+    @Override
+    public void notifyPositionChange() {
+        for(PositionBoundaryObserver observer : observers)
+            observer.checkBoundary(this, getEntityRadius());
+    }
+
 }
