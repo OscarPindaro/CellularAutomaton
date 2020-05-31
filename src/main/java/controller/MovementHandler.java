@@ -15,7 +15,7 @@ public class MovementHandler implements PositionBoundaryObserver {
         this.model = model;
     }
 
-    public void run(){
+    public void moveAll(){
         for(Cinematic mov : movableObjects){
             mov.move();
         }
