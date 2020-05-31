@@ -5,9 +5,9 @@ import model.interfaces.EnergyDependent;
 
 public class BasicAction implements ActionInterface {
 
-    private  float cost;
+    private  final float cost;
 
-    private EnergyDependent agent;
+    private final EnergyDependent agent;
 
     public BasicAction(float cost, EnergyDependent agent){
         if(cost < 0) throw new RuntimeException("cost should be always >= 0");

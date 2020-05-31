@@ -7,8 +7,8 @@ public class RewardFunc extends AdditionalFunctionality {
     /**
      * can be both positive and negative
      */
-    private float reward;
-    private EnergyDependent rewardAgent;
+    private final float reward;
+    private final EnergyDependent rewardAgent;
 
     public RewardFunc(ActionInterface action, EnergyDependent agent, float reward ){
         this.reward = reward;

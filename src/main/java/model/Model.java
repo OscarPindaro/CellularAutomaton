@@ -82,7 +82,7 @@ public class Model {
         for(Entity e : getEntities()){
             PVector randomPosition = Model.createRandomPositionPVector();
             e.setXPosition(randomPosition.x);
-            e.setYposition(randomPosition.y);
+            e.setYPosition(randomPosition.y);
             PVector randomSpeed = Model.createRandomSpeedPVector();
             e.setSpeed(randomSpeed);
         }

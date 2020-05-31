@@ -5,8 +5,8 @@ import model.interfaces.EnergyDependent;
 
 public class DamageFunc extends AdditionalFunctionality {
 
-    private float damage;
-    private EnergyDependent target;
+    private final float damage;
+    private final EnergyDependent target;
 
     public DamageFunc(ActionInterface action, EnergyDependent target, float damage){
         this.action = action;

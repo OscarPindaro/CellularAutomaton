@@ -17,7 +17,7 @@ public class MovementController {
         this.model = model;
     }
 
-    public void updateAllEntitiesSpeed(){
+    public void updateMovementBehaviours(){
         for(MovementBehaviour m : movementBehaviours){
             m.updateAllEntitiesSpeed();
         }
@@ -53,10 +53,10 @@ public class MovementController {
         float threshold = e.getEntityRadius();
 
         if(e.getPosition().y < 0 +threshold){
-            e.setYposition(0 + threshold);
+            e.setYPosition(0 + threshold);
         }
         else if(e.getPosition().y > model.getWorldHeight() - threshold){
-            e.setYposition(model.getWorldHeight()- threshold);
+            e.setYPosition(model.getWorldHeight()- threshold);
         }
     }
 

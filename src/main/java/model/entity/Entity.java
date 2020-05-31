@@ -1,24 +1,26 @@
 package model.entity;
 
-import model.interfaces.Movable;
+import model.interfaces.Cinematic;
 import view.Automata;
 import processing.core.PVector;
 
 import java.awt.*;
 
-public abstract class Entity implements Movable {
+public abstract class Entity implements Cinematic {
 
     private final int SIZE = 40;
     private float size = SIZE;
 
 
-    private PVector position;
-    private PVector speed;
+    private final PVector position;
+    private final PVector speed;
 
     private Color color;
 
     public Entity(){
         super();
+        position = new PVector(0,0);
+        speed = new PVector(0,0 );
     }
 
     public Entity(int posx, int posy, int speedx, int speedy){
@@ -31,7 +33,7 @@ public abstract class Entity implements Movable {
         this.speed = speed;
     }
 
-    public void move() {
+    public synchronized void move() {
         position.add(speed);
     }
 
@@ -56,38 +58,53 @@ public abstract class Entity implements Movable {
         return new Color(color.getRed(), color.getGreen(), color.getBlue());
     }
     public PVector getPosition() {
-        return new PVector(position.x, position.y);
+        synchronized (speed){
+            return new PVector(position.x, position.y);
+        }
     }
 
     public void setXPosition(float xpos) {
-        this.position.x = xpos;
+        synchronized (position){
+            this.position.x = xpos;
+        }
     }
 
-    public void setYposition(float ypos){
-        this.position.y = ypos;
+    public void setYPosition(float ypos){
+        synchronized (position){
+            this.position.y = ypos;
+        }
     }
 
-    public void incrementPosition(PVector speed){
+    public synchronized void incrementPosition(PVector speed){
         position.add(speed);
     }
 
     public PVector getSpeed() {
-        return new PVector(speed.x, speed.y);
+        synchronized (speed){
+            return new PVector(speed.x, speed.y);
+        }
     }
 
-    public void setSpeed(PVector speed) {
-        this.speed = speed;
+    public void setSpeed(PVector newSpeed) {
+        synchronized (this.speed){
+            this.speed.x = newSpeed.x;
+            this.speed.y = newSpeed.y;
+        }
     }
 
     public void setSpeedMagnitude(float linearVelocity){
-        speed.setMag(linearVelocity);
+        synchronized (speed){
+            speed.setMag(linearVelocity);
+        }
     }
 
     public void rotateSpeed(float angle){
-        speed.rotate(angle);
+        synchronized (speed){
+            speed.rotate(angle);
+        }
     }
 
-    public float getEntityRadius(){
+    public synchronized float getEntityRadius(){
         return size/2;
     }
 }

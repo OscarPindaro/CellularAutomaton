@@ -9,7 +9,6 @@ import model.entity.EntityFactory;
 import model.entity.Predator;
 import model.entity.Prey;
 
-import java.io.IOException;
 import java.util.List;
 
 public class Controller {
@@ -68,7 +67,7 @@ public class Controller {
             i = 0;
         }
         //geneticController.computeDecision();
-        movementController.updateAllEntitiesSpeed();
+        movementController.updateMovementBehaviours();
         movementController.updateAllEntitiesPosition();
     }
 
