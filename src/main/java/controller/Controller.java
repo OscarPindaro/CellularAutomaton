@@ -51,9 +51,11 @@ public class Controller {
             movementHandler.addCinematicObject(prey);
             prey.attach(movementHandler);
         }
-
         model.addPreys(preys);
     }
+
+
+
 
     public void update(){
         for(MovementBehaviour behaviour : behaviours){

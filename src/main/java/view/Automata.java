@@ -11,6 +11,8 @@ import java.util.Random;
 public class Automata extends PApplet {
 
     private static  Automata mySketch;
+    private final
+    static Object lock = new Object();
 
     //parameters
     private int width = 1000;
@@ -32,10 +34,12 @@ public class Automata extends PApplet {
     }
 
     public static Automata getInstance(){
-        if(mySketch == null){
-            mySketch = new Automata();
+        synchronized (lock){
+            if(mySketch == null){
+                mySketch = new Automata();
+            }
+            return mySketch;
         }
-        return mySketch;
     }
 
     public void settings(){

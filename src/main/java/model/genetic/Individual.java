@@ -2,13 +2,14 @@ package model.genetic;
 
 import model.entity.Entity;
 import model.interfaces.EnergyDependent;
+import model.interfaces.cinematic.Cinematic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Individual implements EnergyDependent {
 
-    private Entity entity;
+    private Cinematic entity;
     private float energy;
     private Chromosome chromosome;
     private static final float STARTING_ENERGY = 100;
@@ -21,7 +22,7 @@ public class Individual implements EnergyDependent {
     private final int TARGET_POSY = 2;
     private final int ENERGY = 3;
 
-    public Individual(Entity entity){
+    public Individual(Cinematic entity){
         this.entity = entity;
         this.energy = STARTING_ENERGY;
         variables.add(0f);
