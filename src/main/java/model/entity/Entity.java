@@ -1,5 +1,6 @@
 package model.entity;
 
+import model.interfaces.Movable;
 import view.Automata;
 import processing.core.PVector;
 

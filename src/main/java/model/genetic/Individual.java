@@ -1,11 +1,12 @@
 package model.genetic;
 
 import model.entity.Entity;
+import model.interfaces.EnergyDependent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Individual {
+public class Individual implements EnergyDependent {
 
     private Entity entity;
     private float energy;
@@ -42,7 +43,6 @@ public class Individual {
         this.chromosome.setVariables(variables);
     }
 
-    public float getEnergy(){return energy;}
 
     public synchronized Chromosome getChromosome(){
         return new Chromosome(chromosome);
@@ -52,6 +52,23 @@ public class Individual {
         return energy;
     }
 
+    @Override
+    public synchronized void increaseEnergy(float toAdd) {
+        if(toAdd < 0) throw new RuntimeException("toAdd should be positive");
+        energy += toAdd;
+    }
+
+    @Override
+    public  synchronized void decreaseEnergy(float toSub) {
+        if(toSub <0) throw new RuntimeException("toSub should be negative");
+        energy -= toSub;
+    }
+
+    /*********************** ENERGY DEPENDENT ********/
 
 
+    @Override
+    public synchronized float getEnergy() {
+        return energy;
+    }
 }

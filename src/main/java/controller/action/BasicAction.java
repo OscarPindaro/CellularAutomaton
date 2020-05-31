@@ -1,21 +1,23 @@
 package controller.action;
 
 import model.entity.Entity;
+import model.interfaces.EnergyDependent;
 
 public class BasicAction implements ActionInterface {
 
     private  float cost;
 
-    private Entity source;
+    private EnergyDependent agent;
 
-    public BasicAction(float cost, Entity entity){
+    public BasicAction(float cost, EnergyDependent agent){
+        if(cost < 0) throw new RuntimeException("cost should be always >= 0");
         this.cost = cost;
-        this.source = entity;
+        this.agent = agent;
     }
 
 
     @Override
     public void perform() {
-
+        agent.decreaseEnergy(cost);
     }
 }

@@ -1,14 +1,14 @@
 package controller.action;
 
 import model.entity.Entity;
+import model.interfaces.EnergyDependent;
 
 public class DamageFunc extends AdditionalFunctionality {
 
-    private Entity target;
     private float damage;
+    private EnergyDependent target;
 
-
-    public DamageFunc(ActionInterface action, Entity target, float damage){
+    public DamageFunc(ActionInterface action, EnergyDependent target, float damage){
         this.action = action;
         this.target = target;
         this.damage = damage;
@@ -18,6 +18,7 @@ public class DamageFunc extends AdditionalFunctionality {
 
     @Override
     public void perform() {
-        super.perform();
+        action.perform();
+        target.decreaseEnergy(damage);
     }
 }
