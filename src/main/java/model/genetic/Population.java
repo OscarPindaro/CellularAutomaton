@@ -18,7 +18,8 @@ public class Population {
     public Population(List<Entity> entities){
         individuals = new ArrayList<>(entities.size());
         for(Entity e: entities){
-            individuals.add(new Individual(e));
+            individuals.add(new Individual(e, new Chromosome(new OperationNode("add", null))));
+            throw  new RuntimeException("Corretto per problemi con altro codice. Da CAMBIARE IL COSTRUTTORE");
         }
         populationSize = entities.size();
     }

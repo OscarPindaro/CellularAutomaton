@@ -70,7 +70,7 @@ public class Automata extends PApplet {
         createModel();
         assignController();
         MovementBehaviour randomMovementBehaviour = new RandomMovementBehaviour();
-        mySketch.controller.createRandomPredators(mySketch.NUM_OF_PREDATORS, randomMovementBehaviour);
+        //mySketch.controller.createRandomPredators(mySketch.NUM_OF_PREDATORS, randomMovementBehaviour);
         mySketch.controller.createRandomPreys(mySketch.NUM_OF_PREYS, randomMovementBehaviour);
         mySketch.controller.addMovementBehaviour(randomMovementBehaviour);
         createEntityDrawer();
@@ -83,7 +83,7 @@ public class Automata extends PApplet {
     }
 
     private static void assignController(){
-        mySketch.controller = new Controller(mySketch.model);
+        mySketch.controller = new Controller(mySketch.model, 100);
     }
 
     private static void createEntityDrawer(){

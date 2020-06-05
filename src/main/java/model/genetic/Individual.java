@@ -3,6 +3,7 @@ package model.genetic;
 import model.entity.Entity;
 import model.interfaces.EnergyDependent;
 import model.interfaces.cinematic.Cinematic;
+import processing.core.PVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +23,16 @@ public class Individual implements EnergyDependent {
     private final int TARGET_POSY = 2;
     private final int ENERGY = 3;
 
-    public Individual(Cinematic entity){
+    public Individual(Cinematic entity, List<Float> variables){
         this.entity = entity;
         this.energy = STARTING_ENERGY;
-        variables.add(0f);
-        variables.add(0f);
-        variables.add(0f);
-        variables.add(energy);
         this.chromosome = new Chromosome(variables);
-        this.chromosome.setVariables(variables);
     }
 
     public Individual(Entity entity, Chromosome chromosome){
         this.entity = entity;
         this.energy = STARTING_ENERGY;
-        variables.add(0f);
-        variables.add(0f);
-        variables.add(0f);
-        variables.add(energy);
         this.chromosome = chromosome;
-        this.chromosome.setVariables(variables);
     }
 
 
@@ -51,6 +42,14 @@ public class Individual implements EnergyDependent {
 
     public synchronized float fitness(){
         return energy;
+    }
+
+    public synchronized PVector getPosition(){
+        return entity.getPosition();
+    }
+
+    public  synchronized Cinematic getCinematic(){
+        return entity;
     }
 
     @Override

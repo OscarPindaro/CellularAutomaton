@@ -51,4 +51,8 @@ public class Chromosome {
         return toRet;
     }
 
+    public float getValue(){
+        return root.getValue();
+    }
+
 }

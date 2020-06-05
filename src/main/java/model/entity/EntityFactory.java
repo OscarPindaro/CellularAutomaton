@@ -21,6 +21,17 @@ public class EntityFactory {
         return predators;
     }
 
+    public static List<Predator> createPredators(int numberOfPredators){
+        List<Predator> predators = new LinkedList<>();
+        for(int i = 0; i < numberOfPredators; i++){
+            PVector position = createRandomPositionPVector();
+            PVector speed = createRandomSpeedPVector();
+            Predator newPredator = new Predator(position, speed);
+            predators.add(newPredator);
+        }
+        return predators;
+    }
+
     public static List<Prey> createRandomPreys(int numberOfPreys, MovementBehaviour movementBehaviour){
         List<Prey> preys = new LinkedList<>();
         for(int i = 0; i < numberOfPreys; i++){

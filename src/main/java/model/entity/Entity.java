@@ -111,6 +111,7 @@ public abstract class Entity implements Cinematic, PositionObservable {
         }
     }
 
+
     public void rotateSpeed(float angle){
         synchronized (speed){
             speed.rotate(angle);

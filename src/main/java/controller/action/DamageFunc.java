@@ -12,6 +12,9 @@ public class DamageFunc extends AdditionalFunctionality {
         this.action = action;
         this.target = target;
         this.damage = damage;
+        if(damage < 0){
+            throw new RuntimeException("damage should be positive");
+        }
 
     }
 

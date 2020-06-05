@@ -17,6 +17,7 @@ public interface Cinematic {
 
     void setSpeedMagnitude(float linearVelocity);
 
+
     void rotateSpeed(float angle);
 
 
