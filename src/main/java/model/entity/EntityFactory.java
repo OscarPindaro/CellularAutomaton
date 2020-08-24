@@ -10,14 +10,9 @@ import java.util.List;
 public class EntityFactory {
 
     public static List<Predator> createRandomPredators(int numberOfPredators, MovementBehaviour movementBehaviour){
-        List<Predator> predators = new LinkedList<>();
-        for(int i = 0; i < numberOfPredators; i++){
-            PVector position = createRandomPositionPVector();
-            PVector speed = createRandomSpeedPVector();
-            Predator newPredator = new Predator(position, speed);
-            predators.add(newPredator);
-            movementBehaviour.addPredator(newPredator);
-        }
+        List<Predator> predators = EntityFactory.createPredators(numberOfPredators);
+        for(Predator predator: predators)
+            movementBehaviour.addPredator(predator);
         return predators;
     }
 
@@ -33,13 +28,19 @@ public class EntityFactory {
     }
 
     public static List<Prey> createRandomPreys(int numberOfPreys, MovementBehaviour movementBehaviour){
+        List<Prey> preys = createPreys(numberOfPreys);
+        for(Prey prey: preys)
+            movementBehaviour.addPrey(prey);
+        return preys;
+    }
+
+    public static List<Prey> createPreys(int numberOfPreys){
         List<Prey> preys = new LinkedList<>();
         for(int i = 0; i < numberOfPreys; i++){
             PVector position = createRandomPositionPVector();
             PVector speed = createRandomSpeedPVector();
             Prey newPrey = new Prey(position, speed);
             preys.add(newPrey);
-            movementBehaviour.addPrey(newPrey);
         }
         return preys;
     }

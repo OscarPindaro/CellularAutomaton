@@ -14,6 +14,7 @@ import model.entity.Predator;
 import model.entity.Prey;
 import model.genetic.Chromosome;
 import model.genetic.Individual;
+import model.genetic.Population;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,51 +33,13 @@ public class Controller {
     private List<MovementBehaviour> behaviours = new LinkedList<>();
 
     //modo stupido per controllare il tempo
-    private int i = 0;
+    private int iterations = 0;
 
 
     public Controller(Model model){
-        this.movementHandler = new MovementHandler(model);
         this.model = model;
 
 
-    }
-
-    public Controller(Model model, int numberOfPredators){
-        this.movementHandler = new MovementHandler(model);
-        this.model = model;
-
-        /********** CANCELLAAAAAAAAAAAAAAAAAA *************/
-        List<Predator> predators =EntityFactory.createPredators(numberOfPredators);
-        for(Predator predator: predators){
-            predator.attach(movementHandler);
-            movementHandler.addCinematicObject(predator);
-        }
-
-
-        model.addPredators(predators);
-
-        List<Individual> individuals = new LinkedList<>();
-        for(int i = 0; i < predators.size(); i++){
-            List<Float> variables = new ArrayList<>();
-            for(int j = 0; j < 8; j++) variables.add(0f);
-            individuals.add(new Individual(predators.get(i), new Chromosome(variables)));
-        }
-
-        this.executor = new ActionExecutor();
-        this.predatorController = new PredatorController(model, executor, individuals );
-
-    }
-
-    private void createPredatorsWithIndividualeDABUTTARE(){
-
-
-    }
-
-    public void addMovementBehaviour(MovementBehaviour behaviour){
-        if(!behaviours.contains(behaviour)){
-            behaviours.add(behaviour);
-        }
     }
 
     public void createRandomPredators(int numPredators, MovementBehaviour movementBehaviour){
@@ -94,20 +57,38 @@ public class Controller {
             movementHandler.addCinematicObject(prey);
             prey.attach(movementHandler);
         }
+
         model.addPreys(preys);
     }
 
+    public void setUp(int npreys, int npreds ){
+        List<Predator> predators = EntityFactory.createPredators(npreds);
+        List<Prey> preys = EntityFactory.createPreys(npreys);
+        this.movementHandler = new MovementHandler(model);
+        registerPredators(predators);
+        registerPreys(preys);
 
 
+        //genetic controller for behaviours
+    }
+
+    private void registerPredators(List<Predator> predators){
+        model.addPredators(predators);
+        for(Predator predator : predators){
+            movementHandler.addCinematicObject(predator);
+            predator.attach(movementHandler);
+        }
+    }
+
+    private void registerPreys(List<Prey> preys){
+        model.addPreys(preys);
+        for(Prey prey: preys){
+            movementHandler.addCinematicObject(prey);
+            prey.attach(movementHandler);
+        }
+    }
 
     public void update(){
-        predatorController.run();
-        executor.runActions();
-
-        for(MovementBehaviour behaviour : behaviours){
-            behaviour.updateAllEntitiesSpeed();
-        }
-
         movementHandler.moveAll();
     }
 

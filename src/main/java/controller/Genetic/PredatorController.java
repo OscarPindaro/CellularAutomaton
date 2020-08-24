@@ -2,7 +2,6 @@ package controller.Genetic;
 
 import controller.action.*;
 import model.Model;
-import model.entity.Predator;
 import model.entity.Prey;
 import model.genetic.Chromosome;
 import model.genetic.Individual;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarOutputStream;
 
 public class PredatorController {
 
@@ -24,11 +22,10 @@ public class PredatorController {
     private int N_OF_INPUTS = 3;
     private int VISION_RADIUS = 100;
 
-    int iterations = 0;
 
     Map<Individual, Prey> targets = new HashMap<>();
 
-    Map<Individual, Integer> lastAction = new HashMap<>();
+    Map<Individual, Integer> lastActionHistory = new HashMap<>();
 
     private float DELTA_ANGLE = 0.05f;
     private final float WALKSPEED = 3;
@@ -40,7 +37,7 @@ public class PredatorController {
         this.executor = executor;
         this.model = model;
         for(Individual individual : individuals)
-            lastAction.put(individual, 0);
+            lastActionHistory.put(individual, 0);
     }
 
 
@@ -52,12 +49,12 @@ public class PredatorController {
             List<Float> variables = new ArrayList<>(N_OF_INPUTS+ N_OF_ACTIONS);
             chooseTarget(variables, predator);
             updateEnergy(variables, predator);
-            updateMemory(variables, lastAction.get(predator));
+            updateMemory(variables, lastActionHistory.get(predator));
             Chromosome chromosome = predator.getChromosome();
             chromosome.setVariables(variables);
             float chromosomeValue = chromosome.getValue();
             int actionNumber = Math.abs( ((int) chromosomeValue) % N_OF_ACTIONS);
-            lastAction.put(predator, actionNumber);
+            lastActionHistory.put(predator, actionNumber);
             ActionInterface action = chooseAction(actionNumber, predator);
             executor.addAction(action);
         }
