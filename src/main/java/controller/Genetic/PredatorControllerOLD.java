@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PredatorController {
+public class PredatorControllerOLD {
 
     private List<Individual> predators;
     private Model model;
@@ -32,7 +32,7 @@ public class PredatorController {
     private final float RUNSPEED = 7;
     private final float BITE_RANGE = 40;
 
-    public PredatorController(Model model, ActionExecutorInterface executor, List<Individual> individuals){
+    public PredatorControllerOLD(Model model, ActionExecutorInterface executor, List<Individual> individuals){
         this.predators = individuals;
         this.executor = executor;
         this.model = model;

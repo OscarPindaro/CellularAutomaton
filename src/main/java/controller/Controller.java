@@ -2,21 +2,14 @@ package controller;
 
 import controller.Genetic.GeneticController;
 
-import controller.Genetic.PredatorController;
+import controller.Genetic.PredatorControllerOLD;
 import controller.MovementBehaviours.MovementBehaviour;
-import controller.MovementBehaviours.RandomMovementBehaviour;
-import controller.action.ActionExecutor;
 import controller.action.ActionExecutorInterface;
 import model.*;
-import model.entity.Entity;
 import model.entity.EntityFactory;
 import model.entity.Predator;
 import model.entity.Prey;
-import model.genetic.Chromosome;
-import model.genetic.Individual;
-import model.genetic.Population;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +21,7 @@ public class Controller {
     private GeneticController geneticController;
     private ActionExecutorInterface executor;
 
-    private PredatorController predatorController;
+    private PredatorControllerOLD predatorController;
 
     private List<MovementBehaviour> behaviours = new LinkedList<>();
 
@@ -89,6 +82,12 @@ public class Controller {
     }
 
     public void update(){
+        // decisione delle prede
+
+        //decisione dei predatori
+
+        //esecuzione azioni
+
         movementHandler.moveAll();
     }
 
