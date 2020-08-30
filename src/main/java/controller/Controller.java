@@ -1,7 +1,9 @@
 package controller;
 
 import controller.MovementBehaviours.MovementBehaviour;
+import controller.action.ActionExecutor;
 import controller.action.ActionExecutorInterface;
+import controller.behaviours.PreyBehaviour;
 import model.*;
 import model.entity.EntityFactory;
 import model.entity.Predator;
@@ -17,6 +19,7 @@ public class Controller {
     private MovementHandler movementHandler;
     private ActionExecutorInterface executor;
 
+    private PreyBehaviour preyBehaviour;
 
     private List<MovementBehaviour> behaviours = new LinkedList<>();
 
@@ -26,8 +29,6 @@ public class Controller {
 
     public Controller(Model model){
         this.model = model;
-
-
     }
 
     public void createRandomPredators(int numPredators, MovementBehaviour movementBehaviour){
@@ -50,14 +51,16 @@ public class Controller {
     }
 
     public void setUp(int npreys, int npreds ){
+        this.executor = new ActionExecutor();
+
         List<Predator> predators = EntityFactory.createPredators(npreds);
         List<Prey> preys = EntityFactory.createPreys(npreys);
         this.movementHandler = new MovementHandler(model);
         registerPredators(predators);
         registerPreys(preys);
 
-
-        //genetic controller for behaviours
+        this.preyBehaviour = new PreyBehaviour(this.model);
+        this.preyBehaviour.addPreys(preys, 2);
     }
 
     private void registerPredators(List<Predator> predators){
@@ -78,10 +81,11 @@ public class Controller {
 
     public void update(){
         // decisione delle prede
-
+        preyBehaviour.makeDecisions(executor);
         //decisione dei predatori
 
         //esecuzione azioni
+        executor.runActions();
 
         movementHandler.moveAll();
     }

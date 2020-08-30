@@ -1,5 +1,6 @@
 package model.entity;
 
+import model.interfaces.EnergyDependent;
 import model.interfaces.cinematic.Cinematic;
 import model.interfaces.cinematic.PositionBoundaryObserver;
 import model.interfaces.cinematic.PositionObservable;
@@ -10,14 +11,16 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Entity implements Cinematic, PositionObservable {
+public abstract class Entity implements Cinematic, PositionObservable, EnergyDependent {
 
     private final int SIZE = 40;
     private float size = SIZE;
+    private float STARTING_ENERGY = 100;
 
 
     private final PVector position;
     private final PVector speed;
+    private float energy = STARTING_ENERGY;
 
     private final List<PositionBoundaryObserver> observers = new LinkedList<>();
 
@@ -145,4 +148,19 @@ public abstract class Entity implements Cinematic, PositionObservable {
             observer.checkBoundary(this, getEntityRadius());
     }
 
+    /************** Energy dependent ************/
+    @Override
+    public void increaseEnergy(float toAdd) {
+        this.energy += toAdd;
+    }
+
+    @Override
+    public void decreaseEnergy(float toSub) {
+        this.energy -=toSub;
+    }
+
+    @Override
+    public float getEnergy() {
+        return this.energy;
+    }
 }

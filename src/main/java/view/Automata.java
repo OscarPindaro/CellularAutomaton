@@ -17,7 +17,7 @@ public class Automata extends PApplet {
     //parameters
     private int width = 1000;
     private  int height = 1000;
-    private final int NUM_OF_PREDATORS = 100;
+    private final int NUM_OF_PREDATORS = 0;
     private final int NUM_OF_PREYS = 100;
 
     //controller
@@ -55,6 +55,7 @@ public class Automata extends PApplet {
     }
 
     public void draw(){
+        controller.update();
         background(51);
         controller.update();
         entityDrawer.drawEntities();

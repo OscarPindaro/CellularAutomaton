@@ -1,8 +1,9 @@
 package controller.behaviours;
 
 import controller.action.ActionExecutor;
+import controller.action.ActionExecutorInterface;
 
 public interface EntityBehaviour {
 
-    void makeDecisions(ActionExecutor executor);
+    void makeDecisions(ActionExecutorInterface executor);
 }

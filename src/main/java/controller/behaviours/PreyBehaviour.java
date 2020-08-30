@@ -1,14 +1,12 @@
 package controller.behaviours;
 
-import controller.action.ActionExecutor;
+import controller.action.*;
 import model.Model;
 import model.entity.Prey;
+import model.genetic.Function;
 import model.genetic.Node;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PreyBehaviour implements EntityBehaviour {
 
@@ -30,19 +28,32 @@ public class PreyBehaviour implements EntityBehaviour {
         }
     }
 
-    public void getDecisionFunction(Prey prey){
-        Node decisor = decisionFunctions.get(prey);
-        throw new RuntimeException();
+    public Function getDecisionFunction(Prey prey){
+        return decisionFunctions.get(prey);
     }
 
     public void setDecisionFunction(Prey prey, Node node){
-        // link here preys with nodes? better to think about it
-        // node.propagateVariables();
         decisionFunctions.put(prey, node);
     }
 
     @Override
-    public void makeDecisions(ActionExecutor executor) {
-        //TODO
+    public void makeDecisions(ActionExecutorInterface executor) {
+        for(Prey prey: decisionFunctions.keySet()){
+            Function f = decisionFunctions.get(prey);
+            float x = prey.getPosition().x;
+            float y = prey.getPosition().y;
+            List<Float> inputs= new ArrayList<>(2);
+            inputs.add(x);
+            inputs.add(y);
+            float value = f.compute(inputs);
+            ActionInterface action = null;
+            if (value > 0){
+                action = new VelocityFunc(new BasicAction(1, prey), prey, 2, -0.03f);
+            }
+            else{
+                action = new VelocityFunc(new BasicAction(1, prey), prey, 1, 0.05f);
+            }
+            executor.addAction(action);
+        }
     }
 }
