@@ -18,7 +18,7 @@ public class ConstantNode  extends Node {
     }
 
     @Override
-    public Node copyTree(List<Float> variables) {
+    public Node copyTree(int ninputs) {
         return new ConstantNode(constantValue);
     }
 

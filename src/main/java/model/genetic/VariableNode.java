@@ -27,7 +27,7 @@ public class VariableNode extends Node {
     }
 
     @Override
-    public Node copyTree(List<Float> variables) {
+    public Node copyTree(int ninputs) {
         return new VariableNode(selectedVariable, ninputs);
     }
 

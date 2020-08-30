@@ -76,5 +76,5 @@ public abstract class Node implements Function {
         return currentNode;
     }
 
-    public abstract Node copyTree(List<Float> variables);
+    public abstract Node copyTree(int ninputs);
 }

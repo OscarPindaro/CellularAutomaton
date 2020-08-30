@@ -53,10 +53,10 @@ public class OperationNode  extends Node{
     }
 
     @Override
-    public Node copyTree(List<Float> variables) {
+    public Node copyTree(int ninputs) {
         OperationNode ret = new OperationNode(operation, ninputs);
-        ret.rightChildren = rightChildren.copyTree(variables);
-        ret.leftChildren = leftChildren.copyTree(variables);
+        ret.rightChildren = rightChildren.copyTree(ninputs);
+        ret.leftChildren = leftChildren.copyTree(ninputs);
         return ret;
     }
 
