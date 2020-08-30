@@ -23,16 +23,16 @@ public class PreyBehaviour implements EntityBehaviour {
         decisionFunctions = new HashMap<>();
     }
 
-    public void addPreys(List<Prey> preys){
+    public void addPreys(List<Prey> preys, int ninputs){
         preyList.addAll(preys);
         for(Prey prey: preyList){
-            decisionFunctions.put(prey, Node.createRandomTree());
+            decisionFunctions.put(prey, Node.createRandomTree(ninputs));
         }
     }
 
     public void getDecisionFunction(Prey prey){
         Node decisor = decisionFunctions.get(prey);
-        return decisor.copyTree();
+        throw new RuntimeException();
     }
 
     public void setDecisionFunction(Prey prey, Node node){
@@ -43,8 +43,6 @@ public class PreyBehaviour implements EntityBehaviour {
 
     @Override
     public void makeDecisions(ActionExecutor executor) {
-        for(Prey prey : preyList){
-
-        }
+        //TODO
     }
 }

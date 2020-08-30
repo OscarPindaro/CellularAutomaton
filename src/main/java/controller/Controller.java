@@ -1,8 +1,5 @@
 package controller;
 
-import controller.Genetic.GeneticController;
-
-import controller.Genetic.PredatorControllerOLD;
 import controller.MovementBehaviours.MovementBehaviour;
 import controller.action.ActionExecutorInterface;
 import model.*;
@@ -18,10 +15,8 @@ public class Controller {
     private Model model;
     //controllers
     private MovementHandler movementHandler;
-    private GeneticController geneticController;
     private ActionExecutorInterface executor;
 
-    private PredatorControllerOLD predatorController;
 
     private List<MovementBehaviour> behaviours = new LinkedList<>();
 

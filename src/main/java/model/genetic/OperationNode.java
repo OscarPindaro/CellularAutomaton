@@ -8,17 +8,12 @@ public class OperationNode  extends Node{
     private final String operation;
 
 
-    public OperationNode(String operation, List<Float> variables){
-        super(variables);
+    public OperationNode(String operation, int ninputs){
+        super(ninputs);
         if(!checkOperation(operation)) throw new RuntimeException("No operation with this name");
-
         this.operation = operation;
-
         rightChildren = createChildren();
         leftChildren = createChildren();
-
-
-
     }
 
     private boolean checkOperation(String operation){
@@ -33,40 +28,33 @@ public class OperationNode  extends Node{
         float probabilty =generator.nextFloat();
 
         if(probabilty < 0.33){
-            return new VariableNode(generator.nextInt(variables.size()), variables);
+            return new VariableNode(generator.nextInt(ninputs), ninputs);
         }
         else if (probabilty > 0.67){
-            return new ConstantNode(generator.nextFloat()*Node.HIGHERCONST, variables);
+            return new ConstantNode(generator.nextFloat()*Node.HIGHERCONST);
         }
-        else return new OperationNode(operations[generator.nextInt(operations.length)], variables);
+        else return new OperationNode(operations[generator.nextInt(operations.length)], ninputs);
 
     }
 
 
     @Override
-    public float getValue() {
+    public float compute(List<Float> inputs) {
         switch (this.operation){
             case "add":
-                return leftChildren.getValue() + rightChildren.getValue();
+                return leftChildren.compute(inputs) + rightChildren.compute(inputs);
             case "sub":
-                return leftChildren.getValue() - rightChildren.getValue();
+                return leftChildren.compute(inputs) - rightChildren.compute(inputs);
             case "mult":
-                return leftChildren.getValue() * rightChildren.getValue();
+                return leftChildren.compute(inputs) * rightChildren.compute(inputs);
             default:
                 throw new RuntimeException("uncompleted switch");
         }
     }
 
     @Override
-    public void propagateVariables(List<Float> variables) {
-        this.variables = variables;
-        rightChildren.propagateVariables(variables);
-        leftChildren.propagateVariables(variables);
-    }
-
-    @Override
     public Node copyTree(List<Float> variables) {
-        OperationNode ret = new OperationNode(operation, variables);
+        OperationNode ret = new OperationNode(operation, ninputs);
         ret.rightChildren = rightChildren.copyTree(variables);
         ret.leftChildren = leftChildren.copyTree(variables);
         return ret;

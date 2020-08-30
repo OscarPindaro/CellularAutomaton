@@ -6,9 +6,9 @@ public class VariableNode extends Node {
 
     private int selectedVariable;
 
-    public VariableNode(int index, List<Float> variables){
-        super(variables);
-        if(index >= variables.size()) throw new RuntimeException("Index too big for the list of variables");
+    public VariableNode(int index, int ninputs){
+        super(ninputs);
+        if(index >= ninputs) throw new RuntimeException("Index too big for the list of variables");
 
         selectedVariable = index;
 
@@ -17,13 +17,8 @@ public class VariableNode extends Node {
     }
 
     @Override
-    public float getValue() {
-        return variables.get(selectedVariable);
-    }
-
-    @Override
-    public void propagateVariables(List<Float> variables) {
-        this.variables = variables;
+    public float compute(List<Float> input) {
+        return input.get(selectedVariable);
     }
 
     @Override
@@ -33,7 +28,7 @@ public class VariableNode extends Node {
 
     @Override
     public Node copyTree(List<Float> variables) {
-        return new VariableNode(selectedVariable, variables);
+        return new VariableNode(selectedVariable, ninputs);
     }
 
     @Override

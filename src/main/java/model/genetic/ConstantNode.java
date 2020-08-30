@@ -6,24 +6,20 @@ public class ConstantNode  extends Node {
 
     private final float constantValue;
 
-    public ConstantNode(float constant, List<Float> variables){
-        super(variables);
+    public ConstantNode(float constant){
         constantValue = constant;
         leftChildren = null;
         rightChildren = null;
     }
 
     @Override
-    public float getValue() {
+    public float compute(List<Float> inputs) {
         return constantValue;
     }
 
     @Override
-    public void propagateVariables(List<Float> variables) {};
-
-    @Override
     public Node copyTree(List<Float> variables) {
-        return new ConstantNode(constantValue, variables);
+        return new ConstantNode(constantValue);
     }
 
     @Override
