@@ -9,10 +9,14 @@ import model.entity.EntityFactory;
 import model.entity.Predator;
 import model.entity.Prey;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Controller {
+
+    private static int SERVER_PORT = 12345;
 
     private Model model;
     //controllers
@@ -61,6 +65,15 @@ public class Controller {
 
         this.preyBehaviour = new PreyBehaviour(this.model);
         this.preyBehaviour.addPreys(preys, 2);
+
+        try{
+            ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
+
+        }
+        catch (IOException ioe){
+            throw new RuntimeException(ioe.getMessage());
+        }
+
     }
 
     private void registerPredators(List<Predator> predators){

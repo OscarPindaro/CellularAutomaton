@@ -79,4 +79,15 @@ public abstract class Node implements Function {
     public abstract Node copyTree(int ninputs);
 
     public abstract String toStringPython();
+
+    public Node treeFromString(String treeDefinition){
+        treeDefinition = treeDefinition.replace("(", " ");
+        treeDefinition = treeDefinition.replace(")", " ");
+        treeDefinition = treeDefinition.replace("add", "+");
+        treeDefinition = treeDefinition.replace("mul", "*");
+        treeDefinition = treeDefinition.replace("sub", "-");
+
+
+
+    }
 }
