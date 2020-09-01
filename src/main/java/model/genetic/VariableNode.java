@@ -36,4 +36,8 @@ public class VariableNode extends Node {
         return "x" + selectedVariable;
     }
 
+    @Override
+    public String toStringPython() {
+        return "ARG" + selectedVariable;
+    }
 }

@@ -31,4 +31,9 @@ public class ConstantNode  extends Node {
     public String toString() {
         return ""+ constantValue;
     }
+
+    @Override
+    public String toStringPython() {
+        return toString();
+    }
 }

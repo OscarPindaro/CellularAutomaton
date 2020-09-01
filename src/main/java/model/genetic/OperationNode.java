@@ -45,7 +45,7 @@ public class OperationNode  extends Node{
                 return leftChildren.compute(inputs) + rightChildren.compute(inputs);
             case "sub":
                 return leftChildren.compute(inputs) - rightChildren.compute(inputs);
-            case "mult":
+            case "mul":
                 return leftChildren.compute(inputs) * rightChildren.compute(inputs);
             default:
                 throw new RuntimeException("uncompleted switch");
@@ -78,12 +78,19 @@ public class OperationNode  extends Node{
                 return "+";
             case "sub":
                return ("-");
-            case "mult":
+            case "mul":
                 return ("*");
             default:
                 throw new RuntimeException("Wrong operation");
         }
     }
 
-
+    @Override
+    public String toStringPython() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(operation).append("(")
+                .append(leftChildren).append(", ").append(rightChildren)
+                .append(")");
+        return builder.toString();
+    }
 }

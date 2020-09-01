@@ -18,7 +18,7 @@ pset.addPrimitive(operator.add, arity=2)
 pset.addPrimitive(operator.sub, arity=2)
 pset.addPrimitive(operator.mul, arity=2)
 pset.addEphemeralConstant("const", lambda: random.uniform(-1, 1))
-pset.renameArguments(ARG0="x")
+#pset.renameArguments(ARG0="x")
 
 toolbox = base.Toolbox()
 #registering in order to enaple multiprocessing

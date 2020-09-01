@@ -14,7 +14,7 @@ public abstract class Node implements Function {
 
     protected final static float HIGHERCONST = 100;
 
-    protected static String[] operations = {"add" , "sub", "mult"};
+    protected static String[] operations = {"add" , "sub", "mul"};
 
     public Node(){
 
@@ -77,4 +77,6 @@ public abstract class Node implements Function {
     }
 
     public abstract Node copyTree(int ninputs);
+
+    public abstract String toStringPython();
 }
