@@ -2,6 +2,8 @@ import operator, random
 from deap import algorithms, base, creator, tools, gp
 from multiprocessing import Pool
 import numpy as np
+import json
+import socket
 
 MAX_HEIGHT = 30
 
@@ -37,8 +39,26 @@ toolbox.register("trees", tools.initRepeat, list, toolbox.tree, n = 5)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.trees)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 #function used in the GA
-a = creator.DecisionFunction(gp.PrimitiveTree.from_string("add(sub(add(-0.22533025603326018, 0.7051473705603539), mul(ARG0, ARG0)), add(add(-0.9239744290346261, ARG0), mul(ARG0, 0.7879025951121006)))", pset))
-print(a.height)
+
+def connectAndGetData(port):
+
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    except socket.error as err:
+        print("Problem creating the socket. Exiting")
+        exit()
+    s.connect(("localhost", port))
+
+    data = s.recv(5*1024)
+    textData = data.decode("utf-8")
+    jsonData = json.loads(textData)
+    for trees in jsonData:
+        print(trees)
+
+
+jsonData = json.loads('["add(sub(add(-0.22533025603326018, 0.7051473705603539), mul(ARG0, ARG0)), add(add(-0.9239744290346261, ARG0), mul(ARG0, 0.7879025951121006)))"]')
+for trees in jsonData:
+    print(trees)
 
 exit()
 toolbox.register("evaluate", evaluateIndividual)
