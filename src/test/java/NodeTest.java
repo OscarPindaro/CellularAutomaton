@@ -9,6 +9,6 @@ public class NodeTest {
         Node n = Node.treeFromString(tree, 1);
         System.out.println(n);
         System.out.println(tree);
-        System.out.println(n.toStringPython());
+        System.out.println(n.toString());
     }
 }

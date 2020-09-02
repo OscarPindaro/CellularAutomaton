@@ -73,13 +73,6 @@ public class OperationNode  extends Node{
         return 1 + rightChildren.numberOfNodes() + leftChildren.numberOfNodes();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("( ").append(leftChildren).append(" " + convertOperation(operation) + " ").append(rightChildren).append(" )");
-        return  builder.toString();
-    }
-
     private String convertOperation(String operation){
         switch (operation) {
             case "add":
@@ -94,10 +87,10 @@ public class OperationNode  extends Node{
     }
 
     @Override
-    public String toStringPython() {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(operation).append("(")
-                .append(leftChildren.toStringPython()).append(", ").append(rightChildren.toStringPython())
+                .append(leftChildren.toString()).append(", ").append(rightChildren.toString())
                 .append(")");
         return builder.toString();
     }

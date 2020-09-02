@@ -78,7 +78,6 @@ public abstract class Node implements Function {
 
     public abstract Node copyTree(int ninputs);
 
-    public abstract String toStringPython();
 
     public static Node treeFromString(String treeDefinition, int ninputs){
         //System.out.println(treeDefinition);

@@ -25,12 +25,22 @@ toolbox = base.Toolbox()
 pool = Pool()
 toolbox.register("map", pool.map)
 #registering the function that create trees, individuals and a population
-toolbox.register("expr", gp.genFull, pset=pset, min_=1, max_=3)
+def roba(pset, min_, max_):
+    i = 0
+    yield gp.genFull(pset, min_, max_, type_=None)
+
+
+
+toolbox.register("expr", roba, pset=pset, min_=1, max_=3)
 toolbox.register("tree", tools.initIterate, creator.DecisionFunction, toolbox.expr)
 toolbox.register("trees", tools.initRepeat, list, toolbox.tree, n = 5)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.trees)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 #function used in the GA
+a = creator.DecisionFunction(gp.PrimitiveTree.from_string("add(sub(add(-0.22533025603326018, 0.7051473705603539), mul(ARG0, ARG0)), add(add(-0.9239744290346261, ARG0), mul(ARG0, 0.7879025951121006)))", pset))
+print(a.height)
+
+exit()
 toolbox.register("evaluate", evaluateIndividual)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, pset=pset, min_=0,max_= 2)

@@ -66,13 +66,8 @@ public class Controller {
         this.preyBehaviour = new PreyBehaviour(this.model);
         this.preyBehaviour.addPreys(preys, 2);
 
-        try{
-            ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
+        ServerSocket server = setUpServer();
 
-        }
-        catch (IOException ioe){
-            throw new RuntimeException(ioe.getMessage());
-        }
 
     }
 
@@ -90,6 +85,18 @@ public class Controller {
             movementHandler.addCinematicObject(prey);
             prey.attach(movementHandler);
         }
+    }
+
+    private ServerSocket setUpServer(){
+        ServerSocket serverSocket = null;
+        try{
+            serverSocket = new ServerSocket(SERVER_PORT);
+
+        }
+        catch (IOException ioe){
+            throw new RuntimeException(ioe.getMessage());
+        }
+        return  serverSocket;
     }
 
     public void update(){

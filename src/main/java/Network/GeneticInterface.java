@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GeneticInterface {
@@ -24,10 +25,16 @@ public class GeneticInterface {
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
-    public void setUp(List<Node> decisionFunctions){
-        JSONArray array = new JSONArray();
-        array.put(decisionFunctions);
-        out.println(array.toString());
+    public void setUp(List<List<Function>> decisionFunctions){
+        JSONArray arrayExt = new JSONArray();
+        for(List<Function> list : decisionFunctions){
+            JSONArray arrayInt = new JSONArray();
+            for(Function function : list){
+                arrayInt.put(function);
+            }
+            arrayExt.put(arrayInt);
+        }
+        out.println(arrayExt.toString());
     }
 
     public void sendFitness(float[] fitnessArray){
@@ -46,7 +53,16 @@ public class GeneticInterface {
         out.println(jsonArray.toString());
     }
 
-    public List<Function> getNewFunctions(){
+    public void sendTrees(List<Node> functions){
+        JSONArray toSend = new JSONArray();
+        for(Node node: functions){
+            toSend.put(node.toString());
+        }
+
+        out.println(toSend.toString());
+    }
+
+    public List<List<Function>> getNewFunctions(int ninputs){
         String functions = null;
         try {
              functions= in.readLine();
@@ -54,14 +70,20 @@ public class GeneticInterface {
             closeSocket();
             throw new RuntimeException("Error with input stream");
         }
-        JSONArray jsonFun = new JSONArray(functions);
+        JSONArray arrayExt = new JSONArray(functions);
 
-        for(int i = 0; i < jsonFun.length(); i++){
-            String tree = jsonFun.getString(i);
-
+        List<List<Function>> newFunctions = new LinkedList<>();
+        for(int a = 0; a < arrayExt.length(); a++){
+            List<Function> oneIndividualFunction = new LinkedList<>();
+            JSONArray arrayInt = new JSONArray(arrayExt.get(a));
+            for(int b =0; b < arrayInt.length(); b++){
+                String tree = arrayInt.getString(a);
+                Node newTree = Node.treeFromString(tree, ninputs);
+                oneIndividualFunction.add(newTree);
+            }
+            newFunctions.add(oneIndividualFunction);
         }
-
-        return null;
+        return newFunctions;
     }
 
     private void closeSocket(){
