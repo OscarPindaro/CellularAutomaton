@@ -97,7 +97,7 @@ public class OperationNode  extends Node{
     public String toStringPython() {
         StringBuilder builder = new StringBuilder();
         builder.append(operation).append("(")
-                .append(leftChildren).append(", ").append(rightChildren)
+                .append(leftChildren.toStringPython()).append(", ").append(rightChildren.toStringPython())
                 .append(")");
         return builder.toString();
     }
