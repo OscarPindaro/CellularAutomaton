@@ -16,6 +16,14 @@ public class OperationNode  extends Node{
         leftChildren = createChildren();
     }
 
+    public OperationNode(String operation, Node node1, Node node2, int ninputs){
+        super(ninputs);
+        if(!checkOperation(operation)) throw new RuntimeException("No operation with this name");
+        this.operation = operation;
+        rightChildren = node1;
+        leftChildren = node2;
+    }
+
     private boolean checkOperation(String operation){
         for(int i = 0; i < operations.length; i++){
             if (operations[i].equals(operation))
