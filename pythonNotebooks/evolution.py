@@ -24,9 +24,18 @@ class JsonParser:
         fitnesses = json.loads(data)
         return np.array(fitnesses)
 
+    #returns a disctionary
+    def parseInputParams(self, data):
+        return json.loads(data)
 
-
-
+    def treeToString(self, trees):
+        bigList = []
+        for list in trees:
+            individual = []
+            for tree in list:
+                individual.append(str(tree))
+            bigList.append(individual)
+        return json.dumps(bigList)            
 
 MAX_HEIGHT = 30
 

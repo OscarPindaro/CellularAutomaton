@@ -12,7 +12,7 @@ public class PreyBehaviour implements EntityBehaviour {
 
     final List<Prey> preyList = new LinkedList<>();
 
-    final Map<Prey, Node> decisionFunctions;
+    final Map<Prey, List<Function>> decisionFunctions;
 
     final Model model;
 
@@ -54,6 +54,14 @@ public class PreyBehaviour implements EntityBehaviour {
                 action = new VelocityFunc(new BasicAction(1, prey), prey, 1, 0.05f);
             }
             executor.addAction(action);
+        }
+    }
+
+    @Override
+    public List<List<Function>> getAllDecisionFunctions() {
+        List<List<Function>>functionList = new LinkedList<>();
+        for(List<Function> functions: decisionFunctions.values() ){
+
         }
     }
 }

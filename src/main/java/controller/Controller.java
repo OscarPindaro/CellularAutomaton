@@ -1,5 +1,6 @@
 package controller;
 
+import Network.GeneticInterface;
 import controller.MovementBehaviours.MovementBehaviour;
 import controller.action.ActionExecutor;
 import controller.action.ActionExecutorInterface;
@@ -67,6 +68,13 @@ public class Controller {
         this.preyBehaviour.addPreys(preys, 2);
 
         ServerSocket server = setUpServer();
+        GeneticInterface gi = null;
+        try {
+            gi = new GeneticInterface(server);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        gi.setUp(50, 3, preyBehaviour.getAllDecisionFunctions());
 
 
     }
