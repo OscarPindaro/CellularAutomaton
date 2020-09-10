@@ -3,7 +3,30 @@ from deap import algorithms, base, creator, tools, gp
 from multiprocessing import Pool
 import numpy as np
 import json
-import socket
+
+class JsonParser:
+
+    def __init__(self):
+        pass
+
+    def parsePopulation(self, data,pset):
+        jsonData = json.loads(data)
+        population = []
+        for list in jsonData:
+            listOfTrees = []
+            for tree in list:
+                listOfTrees.append(gp.PrimitiveTree.from_string(tree, pset))
+            individual = creator.Individual(listOfTrees)
+            population.append(individual)
+        return population
+
+    def parseFitness(self, data):
+        fitnesses = json.loads(data)
+        return np.array(fitnesses)
+
+
+
+
 
 MAX_HEIGHT = 30
 
@@ -27,40 +50,20 @@ toolbox = base.Toolbox()
 pool = Pool()
 toolbox.register("map", pool.map)
 #registering the function that create trees, individuals and a population
-def roba(pset, min_, max_):
-    i = 0
-    yield gp.genFull(pset, min_, max_, type_=None)
-
-
-
-toolbox.register("expr", roba, pset=pset, min_=1, max_=3)
+toolbox.register("expr", gp.genFull, pset=pset, min_=1, max_=3)
 toolbox.register("tree", tools.initIterate, creator.DecisionFunction, toolbox.expr)
 toolbox.register("trees", tools.initRepeat, list, toolbox.tree, n = 5)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.trees)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 #function used in the GA
 
-def connectAndGetData(port):
-
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    except socket.error as err:
-        print("Problem creating the socket. Exiting")
-        exit()
-    s.connect(("localhost", port))
-
-    data = s.recv(5*1024)
-    textData = data.decode("utf-8")
-    jsonData = json.loads(textData)
-    for trees in jsonData:
-        print(trees)
-
-
-jsonData = json.loads('["add(sub(add(-0.22533025603326018, 0.7051473705603539), mul(ARG0, ARG0)), add(add(-0.9239744290346261, ARG0), mul(ARG0, 0.7879025951121006)))"]')
-for trees in jsonData:
-    print(trees)
-
+parser = JsonParser()
+b ='[["mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))","mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))","mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))","mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))"]]'
+a =parser.parsePopulation(b,pset)
+b = parser.parseFitness('[1.0,2.0,3.0]')
+print(b[0]+1)
 exit()
+
 toolbox.register("evaluate", evaluateIndividual)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, pset=pset, min_=0,max_= 2)

@@ -26,6 +26,11 @@ public class GeneticInterface {
     }
 
     public void setUp(List<List<Function>> decisionFunctions){
+        JSONArray array = funcToJsonArray(decisionFunctions);
+        out.println(array.toString());
+    }
+
+    private JSONArray funcToJsonArray(List<List<Function>> decisionFunctions){
         JSONArray arrayExt = new JSONArray();
         for(List<Function> list : decisionFunctions){
             JSONArray arrayInt = new JSONArray();
@@ -34,7 +39,7 @@ public class GeneticInterface {
             }
             arrayExt.put(arrayInt);
         }
-        out.println(arrayExt.toString());
+        return arrayExt;
     }
 
     public void sendFitness(float[] fitnessArray){
@@ -53,12 +58,8 @@ public class GeneticInterface {
         out.println(jsonArray.toString());
     }
 
-    public void sendTrees(List<Node> functions){
-        JSONArray toSend = new JSONArray();
-        for(Node node: functions){
-            toSend.put(node.toString());
-        }
-
+    public void sendTrees(List<List<Function>> functions){
+        JSONArray toSend = funcToJsonArray(functions);
         out.println(toSend.toString());
     }
 
