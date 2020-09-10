@@ -34,8 +34,10 @@ public class GeneticInterface {
 
     }
 
-    public void setUp(int populationSize, int ninputs, List<List<Function>> decisionFunctions) throws IOException {
+    public void setUp(int populationSize, int ninputs) throws IOException {
+        System.out.println("bbbbbbbbbbb");
         String request = in.readLine();
+        System.out.println("aaaaaaaaaa");
         if (!request.equals("parameters"))
             throw new RuntimeException("wrong moment of calling this function or wrong request formatting");
         Map<String, Object> parameters = new HashMap<>();
@@ -44,6 +46,7 @@ public class GeneticInterface {
         JSONObject setUpParameters = new JSONObject(parameters);
         System.out.println("Sending parameters");
         out.println(setUpParameters);
+        out.flush();
     }
 
 

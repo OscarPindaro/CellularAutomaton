@@ -3,6 +3,7 @@ from deap import algorithms, base, creator, tools, gp
 from multiprocessing import Pool
 import numpy as np
 import json
+import communication
 
 class JsonParser:
 
@@ -35,9 +36,15 @@ class JsonParser:
             for tree in list:
                 individual.append(str(tree))
             bigList.append(individual)
-        return json.dumps(bigList)            
+        return json.dumps(bigList)
 
 MAX_HEIGHT = 30
+
+communication = communication.Communication(12346)
+a = communication.readParameters()
+print(a)
+exit()
+
 
 def evaluateIndividual(individual):
     return random.random()+1,

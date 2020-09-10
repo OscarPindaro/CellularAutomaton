@@ -14,10 +14,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller {
 
-    private static int SERVER_PORT = 12345;
+    private static int SERVER_PORT = 12346;
 
     private Model model;
     //controllers
@@ -28,6 +30,7 @@ public class Controller {
 
     private List<MovementBehaviour> behaviours = new LinkedList<>();
 
+    private final static Logger logger = Logger.getLogger(Controller.class.getName());
     //modo stupido per controllare il tempo
     private int iterations = 0;
 
@@ -67,10 +70,15 @@ public class Controller {
         this.preyBehaviour = new PreyBehaviour(this.model, 2,2);
         this.preyBehaviour.addPreys(preys);
 
+        logger.log(Level.INFO, "Creation of the server");
         ServerSocket server = setUpServer();
         GeneticInterface gi = null;
         try {
+            logger.log(Level.INFO, "Waiting for connection");
             gi = new GeneticInterface(server);
+            logger.log(Level.INFO, "Setting up");
+            gi.setUp(50, 2);
+            logger.log(Level.INFO, "Parameters sent");
         } catch (IOException e) {
             e.printStackTrace();
         }
