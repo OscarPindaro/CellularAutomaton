@@ -10,5 +10,4 @@ public interface EntityBehaviour {
 
     void makeDecisions(ActionExecutorInterface executor);
 
-    List<List<Function>> getAllDecisionFunctions();
 }

@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,14 +29,16 @@ public class GeneticInterface {
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
-    public void setUp(int populationSize, int ninputs, List<List<Function>> decisionFunctions){
+    public void setUp(int populationSize, int ninputs, List<List<Function>> decisionFunctions) throws IOException {
+        String request = in.readLine();
+        if (!request.equals("parameters"))
+            throw new RuntimeException("wrong moment of calling this function or wrong requesto formatting");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("populationSize", populationSize);
-        parameters.put("ninputs", ninputs);
+        parameters.put("numberOfInputs", ninputs);
         JSONObject setUpParameters = new JSONObject(parameters);
+        System.out.println("Sending parameters");
         out.println(setUpParameters);
-        JSONArray array = funcToJsonArray(decisionFunctions);
-        out.println(array.toString());
     }
 
     private JSONArray funcToJsonArray(List<List<Function>> decisionFunctions){

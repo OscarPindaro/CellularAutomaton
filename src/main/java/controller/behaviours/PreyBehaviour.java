@@ -8,46 +8,53 @@ import model.genetic.Node;
 
 import java.util.*;
 
-public class PreyBehaviour implements EntityBehaviour {
+public class PreyBehaviour extends AbstractBehaviour {
 
-    final List<Prey> preyList = new LinkedList<>();
+    private final List<Prey> preyList = new LinkedList<>();
 
-    final Map<Prey, List<Function>> decisionFunctions;
+    private final Map<Prey, List<Function>> preyDecisionFunctions;
 
-    final Model model;
 
-    public PreyBehaviour(Model model){
-        this.model = model;
-        decisionFunctions = new HashMap<>();
+    public PreyBehaviour(Model model, int nActions, int numberOfInputs){
+        super(model, nActions, numberOfInputs);
+        preyDecisionFunctions = new HashMap<>();
     }
 
-    public void addPreys(List<Prey> preys, int ninputs){
+    public void addPreys(List<Prey> preys){
         preyList.addAll(preys);
         for(Prey prey: preyList){
-            decisionFunctions.put(prey, Node.createRandomTree(ninputs));
+            List<Function> functions = new LinkedList<>();
+            for(int i = 0; i < numberOfActions; i++){
+                functions.add(Node.createRandomTree(this.numberOfInputs));
+            }
+            preyDecisionFunctions.put(prey, functions);
         }
+        //add to super class
+        for(Prey prey : preyList)
+            super.setDecisionFunctions(prey, preyDecisionFunctions.get(prey));
     }
 
-    public Function getDecisionFunction(Prey prey){
-        return decisionFunctions.get(prey);
+    public List<Function> getDecisionFunctions(Prey prey){
+        return preyDecisionFunctions.get(prey);
     }
 
-    public void setDecisionFunction(Prey prey, Node node){
-        decisionFunctions.put(prey, node);
+    public void setDecisionFunction(Prey prey, List<Function> functions){
+        preyDecisionFunctions.put(prey, functions);
     }
 
     @Override
     public void makeDecisions(ActionExecutorInterface executor) {
-        for(Prey prey: decisionFunctions.keySet()){
-            Function f = decisionFunctions.get(prey);
+        for(Prey prey: preyDecisionFunctions.keySet()){
+            List<Function> f = preyDecisionFunctions.get(prey);
             float x = prey.getPosition().x;
             float y = prey.getPosition().y;
             List<Float> inputs= new ArrayList<>(2);
             inputs.add(x);
             inputs.add(y);
-            float value = f.compute(inputs);
+            float value = f.get(0).compute(inputs);
+            float value2 = f.get(1).compute(inputs);
             ActionInterface action = null;
-            if (value > 0){
+            if (value > value2){
                 action = new VelocityFunc(new BasicAction(1, prey), prey, 2, -0.03f);
             }
             else{
@@ -57,11 +64,4 @@ public class PreyBehaviour implements EntityBehaviour {
         }
     }
 
-    @Override
-    public List<List<Function>> getAllDecisionFunctions() {
-        List<List<Function>>functionList = new LinkedList<>();
-        for(List<Function> functions: decisionFunctions.values() ){
-
-        }
-    }
 }

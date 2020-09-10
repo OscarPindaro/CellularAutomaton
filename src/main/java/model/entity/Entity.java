@@ -1,5 +1,6 @@
 package model.entity;
 
+import controller.behaviours.DecisionMaker;
 import model.interfaces.EnergyDependent;
 import model.interfaces.cinematic.Cinematic;
 import model.interfaces.cinematic.PositionBoundaryObserver;
@@ -11,7 +12,7 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Entity implements Cinematic, PositionObservable, EnergyDependent {
+public abstract class Entity implements Cinematic, PositionObservable, EnergyDependent, DecisionMaker {
 
     private final int SIZE = 40;
     private float size = SIZE;
