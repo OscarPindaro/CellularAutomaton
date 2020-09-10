@@ -1,7 +1,7 @@
 package controller.behaviours;
 
 import model.Model;
-import model.entity.Prey;
+import model.entity.Entity;
 import model.genetic.Function;
 import model.genetic.Node;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public abstract class AbstractBehaviour implements EntityBehaviour {
 
-    private final Map<DecisionMaker, List<Function>> decisionFunctions = new HashMap<>();
+    private final Map<Entity, List<Function>> decisionFunctions = new HashMap<>();
 
     protected final Model model;
 
@@ -31,8 +31,8 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
         this.numberOfInputs = nInputs;
     }
 
-    public void addDecisionMakers(List<DecisionMaker> decisionMakers){
-        for(DecisionMaker decider: decisionMakers){
+    public void addDecisionMakers(List<Entity> entities){
+        for(Entity decider: entities){
             List<Function> functions = new LinkedList<>();
             for(int i = 0; i < numberOfActions; i++){
                 functions.add(Node.createRandomTree(this.numberOfInputs));
@@ -41,20 +41,24 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
         }
     }
 
-    public void addDecisionMaker(DecisionMaker decisionMaker){
+    public void addDecisionMaker(Entity entity){
         List<Function> functions = new LinkedList<>();
         for(int i = 0; i < numberOfActions; i++){
             functions.add(Node.createRandomTree(this.numberOfInputs));
         }
-        decisionFunctions.put(decisionMaker, functions);
+        decisionFunctions.put(entity, functions);
     }
 
-    public List<Function> getFunctions(DecisionMaker decisionMaker){
-        return decisionFunctions.get(decisionMaker);
+    public List<Function> getFunctions(Entity entity){
+        return decisionFunctions.get(entity);
     }
 
-    public void setDecisionFunctions(DecisionMaker decisionMaker, List<Function> functions){
-        decisionFunctions.put(decisionMaker, functions);
+    public List<Entity> getEntities(){
+        return new LinkedList<>(decisionFunctions.keySet());
+    }
+
+    public void setDecisionFunctions(Entity entity, List<Function> functions){
+        decisionFunctions.put(entity, functions);
     }
 
 }

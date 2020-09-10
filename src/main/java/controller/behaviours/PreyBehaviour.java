@@ -40,6 +40,7 @@ public class PreyBehaviour extends AbstractBehaviour {
 
     public void setDecisionFunction(Prey prey, List<Function> functions){
         preyDecisionFunctions.put(prey, functions);
+        super.setDecisionFunctions(prey, functions);
     }
 
     @Override

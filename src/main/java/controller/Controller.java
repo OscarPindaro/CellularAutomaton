@@ -64,8 +64,8 @@ public class Controller {
         registerPredators(predators);
         registerPreys(preys);
 
-        this.preyBehaviour = new PreyBehaviour(this.model);
-        this.preyBehaviour.addPreys(preys, 2);
+        this.preyBehaviour = new PreyBehaviour(this.model, 2,2);
+        this.preyBehaviour.addPreys(preys);
 
         ServerSocket server = setUpServer();
         GeneticInterface gi = null;
@@ -74,7 +74,6 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        gi.setUp(50, 3, preyBehaviour.getAllDecisionFunctions());
 
 
     }
