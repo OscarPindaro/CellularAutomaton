@@ -77,7 +77,7 @@ public class Controller {
             logger.log(Level.INFO, "Waiting for connection");
             gi = new GeneticInterface(server);
             logger.log(Level.INFO, "Setting up");
-            gi.setUp(50, 2);
+            gi.setUp(50, 2, 0.8f, 0.1f, 4, "Prey");
             logger.log(Level.INFO, "Parameters sent");
         } catch (IOException e) {
             e.printStackTrace();

@@ -34,7 +34,7 @@ public class GeneticInterface {
 
     }
 
-    public void setUp(int populationSize, int ninputs, float cxpb, float mutpb, int numberOfFunctions) throws IOException {
+    public void setUp(int populationSize, int ninputs, float cxpb, float mutpb, int numberOfFunctions, String name) throws IOException {
         String request = in.readLine();
         if (!request.equals("parameters"))
             throw new RuntimeException("wrong moment of calling this function or wrong request formatting");
@@ -44,12 +44,18 @@ public class GeneticInterface {
         parameters.put("cxpb", cxpb);
         parameters.put("mutpb", mutpb);
         parameters.put("nOfFunctions", numberOfFunctions);
+        parameters.put("nameOfEntity", name);
         JSONObject setUpParameters = new JSONObject(parameters);
         out.println(setUpParameters);
         out.flush();
     }
 
 
+    /**
+     * Sens a dictionary indexed with the names of the preys
+     * @param behaviour
+     * @throws IOException
+     */
     public void sendPopulation(AbstractBehaviour behaviour) throws IOException {
         String request = in.readLine();
         if (!request.equals("population"))
@@ -75,6 +81,30 @@ public class GeneticInterface {
             jsonObject.put("functions", arrayOfFunctions);
 //            jsonObject.put("fitness", entity.getEnergy());
             entityDictionary.put(entity.toString(), jsonObject);
+        }
+        return entityDictionary;
+    }
+
+    public void sendFitness(AbstractBehaviour behaviour) throws IOException{
+        String request = in.readLine();
+        if (!request.equals("fitness"))
+            throw new RuntimeException("wrong moment of calling this function or wrong request formatting");
+        JSONObject fitDict = dictionaryEntityFitness(behaviour);
+        out.println(fitDict);
+    }
+
+    /**
+     * Returns a dictionary where the keys are the names of the preys and the values are their fitness
+     * @param behaviour
+     * @return
+     */
+    public JSONObject dictionaryEntityFitness(AbstractBehaviour behaviour){
+        List<Entity> entities = behaviour.getEntities();
+        JSONObject entityDictionary = new JSONObject();
+        for(Entity entity: entities){
+            JSONObject fitnessField = new JSONObject();
+            fitnessField.put("fitness", entity.getEnergy());
+            entityDictionary.put(entity.toString(), fitnessField);
         }
         return entityDictionary;
     }

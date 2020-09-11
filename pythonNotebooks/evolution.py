@@ -145,7 +145,9 @@ class GeneticAlgorithm:
                 mutant[index] = tree
                 del mutant.fitness.values
 
-
+    def resetNames(self, names):
+        for individual, name in zip(population, names):
+            population.name = name
 
 
 # parser = JsonParser()
@@ -170,6 +172,8 @@ if __name__ == "__main__":
 
     populationJson = com.readPopulation()
     population = parser.parsePopulation(population, ga.pset)
+    populationNames = [ el.keys()[0] for el in populationJson]
+    print("Population names\n{}\n".format(populationNames))
     ga.setPopulation(population)
     ngen = 0
     stop = False
@@ -177,12 +181,14 @@ if __name__ == "__main__":
     while(!stop):
         jsonFitness = communication.readFitness()
         fitness = parser.parseFitness(jsonFitness)
+
         ga.fitnessDictionary = fitness
         ga.computeFitness()
         ga.selectIndividuals()
         ga.crossover()
         ga.mutate()
         #probabilmente qua bisogna rinominare tutti gli individui con i nomi che avevano prima
+        ga.resetNames(populationNames)
 
         #inviare a java la nuova popolazione
         #jsonparser trasforma una lista di individui in un json
