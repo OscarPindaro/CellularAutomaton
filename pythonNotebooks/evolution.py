@@ -187,8 +187,4 @@ if __name__ == "__main__":
         #inviare a java la nuova popolazione
         #jsonparser trasforma una lista di individui in un json
         #communication invia a java, immagino inviando "newPolulation" e il json
-        best = tools.selBest(ga.population, 1)
-        for a in best:
-            for b in a:
-                print(b)
-        print("\n")
+        ngen += 1
