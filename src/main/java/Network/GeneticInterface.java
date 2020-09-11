@@ -34,17 +34,17 @@ public class GeneticInterface {
 
     }
 
-    public void setUp(int populationSize, int ninputs) throws IOException {
-        System.out.println("bbbbbbbbbbb");
+    public void setUp(int populationSize, int ninputs, float cxpb, float mutpb, int numberOfFunctions) throws IOException {
         String request = in.readLine();
-        System.out.println("aaaaaaaaaa");
         if (!request.equals("parameters"))
             throw new RuntimeException("wrong moment of calling this function or wrong request formatting");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("populationSize", populationSize);
         parameters.put("numberOfInputs", ninputs);
+        parameters.put("cxpb", cxpb);
+        parameters.put("mutpb", mutpb);
+        parameters.put("nOfFunctions", numberOfFunctions);
         JSONObject setUpParameters = new JSONObject(parameters);
-        System.out.println("Sending parameters");
         out.println(setUpParameters);
         out.flush();
     }
@@ -73,7 +73,7 @@ public class GeneticInterface {
             for(Function function: functions)
                 arrayOfFunctions.put(function);
             jsonObject.put("functions", arrayOfFunctions);
-            jsonObject.put("fitness", entity.getEnergy());
+//            jsonObject.put("fitness", entity.getEnergy());
             entityDictionary.put(entity.toString(), jsonObject);
         }
         return entityDictionary;

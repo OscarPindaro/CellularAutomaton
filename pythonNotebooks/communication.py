@@ -29,5 +29,13 @@ class Communication:
             print(data)
         return data
 
-    def sendJson(self, data):
+    def readFitness(self):
+        self.mySocket.send("fitness".encode())
+        while('\n' not in data):
+            data = data + self.mySocket.recv(1024).decode("utf-8")
+            print(data)
+        return data
+
+
+    def sendPopulation(self, data):
         self.mySocket.send(data.encode("'utf-8'"))
