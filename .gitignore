@@ -1,2 +1,5 @@
 *.iml
 .idea
+target/
+pythonNotebooks/.ipynb_checkpoints/
+pythonNotebooks/__pycache__/
