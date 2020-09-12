@@ -29,12 +29,12 @@ class Communication:
         print("READING POPULATION")
         self.mySocket.send("population\n".encode())
         data = self.readData("\n")
-        print("population\n {}".format(data))
+        return data
 
     def readFitness(self):
         print("READING FITNESS")
         self.mySocket.send("fitness\n".encode())
-        return self.readData(terminator)
+        return self.readData("\n")
 
     def sendPopulation(self, data):
         print("SENDING POPULATION")

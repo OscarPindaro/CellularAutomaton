@@ -15,12 +15,11 @@ class JsonParser:
         jsonData = json.loads(data)
         population = []
 
-        for prey in data:
+        for prey in jsonData:
             listOfTrees = []
-            for tree in prey["functions"]:
+            for tree in jsonData[prey]["functions"]:
                 listOfTrees.append(gp.PrimitiveTree.from_string(tree, pset))
             individual = creator.Individual(listOfTrees)
-            print("controllo che prey sia solo una stringa e non altro {}".format(prey))
             individual.indName = prey
             population.append(individual)
         return population
@@ -166,14 +165,14 @@ if __name__ == "__main__":
 
 
     populationJson = com.readPopulation()
-    population = parser.parsePopulation(population, ga.pset)
-    populationNames = [ el.keys()[0] for el in populationJson ]
+    population = parser.parsePopulation(populationJson, ga.pset)
+    populationNames = [ individual.indName for individual in population ]
     print("Population names\n{}\n".format(populationNames))
     ga.setPopulation(population)
     ngen = 0
     stop = False
     while(not stop):
-        jsonFitness = communication.readFitness()
+        jsonFitness = com.readFitness()
         fitness = parser.parseFitness(jsonFitness)
 
         ga.fitnessDictionary = fitness
