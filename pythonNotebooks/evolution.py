@@ -3,7 +3,7 @@ from deap import algorithms, base, creator, tools, gp
 from multiprocessing import Pool
 import numpy as np
 import json
-import communication
+from communication import *
 import sys
 
 class JsonParser:
@@ -21,7 +21,7 @@ class JsonParser:
                 listOfTrees.append(gp.PrimitiveTree.from_string(tree, pset))
             individual = creator.Individual(listOfTrees)
             print("controllo che prey sia solo una stringa e non altro {}".format(prey))
-            individual.name = prey
+            individual.indName = prey
             population.append(individual)
         return population
 
@@ -30,18 +30,15 @@ class JsonParser:
         fitnesses = json.loads(data)
         return fitness
 
-    #returns a disctionary
+    #returns a dictionary
     def parseInputParams(self, data):
         return json.loads(data)
 
-    def treeToString(self, trees):
-        bigList = []
-        for list in trees:
-            individual = []
-            for tree in list:
-                individual.append(str(tree))
-            bigList.append(individual)
-        return json.dumps(bigList)
+    def dumpPopulationToJson(self, population):
+        popDict = {}
+        for individual in population:
+            listOfFunctions = []
+
 
 
 # communication = communication.Communication(12346)
@@ -51,7 +48,7 @@ class JsonParser:
 
 
 def evaluateIndividual(individual, fitnessDictionary):
-    return fitnessDictionary[individual.name],
+    return fitnessDictionary[individual.name]["fitness"],
 
 
 class GeneticAlgorithm:
@@ -78,7 +75,7 @@ class GeneticAlgorithm:
     def setCreator(self):
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("DecisionFunction", gp.PrimitiveTree)
-        creator.create("Individual", list, fitness=creator.FitnessMax, name=None )
+        creator.create("Individual", list, fitness=creator.FitnessMax, indName=None)
 
     def enableMultiprocessing(self):
         pool = Pool()
@@ -92,7 +89,7 @@ class GeneticAlgorithm:
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 
     def registerEvolutionFunctions(self, sizeTournament = 4, minGen=0, maxGen=2):
-        self.toolbox.register("evaluate", evaluateIndividual, fitnessDictionary = this.fitnessDictionary)
+        self.toolbox.register("evaluate", evaluateIndividual, fitnessDictionary = self.fitnessDictionary)
         self.toolbox.register("mate", gp.cxOnePoint)
         self.toolbox.register("expr_mut", gp.genFull, pset=self.pset, min_=minGen,max_= maxGen)
         self.toolbox.register("mutate", gp.mutUniform, expr=self.toolbox.expr_mut, pset=self.pset)
@@ -147,38 +144,35 @@ class GeneticAlgorithm:
 
     def resetNames(self, names):
         for individual, name in zip(population, names):
-            population.name = name
-
-
-# parser = JsonParser()
-# b ='[["mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))","mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))","mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))","mul(sub(ARG0, -0.8132880758124059), mul(ARG0, 0.26388341900976764))"]]'
-# a =parser.parsePopulation(b,pset)
-# b = parser.parseFitness('[1.0,2.0,3.0]')
-# print(b[0]+1)
-# exit()
+            population.indName = name
 
 
 if __name__ == "__main__":
-    com= Communication(int(sys.argv[0]))
+    com= Communication(int(sys.argv[1]))
     parser = JsonParser()
-    params = comm.readParameters()
+    params = com.readParameters()
+    params = parser.parseInputParams(params)
     ga = GeneticAlgorithm(params["cxpb"], params["mutpb"])
     ga.setCreator()
-    ga.createPrimitiveSet(params["numverOfInputs"])
+
+
+
+    ga.createPrimitiveSet(params["numberOfInputs"])
     ga.enableMultiprocessing()
     ga.registerGeneratorFunctions(params["nOfFunctions"], minHeight=1, maxHeight = 3)
     ga.registerEvolutionFunctions()
     ga.setStatistics()
 
+
+
     populationJson = com.readPopulation()
     population = parser.parsePopulation(population, ga.pset)
-    populationNames = [ el.keys()[0] for el in populationJson]
+    populationNames = [ el.keys()[0] for el in populationJson ]
     print("Population names\n{}\n".format(populationNames))
     ga.setPopulation(population)
     ngen = 0
     stop = False
-
-    while(!stop):
+    while(not stop):
         jsonFitness = communication.readFitness()
         fitness = parser.parseFitness(jsonFitness)
 

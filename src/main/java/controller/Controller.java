@@ -79,6 +79,8 @@ public class Controller {
             logger.log(Level.INFO, "Setting up");
             gi.setUp(50, 2, 0.8f, 0.1f, 4, "Prey");
             logger.log(Level.INFO, "Parameters sent");
+            gi.sendPopulation(preyBehaviour);
+            logger.log(Level.INFO, "population sent");
         } catch (IOException e) {
             e.printStackTrace();
         }

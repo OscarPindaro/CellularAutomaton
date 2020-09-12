@@ -14,28 +14,28 @@ class Communication:
             exit()
         self.mySocket.connect(("localhost", port))
 
+    def readData(self, terminator):
+        data = ""
+        while(terminator not in data):
+            data = data + self.mySocket.recv(1024).decode("utf-8")
+        return data
+
     def readParameters(self):
         self.mySocket.send("parameters\n".encode())
-        print("inviato")
-        data = ""
-        while('\n' not in data):
-            data = data + self.mySocket.recv(1024).decode("utf-8")
-        return data
+        print("READING PARAMETERS")
+        return self.readData("\n")
 
     def readPopulation(self):
-        self.mySocket.send("population".encode())
-        while('\n' not in data):
-            data = data + self.mySocket.recv(1024).decode("utf-8")
-            print(data)
-        return data
+        print("READING POPULATION")
+        self.mySocket.send("population\n".encode())
+        data = self.readData("\n")
+        print("population\n {}".format(data))
 
     def readFitness(self):
-        self.mySocket.send("fitness".encode())
-        while('\n' not in data):
-            data = data + self.mySocket.recv(1024).decode("utf-8")
-            print(data)
-        return data
-
+        print("READING FITNESS")
+        self.mySocket.send("fitness\n".encode())
+        return self.readData(terminator)
 
     def sendPopulation(self, data):
+        print("SENDING POPULATION")
         self.mySocket.send(data.encode("'utf-8'"))

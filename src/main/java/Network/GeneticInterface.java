@@ -62,6 +62,7 @@ public class GeneticInterface {
             throw new RuntimeException("wrong moment of calling this function or wrong request formatting");
         JSONObject map = dictionaryEntityFunctions(behaviour);
         out.println(map);
+        out.flush();
     }
 
     /**
