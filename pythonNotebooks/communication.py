@@ -34,7 +34,8 @@ class Communication:
     def readFitness(self):
         print("READING FITNESS")
         self.mySocket.send("fitness\n".encode())
-        return self.readData("\n")
+        data= self.readData("\n")
+        return data
 
     def sendPopulation(self, data):
         print("SENDING POPULATION")

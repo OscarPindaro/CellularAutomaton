@@ -65,4 +65,16 @@ public class PreyBehaviour extends AbstractBehaviour {
         }
     }
 
+    @Override
+    public void setEntityByName(String name, List<Function> trees) {
+        Prey toUpdate = null;
+        for(Prey prey: preyList){
+            String preyName = "Prey" + prey.getId();
+            if(preyName.equals(name)){
+                toUpdate = prey;
+            }
+        }
+        preyDecisionFunctions.put(toUpdate, trees);
+        super.setDecisionFunctions(toUpdate, trees);
+    }
 }

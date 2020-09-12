@@ -22,6 +22,8 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     private final PVector speed;
     private float energy = STARTING_ENERGY;
 
+    protected int id=-1;
+
     private final List<PositionBoundaryObserver> observers = new LinkedList<>();
 
     private Color color;
@@ -61,6 +63,14 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
 
     public Color getColor(){
         return new Color(color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public float getStartingEnergy(){
+        return STARTING_ENERGY;
     }
 
 /********* CINEMATIC ******************/
@@ -162,5 +172,10 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     @Override
     public float getEnergy() {
         return this.energy;
+    }
+
+    @Override
+    public void setEnergy(float newEnergy) {
+        this.energy = newEnergy;
     }
 }

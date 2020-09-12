@@ -34,7 +34,7 @@ public class GeneticInterface {
 
     }
 
-    public void setUp(int populationSize, int ninputs, float cxpb, float mutpb, int numberOfFunctions, String name) throws IOException {
+    public void sendSetUpParameters(int populationSize, int ninputs, float cxpb, float mutpb, int numberOfFunctions, String name) throws IOException {
         String request = in.readLine();
         if (!request.equals("parameters"))
             throw new RuntimeException("wrong moment of calling this function or wrong request formatting");
@@ -86,6 +86,11 @@ public class GeneticInterface {
         return entityDictionary;
     }
 
+    /**
+     * Sens a dictionary where the keys are the names of the entities, and the values are the fitness values
+     * @param behaviour
+     * @throws IOException
+     */
     public void sendFitness(AbstractBehaviour behaviour) throws IOException{
         String request = in.readLine();
         if (!request.equals("fitness"))
@@ -108,6 +113,12 @@ public class GeneticInterface {
             entityDictionary.put(entity.toString(), fitnessField);
         }
         return entityDictionary;
+    }
+
+    public JSONObject receiveNewPopulation() throws IOException{
+        String populationString = in.readLine();
+        JSONObject popJson = new JSONObject(populationString);
+        return  popJson;
     }
 
     private void closeSocket(){

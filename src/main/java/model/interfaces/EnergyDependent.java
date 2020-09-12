@@ -7,4 +7,6 @@ public interface EnergyDependent {
     void decreaseEnergy(float toSub);
 
     float getEnergy();
+
+    void setEnergy(float newEnergy);
 }

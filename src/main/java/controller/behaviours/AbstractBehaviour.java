@@ -5,10 +5,7 @@ import model.entity.Entity;
 import model.genetic.Function;
 import model.genetic.Node;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractBehaviour implements EntityBehaviour {
 
@@ -60,5 +57,11 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
     public void setDecisionFunctions(Entity entity, List<Function> functions){
         decisionFunctions.put(entity, functions);
     }
+
+    public void resetEntities(){
+        assert model != null;
+        model.resetEntities(new ArrayList<>(decisionFunctions.keySet()));
+    }
+    public abstract void setEntityByName(String id, List<Function> trees);
 
 }

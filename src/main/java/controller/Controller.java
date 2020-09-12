@@ -9,6 +9,10 @@ import model.*;
 import model.entity.EntityFactory;
 import model.entity.Predator;
 import model.entity.Prey;
+import model.genetic.Function;
+import model.genetic.Node;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -20,6 +24,7 @@ import java.util.logging.Logger;
 public class Controller {
 
     private static int SERVER_PORT = 12346;
+    private ServerSocket server;
 
     private Model model;
     //controllers
@@ -30,10 +35,14 @@ public class Controller {
 
     private List<MovementBehaviour> behaviours = new LinkedList<>();
 
+    private GeneticInterface preyGeneticInterface;
+
     private final static Logger logger = Logger.getLogger(Controller.class.getName());
     //modo stupido per controllare il tempo
     private int iterations = 0;
 
+
+    private int NOFINPUTS = 2;
 
     public Controller(Model model){
         this.model = model;
@@ -71,20 +80,8 @@ public class Controller {
         this.preyBehaviour.addPreys(preys);
 
         logger.log(Level.INFO, "Creation of the server");
-        ServerSocket server = setUpServer();
-        GeneticInterface gi = null;
-        try {
-            logger.log(Level.INFO, "Waiting for connection");
-            gi = new GeneticInterface(server);
-            logger.log(Level.INFO, "Setting up");
-            gi.setUp(50, 2, 0.8f, 0.1f, 4, "Prey");
-            logger.log(Level.INFO, "Parameters sent");
-            gi.sendPopulation(preyBehaviour);
-            logger.log(Level.INFO, "population sent");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.server = setUpServer();
+        setUpCommunication();
 
     }
 
@@ -96,6 +93,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Adds prey in the model and links the movement handler to them.
+     * @param preys
+     */
     private void registerPreys(List<Prey> preys){
         model.addPreys(preys);
         for(Prey prey: preys){
@@ -104,6 +105,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Set up the server used to communicate with the python module
+     * @return a server
+     */
     private ServerSocket setUpServer(){
         ServerSocket serverSocket = null;
         try{
@@ -116,15 +121,70 @@ public class Controller {
         return  serverSocket;
     }
 
+    /**
+     * Set ups the communication with the python module by sending parameters and population
+     */
+    private void setUpCommunication(){
+        try {
+            logger.log(Level.INFO, "Waiting for connection");
+            this.preyGeneticInterface = new GeneticInterface(this.server);
+            logger.log(Level.INFO, "Setting up");
+            preyGeneticInterface.sendSetUpParameters(50, NOFINPUTS, 0.8f, 0.1f, 4, "Prey");
+            logger.log(Level.INFO, "Parameters sent");
+            preyGeneticInterface.sendPopulation(preyBehaviour);
+            logger.log(Level.INFO, "Population sent");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void update(){
         // decisione delle prede
-        preyBehaviour.makeDecisions(executor);
-        //decisione dei predatori
+        if( iterations < 60){
+            preyBehaviour.makeDecisions(executor);
+            //decisione dei predatori
+            //esecuzione azioni
+            executor.runActions();
+            movementHandler.moveAll();
+            iterations++;
+        }
+        else{
+            logger.log(Level.INFO, "End of generation");
+            iterations = 0;
+            //inviamo la fitness che mi è richiesta
+            sendFitness();
+            //python calcola i nuovi individui e me li invia
+            //modifico gli individui esistenti
+            JSONObject jsonPop = null;
+            try {
+                jsonPop = preyGeneticInterface.receiveNewPopulation();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for(String key: jsonPop.keySet()){
+                JSONArray funArray = jsonPop.getJSONObject(key).getJSONArray("functions");
+                List<Function> functions = new LinkedList<>();
+                for(int a = 0; a <funArray.length(); a++){
+                    String tree = funArray.getString(a);
+                    Function functionTree = Node.treeFromString(tree, NOFINPUTS);
+                    functions.add(functionTree);
+                }
+                preyBehaviour.setEntityByName(key, functions);
+            }
+            //resetto positioni e tutto
+            preyBehaviour.resetEntities();
 
-        //esecuzione azioni
-        executor.runActions();
+        }
 
-        movementHandler.moveAll();
     }
+
+    private void sendFitness(){
+        try {
+            preyGeneticInterface.sendFitness(preyBehaviour);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

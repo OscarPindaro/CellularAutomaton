@@ -88,6 +88,21 @@ public class Model {
         }
     }
 
+    public void resetEntities(List<Entity> entities){
+        for(Entity e: entities)
+            resetEntity(e);
+    }
+
+    public void resetEntity(Entity entity){
+        PVector randomPosition = Model.createRandomPositionPVector();
+        entity.setXPosition(randomPosition.x);
+        entity.setYPosition(randomPosition.y);
+        PVector randomSpeed = Model.createRandomSpeedPVector();
+        entity.setSpeed(randomSpeed);
+        entity.setEnergy(entity.getStartingEnergy());
+
+    }
+
     private static PVector createRandomPositionPVector(){
         Automata mySketch = Automata.getInstance();
         return new PVector((float) Math.random()*mySketch.getWidth(), (float) Math.random()*mySketch.getHeight());

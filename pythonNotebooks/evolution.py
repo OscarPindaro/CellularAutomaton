@@ -27,7 +27,7 @@ class JsonParser:
     #a dictionary where the key is the name of an individual and the value is its fitness
     def parseFitness(self, data):
         fitnesses = json.loads(data)
-        return fitness
+        return fitnesses
 
     #returns a dictionary
     def parseInputParams(self, data):
@@ -36,8 +36,10 @@ class JsonParser:
     def dumpPopulationToJson(self, population):
         popDict = {}
         for individual in population:
-            listOfFunctions = []
-
+            functions = [str(f) for f in individual]
+            popDict[individual.indName] = {}
+            popDict["functions"] = functions
+        return json.dumps(popDict)
 
 
 # communication = communication.Communication(12346)
@@ -47,7 +49,7 @@ class JsonParser:
 
 
 def evaluateIndividual(individual, fitnessDictionary):
-    return fitnessDictionary[individual.name]["fitness"],
+    return fitnessDictionary[individual.indName]["fitness"],
 
 
 class GeneticAlgorithm:
@@ -143,8 +145,12 @@ class GeneticAlgorithm:
 
     def resetNames(self, names):
         for individual, name in zip(population, names):
-            population.indName = name
+            individual.indName = name
 
+    def setFitnessDictionary(self, dict):
+        ga.fitnessDictionary = dict
+        self.toolbox.unregister("evaluate")
+        self.toolbox.register("evaluate", evaluateIndividual, fitnessDictionary = self.fitnessDictionary)
 
 if __name__ == "__main__":
     com= Communication(int(sys.argv[1]))
@@ -167,7 +173,6 @@ if __name__ == "__main__":
     populationJson = com.readPopulation()
     population = parser.parsePopulation(populationJson, ga.pset)
     populationNames = [ individual.indName for individual in population ]
-    print("Population names\n{}\n".format(populationNames))
     ga.setPopulation(population)
     ngen = 0
     stop = False
@@ -175,7 +180,7 @@ if __name__ == "__main__":
         jsonFitness = com.readFitness()
         fitness = parser.parseFitness(jsonFitness)
 
-        ga.fitnessDictionary = fitness
+        ga.setFitnessDictionary(fitness)
         ga.computeFitness()
         ga.selectIndividuals()
         ga.crossover()
@@ -183,7 +188,8 @@ if __name__ == "__main__":
         #probabilmente qua bisogna rinominare tutti gli individui con i nomi che avevano prima
         ga.resetNames(populationNames)
 
-        #inviare a java la nuova popolazione
-        #jsonparser trasforma una lista di individui in un json
-        #communication invia a java, immagino inviando "newPolulation" e il json
+
+        jsonPopulation = parser.dumpPopulationToJson(ga.population)
+        #print(jsonPopulation)
+        com.sendPopulation(jsonPopulation)
         ngen += 1
