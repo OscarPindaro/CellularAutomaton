@@ -2,5 +2,5 @@
   "numberOfInputs": 5,
   "cxpb": "0.8",
   "mutpb": "0.1",
-  "populationSize": 20
+  "populationSize": 0
 }

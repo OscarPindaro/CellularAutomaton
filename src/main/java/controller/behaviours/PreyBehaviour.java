@@ -6,7 +6,6 @@ import model.entity.Predator;
 import model.entity.Prey;
 import model.genetic.Function;
 import model.genetic.Node;
-import org.json.JSONObject;
 
 import java.util.*;
 
@@ -87,7 +86,7 @@ public class PreyBehaviour extends AbstractBehaviour {
         float x = prey.getPosition().x;
         float y = prey.getPosition().y;
         float memory = lastAction.get(prey);
-        Predator nearestPredator = getNearestPreadtor(prey);
+        Predator nearestPredator = getNearestPredator(prey);
         float xPred = -1;
         float yPred = -1;
         if (nearestPredator != null){
@@ -110,7 +109,7 @@ public class PreyBehaviour extends AbstractBehaviour {
      * @param prey
      * @return
      */
-    private Predator getNearestPreadtor(Prey prey){
+    private Predator getNearestPredator(Prey prey){
         List<Predator> predators = model.getPredators();
         Predator nearest = null;
         if (predators.size() > 0){

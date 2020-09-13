@@ -1,9 +1,6 @@
 package controller.behaviours;
 
-import controller.action.ActionExecutorInterface;
-import controller.action.ActionInterface;
-import controller.action.BasicAction;
-import controller.action.VelocityFunc;
+import controller.action.*;
 import model.Model;
 import model.entity.Predator;
 import model.entity.Prey;
@@ -19,7 +16,7 @@ public class PredatorBehaviour extends AbstractBehaviour{
     private final Map<Predator, List<Function>> predatorDecisionFunctions;
 
     private static final String SPEC_FILE = "specificationFiles/predator.json";
-    private final int N_OF_ACTIONS_CONST = 2;
+    private final int N_OF_ACTIONS_CONST = 4;
 
     public PredatorBehaviour(Model model){
         super(model, SPEC_FILE);
@@ -51,24 +48,74 @@ public class PredatorBehaviour extends AbstractBehaviour{
     public void makeDecisions(ActionExecutorInterface executor) {
         for(Predator predator: predatorDecisionFunctions.keySet()){
             List<Function> f = predatorDecisionFunctions.get(predator);
-            float x = predator.getPosition().x;
-            float y = predator.getPosition().y;
-            List<Float> inputs= new ArrayList<>(2);
-            inputs.add(x);
-            inputs.add(y);
-            float value = f.get(0).compute(inputs);
-            float value2 = f.get(1).compute(inputs);
+            buildInputs(predator);
+            int indexMaxFunction = getIndexHighestFunction(predator);
             ActionInterface action = null;
-            if (value > value2){
-                action = new VelocityFunc(new BasicAction(1, predator), predator, 5, 0);
-            }
-            else{
-                action = new VelocityFunc(new BasicAction(2, predator), predator, 0.5f, 0.02f);
+            switch (indexMaxFunction){
+                case 0:
+                    action = new VelocityFunc(new BasicAction(2, predator), predator, 1.5f, 0);
+                    break;
+                case 1:
+                    action = new VelocityFunc(new BasicAction(2, predator), predator, 0f, 0.04f);
+                    break;
+                case 2:
+                    action = new VelocityFunc(new BasicAction(2, predator), predator, 0f, -0.04f);
+                    break;
+                case 3:
+                    Prey prey = getNearestPrey(predator);
+                    float reward = 0;
+                    if(prey != null){
+                        if (prey.getPosition().dist(predator.getPosition() )< predator.getEntityRadius()){
+                            reward = 50;
+                        }
+                    }
+                    action = new RewardFunc(new VelocityFunc(new BasicAction(0, predator), predator, 0,0),
+                            predator,reward);
+                    break;
+                default:
+                    throw new RuntimeException("Error with the index calculated for the actions");
             }
             executor.addAction(action);
         }
     }
 
+    private void buildInputs(Predator predator){
+        List<Float> inputs = entityInputs.get(predator);
+        float x = predator.getPosition().x;
+        float y = predator.getPosition().y;
+        float memory = lastAction.get(predator);
+        Prey nearestPrey = getNearestPrey(predator);
+        float xPrey = -1;
+        float yPrey = -1;
+        if (nearestPrey != null){
+            xPrey = nearestPrey.getPosition().x;
+            yPrey = nearestPrey.getPosition().y;
+        }
+        inputs.set(0, x);
+        inputs.set(1, y);
+        inputs.set(2, memory);
+        inputs.set(3, xPrey);
+        inputs.set(4, yPrey);
+        //this line may be overkill
+        entityInputs.put(predator, inputs);
+    }
+
+    private Prey getNearestPrey(Predator predator){
+        List<Prey> preys = model.getPreys();
+        Prey nearest = null;
+        if (preys.size() > 0){
+            nearest = preys.get(0);
+            double dist = predator.getPosition().dist(preys.get(0).getPosition());
+            for(Prey prey: preys){
+                double newDist = predator.getPosition().dist(prey.getPosition());
+                if( newDist< dist){
+                    nearest = prey;
+                    dist = newDist;
+                }
+            }
+        }
+        return nearest;
+    }
     @Override
     public void setEntityByName(String name, List<Function> trees) {
         Predator toUpdate = null;
