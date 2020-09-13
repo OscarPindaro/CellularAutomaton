@@ -4,6 +4,7 @@ import Network.GeneticInterface;
 import controller.MovementBehaviours.MovementBehaviour;
 import controller.action.ActionExecutor;
 import controller.action.ActionExecutorInterface;
+import controller.behaviours.PredatorBehaviour;
 import controller.behaviours.PreyBehaviour;
 import model.*;
 import model.entity.EntityFactory;
@@ -27,7 +28,7 @@ public class Controller {
     private ServerSocket server;
 
     private String PREY_SPEC_FILE = "specificationFiles/prey.json";
-    private String PRED_SPED_FILE = "specificationFiles/pred.json";
+    private String PRED_SPEC_FILE = "specificationFiles/pred.json";
 
     private Model model;
     //controllers
@@ -35,10 +36,12 @@ public class Controller {
     private ActionExecutorInterface executor;
 
     private PreyBehaviour preyBehaviour;
+    private PredatorBehaviour predatorBehaviour;
 
     private List<MovementBehaviour> behaviours = new LinkedList<>();
 
     private GeneticInterface preyGeneticInterface;
+    private GeneticInterface predatorGeneticInterface;
 
     private final static Logger logger = Logger.getLogger(Controller.class.getName());
     //modo stupido per controllare il tempo
@@ -83,9 +86,16 @@ public class Controller {
         this.preyBehaviour = new PreyBehaviour(this.model);
         this.preyBehaviour.addPreys(preys);
 
+        this.predatorBehaviour = new PredatorBehaviour(this.model);
+        this.predatorBehaviour.addPredators(predators);
+
         logger.log(Level.INFO, "Creation of the server");
         this.server = setUpServer();
-        setUpCommunicationPreys(PREY_SPEC_FILE, preys.size());
+        if(preys.size()>0)
+            setUpCommunicationPreys(PREY_SPEC_FILE, preys.size());
+        if(predators.size()>0)
+            setUpCommunicationPredators(PRED_SPEC_FILE, predators.size());
+
 
     }
 
@@ -133,6 +143,16 @@ public class Controller {
             logger.log(Level.INFO, "Waiting for connection");
             this.preyGeneticInterface = new GeneticInterface("Prey Interface",this.server, specPath, popSize);
             this.preyGeneticInterface.setUpInterface(preyBehaviour, "Prey");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setUpCommunicationPredators(String specPath, int popSize){
+        try {
+            logger.log(Level.INFO, "Waiting for connection");
+            this.predatorGeneticInterface = new GeneticInterface("Predator Interface",this.server, specPath, popSize);
+            this.predatorGeneticInterface.setUpInterface(predatorBehaviour, "Predator");
         } catch (IOException e) {
             e.printStackTrace();
         }
