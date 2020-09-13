@@ -2,6 +2,7 @@ package controller.behaviours;
 
 import controller.action.*;
 import model.Model;
+import model.entity.Predator;
 import model.entity.Prey;
 import model.genetic.Function;
 import model.genetic.Node;
@@ -14,6 +15,8 @@ public class PreyBehaviour extends AbstractBehaviour {
     private final List<Prey> preyList = new LinkedList<>();
 
     private final Map<Prey, List<Function>> preyDecisionFunctions;
+
+
 
     //parameters for python and the creation of the trees
     //numberOfInputs defined in the super class
@@ -55,11 +58,7 @@ public class PreyBehaviour extends AbstractBehaviour {
     public void makeDecisions(ActionExecutorInterface executor) {
         for(Prey prey: preyDecisionFunctions.keySet()){
             List<Function> f = preyDecisionFunctions.get(prey);
-            float x = prey.getPosition().x;
-            float y = prey.getPosition().y;
-            List<Float> inputs= new ArrayList<>(2);
-            inputs.add(x);
-            inputs.add(y);
+            buildInputs(prey);
             float value = f.get(0).compute(inputs);
             float value2 = f.get(1).compute(inputs);
             ActionInterface action = null;
@@ -71,6 +70,49 @@ public class PreyBehaviour extends AbstractBehaviour {
             }
             executor.addAction(action);
         }
+    }
+
+    private void buildInputs(Prey prey){
+        List<Float> inputs = entityInputs.get(prey);
+        float x = prey.getPosition().x;
+        float y = prey.getPosition().y;
+        float memory = lastAction.get(prey);
+        Predator nearestPredator = getNearestPreadtor();
+        float xPred = -1;
+        float yPred = -1;
+        if (nearestPredator != null){
+            xPred = nearestPredator.getPosition().x;
+            yPred = nearestPredator.getPosition().y;
+        }
+        inputs.set(0, x);
+        inputs.set(1, y);
+        inputs.set(2, memory);
+        inputs.set(3, xPred);
+        inputs.set(4, yPred);
+        //this line may be overkill
+        entityInputs.put(prey, inputs);
+    }
+
+    /**
+     * returns the nearest predator to the given prey
+     * @param prey
+     * @return
+     */
+    private Predator getNearestPreadtor(Prey prey){
+        List<Predator> predators = model.getPredators();
+        if (predators.size() > 0){
+            Predator nearest = predators.get(0);
+            double dist = prey.getPosition().dist(predators.get(0).getPosition());
+            for(Predator predator: predators){
+                double newDist = prey.getPosition().dist(predator.getPosition());
+                if( newDist< dist){
+                    nearest = predator;
+                    dist = newDist;
+                }
+                return predator;
+            }
+        }
+        else return null;
     }
 
     @Override

@@ -6,7 +6,6 @@ import model.entity.Entity;
 import model.genetic.Function;
 import model.genetic.Node;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,15 +15,21 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
 
     private final Map<Entity, List<Function>> decisionFunctions = new HashMap<>();
 
+    protected final Map<Entity, Integer> lastAction = new HashMap<>();
+    protected final Map<Entity, List<Float>> entityInputs = new HashMap<>();
+
     protected final Model model;
 
     protected int numberOfActions;
     protected int numberOfInputs;
 
+    /**
+     * The number of actions is handled by the child classes
+     */
     public AbstractBehaviour(){
         model = null;
-        numberOfActions =0;
-        numberOfInputs = 0;
+        numberOfActions =-1;
+        numberOfInputs = -1;
     }
 
     public AbstractBehaviour(Model model, String path){
@@ -55,11 +60,7 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
 
     public void addDecisionMakers(List<Entity> entities){
         for(Entity decider: entities){
-            List<Function> functions = new LinkedList<>();
-            for(int i = 0; i < numberOfActions; i++){
-                functions.add(Node.createRandomTree(this.numberOfInputs));
-            }
-            decisionFunctions.put(decider, functions);
+            addDecisionMaker(decider);
         }
     }
 
@@ -69,6 +70,11 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
             functions.add(Node.createRandomTree(this.numberOfInputs));
         }
         decisionFunctions.put(entity, functions);
+        lastAction.put(entity, 0);
+        List<Float> inputs = new ArrayList<>();
+        for(int i = 0; i< numberOfInputs; i++)
+            inputs.add(0f)
+        entityInputs.put(entity, inputs);
     }
 
     public List<Function> getFunctions(Entity entity){
@@ -86,6 +92,9 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
     public void resetEntities(){
         assert model != null;
         model.resetEntities(new ArrayList<>(decisionFunctions.keySet()));
+        for(Entity entity : lastAction.keySet()){
+            lastAction.put(entity, 0);
+        }
     }
 
     public int getNumberOfActions() {
