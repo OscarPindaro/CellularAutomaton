@@ -2,6 +2,6 @@
   "numberOfInputs": 2,
   "cxpb": "0.8",
   "mutpb": "0.1",
-  "populationSize": 500
+  "populationSize": 0
 }
 

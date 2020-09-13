@@ -70,6 +70,10 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
             functions.add(Node.createRandomTree(this.numberOfInputs));
         }
         decisionFunctions.put(entity, functions);
+        handleLastActionAndInputs(entity);
+    }
+
+    private void handleLastActionAndInputs(Entity entity){
         lastAction.put(entity, 0);
         List<Float> inputs = new ArrayList<>();
         for(int i = 0; i< numberOfInputs; i++)
@@ -87,6 +91,7 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
 
     public void setDecisionFunctions(Entity entity, List<Function> functions){
         decisionFunctions.put(entity, functions);
+        handleLastActionAndInputs(entity);
     }
 
     public void resetEntities(){

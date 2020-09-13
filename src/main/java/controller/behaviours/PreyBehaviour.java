@@ -22,7 +22,7 @@ public class PreyBehaviour extends AbstractBehaviour {
     //numberOfInputs defined in the super class
     //numberOfActions needs to be coded in some way, for now, the numberOfActions are hardcoded in the class
     private static final String SPEC_FILE = "specificationFiles/prey.json";
-    private final int  N_OF_ACTIONS_CONST = 2;
+    private final int  N_OF_ACTIONS_CONST = 4;
 
 
     public PreyBehaviour(Model model){
@@ -87,7 +87,7 @@ public class PreyBehaviour extends AbstractBehaviour {
         float x = prey.getPosition().x;
         float y = prey.getPosition().y;
         float memory = lastAction.get(prey);
-        Predator nearestPredator = getNearestPreadtor();
+        Predator nearestPredator = getNearestPreadtor(prey);
         float xPred = -1;
         float yPred = -1;
         if (nearestPredator != null){
@@ -112,8 +112,9 @@ public class PreyBehaviour extends AbstractBehaviour {
      */
     private Predator getNearestPreadtor(Prey prey){
         List<Predator> predators = model.getPredators();
+        Predator nearest = null;
         if (predators.size() > 0){
-            Predator nearest = predators.get(0);
+            nearest = predators.get(0);
             double dist = prey.getPosition().dist(predators.get(0).getPosition());
             for(Predator predator: predators){
                 double newDist = prey.getPosition().dist(predator.getPosition());
@@ -121,10 +122,9 @@ public class PreyBehaviour extends AbstractBehaviour {
                     nearest = predator;
                     dist = newDist;
                 }
-                return predator;
             }
         }
-        else return null;
+        return nearest;
     }
 
     @Override
