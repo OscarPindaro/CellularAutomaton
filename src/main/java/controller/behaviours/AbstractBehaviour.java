@@ -73,7 +73,7 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
         lastAction.put(entity, 0);
         List<Float> inputs = new ArrayList<>();
         for(int i = 0; i< numberOfInputs; i++)
-            inputs.add(0f)
+            inputs.add(0f);
         entityInputs.put(entity, inputs);
     }
 
@@ -104,6 +104,25 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
     public int getNumberOfInputs() {
         return numberOfInputs;
     }
+
+    protected int getIndexHighestFunction(Entity entity){
+        List<Function> functions = decisionFunctions.get(entity);
+        List<Float> inputs = entityInputs.get(entity);
+        int indexMax = 0;
+        int index = 0;
+        float maxValue = functions.get(0).compute(inputs);
+        float value = 0;
+        for(Function function : functions){
+            value = function.compute(inputs);
+            if(value > maxValue){
+                maxValue = value;
+                indexMax = index;
+            }
+            index++;
+        }
+        return indexMax;
+    }
+
 
     public abstract void setEntityByName(String id, List<Function> trees);
 

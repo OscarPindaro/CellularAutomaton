@@ -59,14 +59,24 @@ public class PreyBehaviour extends AbstractBehaviour {
         for(Prey prey: preyDecisionFunctions.keySet()){
             List<Function> f = preyDecisionFunctions.get(prey);
             buildInputs(prey);
-            float value = f.get(0).compute(inputs);
-            float value2 = f.get(1).compute(inputs);
+            int indexMaxFunction = getIndexHighestFunction(prey);
             ActionInterface action = null;
-            if (value > value2){
-                action = new VelocityFunc(new BasicAction(1, prey), prey, 5, 0);
-            }
-            else{
-                action = new VelocityFunc(new BasicAction(2, prey), prey, 0.5f, 0.02f);
+            switch (indexMaxFunction){
+                case 0:
+                    action = new VelocityFunc(new BasicAction(1, prey), prey, 1, 0);
+                    break;
+                case 1:
+                    action = new VelocityFunc(new BasicAction(1, prey), prey, 0f, 0.02f);
+                    break;
+                case 2:
+                    action = new VelocityFunc(new BasicAction(1, prey), prey, 0f, -0.02f);
+                    break;
+                case 3:
+                    action = new RewardFunc(new VelocityFunc(new BasicAction(0, prey), prey, 0,0),
+                            prey,5);
+                    break;
+                default:
+                    throw new RuntimeException("Error with the index calculated for the actions");
             }
             executor.addAction(action);
         }
@@ -92,6 +102,8 @@ public class PreyBehaviour extends AbstractBehaviour {
         //this line may be overkill
         entityInputs.put(prey, inputs);
     }
+
+
 
     /**
      * returns the nearest predator to the given prey
