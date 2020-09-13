@@ -36,4 +36,9 @@ public class Predator extends Entity {
     public float getMAX_ANGULAR_VEL() {
         return MAX_ANGULAR_VEL;
     }
+
+    @Override
+    public String toString() {
+        return "Predator" + id;
+    }
 }

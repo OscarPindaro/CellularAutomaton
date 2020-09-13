@@ -136,8 +136,9 @@ public class GeneticInterface {
      */
     public void sendFitness(AbstractBehaviour behaviour) throws IOException{
         String request = in.readLine();
-        if (!request.equals("fitness"))
+        if (!request.equals("fitness")){
             throw new RuntimeException("wrong moment of calling this function or wrong request formatting");
+        }
         JSONObject fitDict = dictionaryEntityFitness(behaviour);
         out.println(fitDict);
     }

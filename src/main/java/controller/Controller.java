@@ -4,9 +4,12 @@ import Network.GeneticInterface;
 import controller.MovementBehaviours.MovementBehaviour;
 import controller.action.ActionExecutor;
 import controller.action.ActionExecutorInterface;
+import controller.behaviours.AbstractBehaviour;
+import controller.behaviours.EntityBehaviour;
 import controller.behaviours.PredatorBehaviour;
 import controller.behaviours.PreyBehaviour;
 import model.*;
+import model.entity.Entity;
 import model.entity.EntityFactory;
 import model.entity.Predator;
 import model.entity.Prey;
@@ -17,8 +20,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,21 +40,22 @@ public class Controller {
     private MovementHandler movementHandler;
     private ActionExecutorInterface executor;
 
+    Map<AbstractBehaviour, GeneticInterface> interfaceMap = new HashMap<>();
+
     private PreyBehaviour preyBehaviour;
     private PredatorBehaviour predatorBehaviour;
+    private List<AbstractBehaviour> entityBehaviours = new LinkedList<>();
 
-    private List<MovementBehaviour> behaviours = new LinkedList<>();
+    private List<MovementBehaviour> movementBehaviours = new LinkedList<>();
 
     private GeneticInterface preyGeneticInterface;
     private GeneticInterface predatorGeneticInterface;
+    private List<GeneticInterface> geneticInterfaces = new LinkedList<>();
 
     private final static Logger logger = Logger.getLogger(Controller.class.getName());
     //modo stupido per controllare il tempo
     private int iterations = 0;
     private int ngen = 0;
-
-
-    private int NOFINPUTS = 2;
 
     public Controller(Model model){
         this.model = model;
@@ -91,10 +97,12 @@ public class Controller {
 
         logger.log(Level.INFO, "Creation of the server");
         this.server = setUpServer();
-        if(preys.size()>0)
+        if(preys.size()>0){
             setUpCommunicationPreys(PREY_SPEC_FILE, preys.size());
-        if(predators.size()>0)
+        }
+        if(predators.size()>0){
             setUpCommunicationPredators(PRED_SPEC_FILE, predators.size());
+        }
 
 
     }
@@ -143,6 +151,8 @@ public class Controller {
             logger.log(Level.INFO, "Waiting for connection");
             this.preyGeneticInterface = new GeneticInterface("Prey Interface",this.server, specPath, popSize);
             this.preyGeneticInterface.setUpInterface(preyBehaviour, "Prey");
+            entityBehaviours.add(preyBehaviour);
+            interfaceMap.put(preyBehaviour, preyGeneticInterface);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,6 +163,8 @@ public class Controller {
             logger.log(Level.INFO, "Waiting for connection");
             this.predatorGeneticInterface = new GeneticInterface("Predator Interface",this.server, specPath, popSize);
             this.predatorGeneticInterface.setUpInterface(predatorBehaviour, "Predator");
+            entityBehaviours.add(predatorBehaviour);
+            interfaceMap.put(predatorBehaviour, predatorGeneticInterface);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,24 +174,47 @@ public class Controller {
         // decisione delle prede
         if( iterations < 180){
             if (iterations == 0) logger.log(Level.INFO, "Generation " + ngen);
-            preyBehaviour.makeDecisions(executor);
-            //decisione dei predatori
-            //esecuzione azioni
+            for(EntityBehaviour behaviour: entityBehaviours){
+                behaviour.makeDecisions(executor);
+            }
             executor.runActions();
             movementHandler.moveAll();
             iterations++;
         }
         else{
-            logger.log(Level.INFO, "End of generation");
+            logger.log(Level.INFO, "End of generation " + ngen);
             iterations = 0;
             ngen++;
             //inviamo la fitness che mi è richiesta
             sendFitness();
             //python calcola i nuovi individui e me li invia
             //modifico gli individui esistenti
+            modifyIndividuals();
+        }
+
+    }
+
+    private void sendFitness(){
+        try {
+            for(AbstractBehaviour behaviour: entityBehaviours){
+                interfaceMap.get(behaviour).sendFitness(behaviour);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This methods modifies the individuals of each behaviour. The python module is asked to give the new population,
+     * which is set and then resetted
+     */
+    private void modifyIndividuals(){
+        for(AbstractBehaviour behaviour: entityBehaviours){
             JSONObject jsonPop = null;
+            GeneticInterface gi = interfaceMap.get(behaviour);
             try {
-                jsonPop = preyGeneticInterface.receiveNewPopulation();
+                jsonPop = gi.receiveNewPopulation();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -188,23 +223,12 @@ public class Controller {
                 List<Function> functions = new LinkedList<>();
                 for(int a = 0; a <funArray.length(); a++){
                     String tree = funArray.getString(a);
-                    Function functionTree = Node.treeFromString(tree, NOFINPUTS);
+                    Function functionTree = Node.treeFromString(tree, behaviour.getNumberOfInputs());
                     functions.add(functionTree);
                 }
-                preyBehaviour.setEntityByName(key, functions);
+                behaviour.setEntityByName(key, functions);
             }
-            //resetto positioni e tutto
-            preyBehaviour.resetEntities();
-
-        }
-
-    }
-
-    private void sendFitness(){
-        try {
-            preyGeneticInterface.sendFitness(preyBehaviour);
-        } catch (IOException e) {
-            e.printStackTrace();
+            behaviour.resetEntities();
         }
     }
 
