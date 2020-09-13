@@ -1,7 +1,6 @@
 package controller.behaviours;
 
 import controller.action.*;
-import jdk.nashorn.internal.parser.JSONParser;
 import model.Model;
 import model.entity.Prey;
 import model.genetic.Function;

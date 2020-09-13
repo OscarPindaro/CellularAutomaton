@@ -5,13 +5,14 @@ import controller.MovementBehaviours.MovementBehaviour;
 import controller.MovementBehaviours.RandomMovementBehaviour;
 import model.Model;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import processing.core.PApplet;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Random;
 
 public class Automata extends PApplet {
@@ -21,13 +22,13 @@ public class Automata extends PApplet {
     static Object lock = new Object();
 
     private final String preyFile ="specificationFiles/prey.json";
-    private final String predFile = "specificationFiles/pred.json";
+    private final String predFile = "specificationFiles/predator.json";
 
     //parameters
     private int width = 1000;
     private  int height = 1000;
     private  int NUM_OF_PREDATORS = 0;
-    private int NUM_OF_PREYS = 30;
+    private int NUM_OF_PREYS = 0;
 
     //controller
     private Controller controller;
@@ -104,25 +105,25 @@ public class Automata extends PApplet {
     }
 
     private void loadSpecFilePrey(){
-        JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader(preyFile)){
-            JSONObject specification = (JSONObject) parser.parse(reader);
-            if (specification.has("numberOfPreys")){
-                this.NUM_OF_PREYS= specification.getInt("numberOfPreys");
+        try {
+            String contents = new String(Files.readAllBytes(Paths.get(preyFile)));
+            JSONObject specification = new JSONObject(contents);
+            if (specification.has("populationSize")){
+                this.NUM_OF_PREYS= specification.getInt("populationSize");
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void loadSPecFilePred(){
-        JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader(predFile)){
-            JSONObject specification = (JSONObject) parser.parse(reader);
-            if (specification.has("numberOfPreds")){
-                this.NUM_OF_PREYS= specification.getInt("numberOfPreds");
+        try{
+            String contents = new String(Files.readAllBytes(Paths.get(predFile)));
+            JSONObject specification = new JSONObject(contents);
+            if (specification.has("populationSize")){
+                this.NUM_OF_PREDATORS= specification.getInt("populationSize");
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException  e) {
             e.printStackTrace();
         }
     }

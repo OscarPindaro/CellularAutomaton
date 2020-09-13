@@ -1,16 +1,15 @@
 package controller.behaviours;
 
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 import model.Model;
 import model.entity.Entity;
 import model.genetic.Function;
 import model.genetic.Node;
-import org.json.simple.parser.ParseException;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public abstract class AbstractBehaviour implements EntityBehaviour {
@@ -42,19 +41,14 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
     }
 
     private void loadSpecFile(String filePath){
-        JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader(filePath)){
-            JSONObject specification = (JSONObject) parser.parse(reader);
+        try {
+            String contents = new String(Files.readAllBytes(Paths.get(filePath)));
+            JSONObject specification = new JSONObject(contents);
             if (specification.has("numberOfInputs")){
                 this.numberOfInputs = specification.getInt("numberOfInputs");
             }
 
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
     }

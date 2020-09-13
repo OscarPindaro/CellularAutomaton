@@ -18,7 +18,7 @@ public class GeneticInterfaceTest {
         List<Function> list = new LinkedList<>();
         list.add(n);
         GeneticInterface gi = new GeneticInterface();
-        PreyBehaviour preyBehaviour = new PreyBehaviour(null,2,1);
+        PreyBehaviour preyBehaviour = new PreyBehaviour(null);
         Prey prey = new Prey();
         preyBehaviour.setDecisionFunction(prey, list);
         JSONObject traduction = gi.dictionaryEntityFunctions(preyBehaviour);
