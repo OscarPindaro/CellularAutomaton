@@ -93,6 +93,15 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
         assert model != null;
         model.resetEntities(new ArrayList<>(decisionFunctions.keySet()));
     }
+
+    public int getNumberOfActions() {
+        return numberOfActions;
+    }
+
+    public int getNumberOfInputs() {
+        return numberOfInputs;
+    }
+
     public abstract void setEntityByName(String id, List<Function> trees);
 
 }

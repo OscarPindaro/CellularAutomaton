@@ -26,6 +26,9 @@ public class Controller {
     private static int SERVER_PORT = 12346;
     private ServerSocket server;
 
+    private String PREY_SPEC_FILE = "specificationFiles/prey.json";
+    private String PRED_SPED_FILE = "specificationFiles/pred.json";
+
     private Model model;
     //controllers
     private MovementHandler movementHandler;
@@ -68,21 +71,21 @@ public class Controller {
         model.addPreys(preys);
     }
 
-    public void setUp(int npreys, int npreds ){
+    public void setUp(int nOfPreys, int nOfPredators ){
         this.executor = new ActionExecutor();
 
-        List<Predator> predators = EntityFactory.createPredators(npreds);
-        List<Prey> preys = EntityFactory.createPreys(npreys);
+        List<Predator> predators = EntityFactory.createPredators(nOfPredators);
+        List<Prey> preys = EntityFactory.createPreys(nOfPreys);
         this.movementHandler = new MovementHandler(model);
         registerPredators(predators);
         registerPreys(preys);
 
-        this.preyBehaviour = new PreyBehaviour(this.model, 2,2);
+        this.preyBehaviour = new PreyBehaviour(this.model);
         this.preyBehaviour.addPreys(preys);
 
         logger.log(Level.INFO, "Creation of the server");
         this.server = setUpServer();
-        setUpCommunication();
+        setUpCommunicationPreys(PREY_SPEC_FILE, preys.size());
 
     }
 
@@ -125,15 +128,11 @@ public class Controller {
     /**
      * Set ups the communication with the python module by sending parameters and population
      */
-    private void setUpCommunication(){
+    private void setUpCommunicationPreys(String specPath, int popSize){
         try {
             logger.log(Level.INFO, "Waiting for connection");
-            this.preyGeneticInterface = new GeneticInterface(this.server);
-            logger.log(Level.INFO, "Setting up");
-            preyGeneticInterface.sendSetUpParameters(30, NOFINPUTS, 0.8f, 0.1f, 4, "Prey");
-            logger.log(Level.INFO, "Parameters sent");
-            preyGeneticInterface.sendPopulation(preyBehaviour);
-            logger.log(Level.INFO, "Population sent");
+            this.preyGeneticInterface = new GeneticInterface("Prey Interface",this.server, specPath, popSize);
+            this.preyGeneticInterface.setUpInterface(preyBehaviour, "Prey");
         } catch (IOException e) {
             e.printStackTrace();
         }

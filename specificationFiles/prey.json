@@ -1,5 +1,6 @@
 {
   "numberOfInputs": 4,
   "cxpb": "0.8",
-  "mutpb": "0.1"
+  "mutpb": "0.1",
+  "numberOfPreys": 30
 }
