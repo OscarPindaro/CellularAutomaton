@@ -1,10 +1,16 @@
 package controller.behaviours;
 
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
 import model.Model;
 import model.entity.Entity;
 import model.genetic.Function;
 import model.genetic.Node;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public abstract class AbstractBehaviour implements EntityBehaviour {
@@ -13,8 +19,8 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
 
     protected final Model model;
 
-    protected final int numberOfActions;
-    protected final int numberOfInputs;
+    protected int numberOfActions;
+    protected int numberOfInputs;
 
     public AbstractBehaviour(){
         model = null;
@@ -22,10 +28,35 @@ public abstract class AbstractBehaviour implements EntityBehaviour {
         numberOfInputs = 0;
     }
 
+    public AbstractBehaviour(Model model, String path){
+        this.model = model;
+        this.numberOfActions = -1;
+        this.numberOfInputs = -1;
+        loadSpecFile(path);
+    }
+
     public AbstractBehaviour(Model model, int nActions, int nInputs){
         this.model = model;
         this.numberOfActions = nActions;
         this.numberOfInputs = nInputs;
+    }
+
+    private void loadSpecFile(String filePath){
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader(filePath)){
+            JSONObject specification = (JSONObject) parser.parse(reader);
+            if (specification.has("numberOfInputs")){
+                this.numberOfInputs = specification.getInt("numberOfInputs");
+            }
+
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addDecisionMakers(List<Entity> entities){

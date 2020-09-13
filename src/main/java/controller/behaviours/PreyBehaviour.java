@@ -1,10 +1,12 @@
 package controller.behaviours;
 
 import controller.action.*;
+import jdk.nashorn.internal.parser.JSONParser;
 import model.Model;
 import model.entity.Prey;
 import model.genetic.Function;
 import model.genetic.Node;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -14,10 +16,17 @@ public class PreyBehaviour extends AbstractBehaviour {
 
     private final Map<Prey, List<Function>> preyDecisionFunctions;
 
+    //parameters for python and the creation of the trees
+    //numberOfInputs defined in the super class
+    //numberOfActions needs to be coded in some way, for now, the numberOfActions are hardcoded in the class
+    private static final String SPEC_FILE = "specificationFiles/prey.json";
+    private final int  N_OF_ACTIONS_CONST = 2;
 
-    public PreyBehaviour(Model model, int nActions, int numberOfInputs){
-        super(model, nActions, numberOfInputs);
+
+    public PreyBehaviour(Model model){
+        super(model, SPEC_FILE);
         preyDecisionFunctions = new HashMap<>();
+        this.numberOfActions = N_OF_ACTIONS_CONST;
     }
 
     public void addPreys(List<Prey> preys){

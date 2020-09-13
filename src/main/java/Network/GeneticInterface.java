@@ -21,6 +21,8 @@ public class GeneticInterface {
     private PrintWriter out;
     private BufferedReader in;
 
+
+
     public GeneticInterface(ServerSocket serverSocket) throws IOException {
         this.clientSocket = serverSocket.accept();
         out = new PrintWriter(clientSocket.getOutputStream(), true);
