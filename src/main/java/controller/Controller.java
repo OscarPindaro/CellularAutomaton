@@ -40,6 +40,7 @@ public class Controller {
     private final static Logger logger = Logger.getLogger(Controller.class.getName());
     //modo stupido per controllare il tempo
     private int iterations = 0;
+    private int ngen = 0;
 
 
     private int NOFINPUTS = 2;
@@ -129,7 +130,7 @@ public class Controller {
             logger.log(Level.INFO, "Waiting for connection");
             this.preyGeneticInterface = new GeneticInterface(this.server);
             logger.log(Level.INFO, "Setting up");
-            preyGeneticInterface.sendSetUpParameters(50, NOFINPUTS, 0.8f, 0.1f, 4, "Prey");
+            preyGeneticInterface.sendSetUpParameters(30, NOFINPUTS, 0.8f, 0.1f, 4, "Prey");
             logger.log(Level.INFO, "Parameters sent");
             preyGeneticInterface.sendPopulation(preyBehaviour);
             logger.log(Level.INFO, "Population sent");
@@ -140,7 +141,8 @@ public class Controller {
 
     public void update(){
         // decisione delle prede
-        if( iterations < 60){
+        if( iterations < 180){
+            if (iterations == 0) logger.log(Level.INFO, "Generation " + ngen);
             preyBehaviour.makeDecisions(executor);
             //decisione dei predatori
             //esecuzione azioni
@@ -151,6 +153,7 @@ public class Controller {
         else{
             logger.log(Level.INFO, "End of generation");
             iterations = 0;
+            ngen++;
             //inviamo la fitness che mi è richiesta
             sendFitness();
             //python calcola i nuovi individui e me li invia

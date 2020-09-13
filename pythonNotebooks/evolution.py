@@ -38,7 +38,7 @@ class JsonParser:
         for individual in population:
             functions = [str(f) for f in individual]
             popDict[individual.indName] = {}
-            popDict["functions"] = functions
+            popDict[individual.indName]["functions"] = functions
         return json.dumps(popDict)
 
 
@@ -94,16 +94,18 @@ class GeneticAlgorithm:
         self.toolbox.register("mate", gp.cxOnePoint)
         self.toolbox.register("expr_mut", gp.genFull, pset=self.pset, min_=minGen,max_= maxGen)
         self.toolbox.register("mutate", gp.mutUniform, expr=self.toolbox.expr_mut, pset=self.pset)
-        self.toolbox.register("select", tools.selTournament, tournsize=sizeTournament)
+        self.toolbox.register("select", tools.selTournament, tournsize=3)
         #fix tree height
         self.toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=self.MAX_HEIGHT))
         self.toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=self.MAX_HEIGHT))
 
     def setStatistics(self):
-        stats = tools.Statistics(key=operator.attrgetter("fitness.values"))
-        stats.register("max", np.max)
-        stats.register("mean", np.mean)
-        stats.register("min", np.min)
+        self.stats = tools.Statistics(key=operator.attrgetter("fitness.values"))
+        self.stats.register("max", np.max)
+        self.stats.register("min", np.min)
+        self.stats.register("mean", np.mean)
+        self.stats.register("std", np.std)
+        self.stats.register("median", np.median)
 
     def setPopulation(self, population):
         self.population = population
@@ -144,7 +146,9 @@ class GeneticAlgorithm:
                 del mutant.fitness.values
 
     def resetNames(self, names):
-        for individual, name in zip(population, names):
+
+        for individual, name in zip(self.population, names):
+            #print(individual, name)
             individual.indName = name
 
     def setFitnessDictionary(self, dict):
@@ -176,12 +180,15 @@ if __name__ == "__main__":
     ga.setPopulation(population)
     ngen = 0
     stop = False
+
     while(not stop):
         jsonFitness = com.readFitness()
         fitness = parser.parseFitness(jsonFitness)
-
+        numberFitness = [ fitness[prey]["fitness"] for prey in fitness]
         ga.setFitnessDictionary(fitness)
         ga.computeFitness()
+        record = ga.stats.compile(ga.population)
+        print(record)
         ga.selectIndividuals()
         ga.crossover()
         ga.mutate()

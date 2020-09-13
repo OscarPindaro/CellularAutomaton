@@ -13,10 +13,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GeneticInterface {
 
@@ -118,6 +115,9 @@ public class GeneticInterface {
     public JSONObject receiveNewPopulation() throws IOException{
         String populationString = in.readLine();
         JSONObject popJson = new JSONObject(populationString);
+//        List<String> keys = new ArrayList<>(popJson.keySet());
+//        Collections.sort(keys);
+//        System.out.println(keys);
         return  popJson;
     }
 

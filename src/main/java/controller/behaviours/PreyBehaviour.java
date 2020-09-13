@@ -56,10 +56,10 @@ public class PreyBehaviour extends AbstractBehaviour {
             float value2 = f.get(1).compute(inputs);
             ActionInterface action = null;
             if (value > value2){
-                action = new VelocityFunc(new BasicAction(1, prey), prey, 2, -0.03f);
+                action = new VelocityFunc(new BasicAction(2, prey), prey, 5, 0);
             }
             else{
-                action = new VelocityFunc(new BasicAction(1, prey), prey, 1, 0.05f);
+                action = new VelocityFunc(new BasicAction(1, prey), prey, 0.5f, 0.02f);
             }
             executor.addAction(action);
         }
