@@ -172,7 +172,7 @@ public class Controller {
 
     public void update(){
         // decisione delle prede
-        if( iterations < 180){
+        if( iterations < 600){
             if (iterations == 0) logger.log(Level.INFO, "Generation " + ngen);
             for(EntityBehaviour behaviour: entityBehaviours){
                 behaviour.makeDecisions(executor);

@@ -51,26 +51,28 @@ public class PredatorBehaviour extends AbstractBehaviour{
             buildInputs(predator);
             int indexMaxFunction = getIndexHighestFunction(predator);
             ActionInterface action = null;
+            Prey prey = getNearestPrey(predator);
             switch (indexMaxFunction){
                 case 0:
-                    action = new VelocityFunc(new BasicAction(2, predator), predator, 1.5f, 0);
+                    action = new VelocityFunc(new BasicAction(2, predator), predator, 1f, prey.getPosition());
                     break;
                 case 1:
-                    action = new VelocityFunc(new BasicAction(2, predator), predator, 0f, 0.04f);
+                    action = new VelocityFunc(new BasicAction(4, predator), predator, 0.8f, 0.04f);
                     break;
                 case 2:
-                    action = new VelocityFunc(new BasicAction(2, predator), predator, 0f, -0.04f);
+                    action = new VelocityFunc(new BasicAction(4, predator), predator, 0.8f, -0.04f);
                     break;
                 case 3:
-                    Prey prey = getNearestPrey(predator);
                     float reward = 0;
+                    float damage = 0;
                     if(prey != null){
                         if (prey.getPosition().dist(predator.getPosition() )< predator.getEntityRadius()){
-                            reward = 50;
+                            reward = 10;
+                            damage = 10;
                         }
                     }
-                    action = new RewardFunc(new VelocityFunc(new BasicAction(0, predator), predator, 0,0),
-                            predator,reward);
+                    action = new DamageFunc(new RewardFunc(new VelocityFunc(new BasicAction(2, predator), predator, 0.5f, prey.getPosition() ),
+                            predator,reward), prey, damage);
                     break;
                 default:
                     throw new RuntimeException("Error with the index calculated for the actions");

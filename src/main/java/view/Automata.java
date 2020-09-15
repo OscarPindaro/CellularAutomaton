@@ -7,6 +7,7 @@ import model.Model;
 import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -78,6 +79,12 @@ public class Automata extends PApplet {
     public static void main(String[] args) {
         String[] appletArgs= new String[]{Automata.class.getName()};
         Automata mySketch= getInstance();
+//        System.out.println(PVector.angleBetween(new PVector(1,0), new PVector(0,1)));
+//        System.out.println(PVector.angleBetween(new PVector(0,1), new PVector(1,0)));
+//        PVector prova = new PVector(-1, 1); // 135 rad(2)
+//        PVector samuele = new PVector(0, -1); // -90
+//        System.out.println((samuele.heading() - prova.heading())*180/3.14); // -90 -135 = - 225
+//        System.out.println(prova.rotate(-135*3.1415f/180));
         mySketch.loadSpecFiles();
         createModel();
         assignController();

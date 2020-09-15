@@ -62,13 +62,13 @@ public class PreyBehaviour extends AbstractBehaviour {
             ActionInterface action = null;
             switch (indexMaxFunction){
                 case 0:
-                    action = new VelocityFunc(new BasicAction(1, prey), prey, 1, 0);
+                    action = new VelocityFunc(new BasicAction(1, prey), prey, 3, 0);
                     break;
                 case 1:
-                    action = new VelocityFunc(new BasicAction(1, prey), prey, 0f, 0.02f);
+                    action = new VelocityFunc(new BasicAction(1, prey), prey, 0.5f, 0.02f);
                     break;
                 case 2:
-                    action = new VelocityFunc(new BasicAction(1, prey), prey, 0f, -0.02f);
+                    action = new VelocityFunc(new BasicAction(1, prey), prey, 0.5f, -0.02f);
                     break;
                 case 3:
                     action = new RewardFunc(new VelocityFunc(new BasicAction(0, prey), prey, 0,0),

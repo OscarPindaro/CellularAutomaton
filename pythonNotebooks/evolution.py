@@ -162,6 +162,7 @@ if __name__ == "__main__":
     params = com.readParameters()
     params = parser.parseInputParams(params)
     ga = GeneticAlgorithm(params["cxpb"], params["mutpb"])
+    print(params["nameOfEntity"])
     ga.setCreator()
 
 
