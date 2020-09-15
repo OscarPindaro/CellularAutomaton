@@ -1,7 +1,6 @@
 package controller.action;
 
-import model.entity.Entity;
-import model.interfaces.EnergyDependent;
+import model.interfaces.energy.EnergyDependent;
 
 public class DamageFunc extends AdditionalFunctionality {
 

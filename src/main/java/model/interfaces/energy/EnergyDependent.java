@@ -1,4 +1,4 @@
-package model.interfaces;
+package model.interfaces.energy;
 
 public interface EnergyDependent {
 

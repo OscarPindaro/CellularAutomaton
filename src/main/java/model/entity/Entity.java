@@ -1,6 +1,6 @@
 package model.entity;
 
-import model.interfaces.EnergyDependent;
+import model.interfaces.energy.EnergyDependent;
 import model.interfaces.cinematic.Cinematic;
 import model.interfaces.cinematic.PositionBoundaryObserver;
 import model.interfaces.cinematic.PositionObservable;

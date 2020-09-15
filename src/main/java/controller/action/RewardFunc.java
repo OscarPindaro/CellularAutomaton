@@ -1,6 +1,6 @@
 package controller.action;
 
-import model.interfaces.EnergyDependent;
+import model.interfaces.energy.EnergyDependent;
 
 public class RewardFunc extends AdditionalFunctionality {
 
