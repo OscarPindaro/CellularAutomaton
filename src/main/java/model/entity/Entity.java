@@ -4,6 +4,8 @@ import model.interfaces.energy.EnergyDependent;
 import model.interfaces.cinematic.Cinematic;
 import model.interfaces.cinematic.PositionBoundaryObserver;
 import model.interfaces.cinematic.PositionObservable;
+import model.interfaces.energy.EnergyObservable;
+import model.interfaces.energy.EnergyObserver;
 import view.Automata;
 import processing.core.PVector;
 
@@ -11,7 +13,7 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Entity implements Cinematic, PositionObservable, EnergyDependent {
+public abstract class Entity implements Cinematic, PositionObservable, EnergyDependent, EnergyObservable {
 
     private final int SIZE = 40;
     private float size = SIZE;
@@ -21,10 +23,12 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     private final PVector position;
     private final PVector speed;
     private float energy = STARTING_ENERGY;
+    private boolean isDead = false;
 
     protected int id=-1;
 
-    private final List<PositionBoundaryObserver> observers = new LinkedList<>();
+    private final List<PositionBoundaryObserver> positionObservers = new LinkedList<>();
+    private final List<EnergyObserver> energyObservers = new LinkedList<>();
 
     private Color color;
 
@@ -139,22 +143,22 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
 
     @Override
     public void attach(PositionBoundaryObserver observer) {
-        synchronized (observers){
-            if(!observers.contains(observer))
-                observers.add(observer);
+        synchronized (positionObservers){
+            if(!positionObservers.contains(observer))
+                positionObservers.add(observer);
         }
     }
 
     @Override
     public void remove(PositionBoundaryObserver observer) {
-        synchronized (observers){
-            observers.remove(observer);
+        synchronized (positionObservers){
+            positionObservers.remove(observer);
         }
     }
 
     @Override
     public void notifyPositionChange() {
-        for(PositionBoundaryObserver observer : observers)
+        for(PositionBoundaryObserver observer : positionObservers)
             observer.checkBoundary(this, getEntityRadius());
     }
 
@@ -177,5 +181,23 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     @Override
     public void setEnergy(float newEnergy) {
         this.energy = newEnergy;
+    }
+
+    @Override
+    public void setDeath(boolean isDead) {
+        this.isDead = isDead;
+    }
+
+    @Override
+    public boolean isDead() {
+        return isDead;
+    }
+
+    /******** ENERGY OBSERVABLE ****************/
+    @Override
+    public void notifyEnergyChange() {
+        for(EnergyObserver observer : energyObservers){
+            observer.checkEnergy(this);
+        }
     }
 }

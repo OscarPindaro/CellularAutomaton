@@ -9,4 +9,8 @@ public interface EnergyDependent {
     float getEnergy();
 
     void setEnergy(float newEnergy);
+
+    void setDeath(boolean isDead);
+
+    boolean isDead();
 }
