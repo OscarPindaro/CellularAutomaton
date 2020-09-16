@@ -16,9 +16,7 @@ public class EntityDrawer {
 
     public void drawEntities(){
         Automata mySketch = Automata.getInstance();
-        List<Entity> entities = model.getEntities();
-        //only live entities are drawn
-        entities = entities.stream().filter(e -> !e.isDead()).collect(Collectors.toList());
+        List<Entity> entities = model.getAliveEntities();
         for (Entity e : entities){
             float xpos = e.getPosition().x;
             float ypos = e.getPosition().y;

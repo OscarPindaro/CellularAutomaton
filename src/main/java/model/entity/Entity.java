@@ -166,11 +166,13 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     @Override
     public void increaseEnergy(float toAdd) {
         this.energy += toAdd;
+        notifyEnergyChange();
     }
 
     @Override
     public void decreaseEnergy(float toSub) {
         this.energy -=toSub;
+        notifyEnergyChange();
     }
 
     @Override
@@ -181,6 +183,7 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     @Override
     public void setEnergy(float newEnergy) {
         this.energy = newEnergy;
+        notifyEnergyChange();
     }
 
     @Override
@@ -199,5 +202,15 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
         for(EnergyObserver observer : energyObservers){
             observer.checkEnergy(this);
         }
+    }
+
+    @Override
+    public void attach(EnergyObserver observer) {
+        energyObservers.add(observer);
+    }
+
+    @Override
+    public void remove(EnergyObserver observer) {
+        energyObservers.remove(observer);
     }
 }

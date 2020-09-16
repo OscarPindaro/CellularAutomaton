@@ -116,6 +116,8 @@ public class Controller {
         for(Predator predator : predators){
             movementHandler.addCinematicObject(predator);
             predator.attach(movementHandler);
+            if (this.deathController != null)
+                predator.attach(deathController);
         }
     }
 

@@ -110,7 +110,7 @@ public class PreyBehaviour extends AbstractBehaviour {
      * @return
      */
     private Predator getNearestPredator(Prey prey){
-        List<Predator> predators = model.getPredators();
+        List<Predator> predators = model.getAlivePredators();
         Predator nearest = null;
         if (predators.size() > 0){
             nearest = predators.get(0);
