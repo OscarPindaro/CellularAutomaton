@@ -8,6 +8,7 @@ import model.genetic.Function;
 import model.genetic.Node;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PredatorBehaviour extends AbstractBehaviour{
 
@@ -46,7 +47,10 @@ public class PredatorBehaviour extends AbstractBehaviour{
 
     @Override
     public void makeDecisions(ActionExecutorInterface executor) {
-        for(Predator predator: predatorDecisionFunctions.keySet()){
+        //only alive predators can make desicions
+        List<Predator> alivePredators = predatorDecisionFunctions.keySet().stream().filter(p -> !p.isDead())
+                .collect(Collectors.toList());
+        for(Predator predator: alivePredators){
             List<Function> f = predatorDecisionFunctions.get(predator);
             buildInputs(predator);
             int indexMaxFunction = getIndexHighestFunction(predator);
