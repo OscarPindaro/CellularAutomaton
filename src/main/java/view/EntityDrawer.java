@@ -5,6 +5,7 @@ import model.entity.Entity;
 
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityDrawer {
     private final Model model;
@@ -16,6 +17,8 @@ public class EntityDrawer {
     public void drawEntities(){
         Automata mySketch = Automata.getInstance();
         List<Entity> entities = model.getEntities();
+        //only live entities are drawn
+        entities = entities.stream().filter(e -> !e.isDead()).collect(Collectors.toList());
         for (Entity e : entities){
             float xpos = e.getPosition().x;
             float ypos = e.getPosition().y;

@@ -4,9 +4,9 @@ import model.interfaces.cinematic.PositionBoundaryObserver;
 
 public interface EnergyObservable {
 
-    void attach(PositionBoundaryObserver observer);
+    void attach(EnergyObserver observer);
 
-    void remove(PositionBoundaryObserver observer);
+    void remove(EnergyObserver observer);
 
     void notifyEnergyChange();
 }

@@ -13,10 +13,8 @@ import model.interfaces.energy.EnergyDependent;
  */
 public class DeathController implements EnergyObserver {
 
-    private Model model;
+    public DeathController(){
 
-    public DeathController(Model model){
-        this.model = model;
     }
 
     /**

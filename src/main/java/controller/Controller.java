@@ -39,6 +39,7 @@ public class Controller {
     //controllers
     private MovementHandler movementHandler;
     private ActionExecutorInterface executor;
+    private DeathController deathController;
 
     Map<AbstractBehaviour, GeneticInterface> interfaceMap = new HashMap<>();
 
@@ -85,7 +86,10 @@ public class Controller {
 
         List<Predator> predators = EntityFactory.createPredators(nOfPredators);
         List<Prey> preys = EntityFactory.createPreys(nOfPreys);
+
         this.movementHandler = new MovementHandler(model);
+        this.deathController = new DeathController();
+
         registerPredators(predators);
         registerPreys(preys);
 
@@ -116,7 +120,8 @@ public class Controller {
     }
 
     /**
-     * Adds prey in the model and links the movement handler to them.
+     * Adds prey in the model and links the movement handler and death controller
+     *
      * @param preys
      */
     private void registerPreys(List<Prey> preys){
@@ -124,6 +129,8 @@ public class Controller {
         for(Prey prey: preys){
             movementHandler.addCinematicObject(prey);
             prey.attach(movementHandler);
+            if (this.deathController != null)
+                prey.attach(deathController);
         }
     }
 

@@ -9,6 +9,7 @@ import processing.core.PVector;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Model {
     private final List<Predator> predators = new LinkedList<>();
@@ -62,12 +63,26 @@ public class Model {
         return entities;
     }
 
+    public List<Entity> getAliveEntities(){
+        List<Entity> entities = preys.stream().filter(e -> !e.isDead()).collect(Collectors.toCollection(LinkedList::new));
+        entities.addAll( predators.stream().filter(e -> !e.isDead()).collect(Collectors.toList()));
+        return entities;
+    }
+
     public List<Prey> getPreys(){
         return new ArrayList<Prey>(preys);
     }
 
+    public List<Prey> getAlivePreys(){
+        return  preys.stream().filter(e -> !e.isDead()).collect(Collectors.toList());
+    }
+
     public List<Predator> getPredators(){
         return new ArrayList<>(predators);
+    }
+
+    public List<Predator> getAlivePredators(){
+        return  predators.stream().filter(e -> !e.isDead()).collect(Collectors.toList());
     }
 
     public int getWorldWidth() {
@@ -80,11 +95,7 @@ public class Model {
 
     public void resetExistingEntities(){
         for(Entity e : getEntities()){
-            PVector randomPosition = Model.createRandomPositionPVector();
-            e.setXPosition(randomPosition.x);
-            e.setYPosition(randomPosition.y);
-            PVector randomSpeed = Model.createRandomSpeedPVector();
-            e.setSpeed(randomSpeed);
+            resetEntity(e);
         }
     }
 
@@ -93,6 +104,11 @@ public class Model {
             resetEntity(e);
     }
 
+    /**
+     * Resets all fields of an entity. Its speed and position are random, the energy is set back to a starting value
+     * and is considered again alive
+     * @param entity
+     */
     public void resetEntity(Entity entity){
         PVector randomPosition = Model.createRandomPositionPVector();
         entity.setXPosition(randomPosition.x);
@@ -100,6 +116,7 @@ public class Model {
         PVector randomSpeed = Model.createRandomSpeedPVector();
         entity.setSpeed(randomSpeed);
         entity.setEnergy(entity.getStartingEnergy());
+        entity.setDeath(false);
 
     }
 
