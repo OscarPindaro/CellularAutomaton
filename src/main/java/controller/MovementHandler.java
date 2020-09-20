@@ -7,6 +7,10 @@ import model.interfaces.cinematic.PositionBoundaryObserver;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class updates the movement of all the cinematic objects and checks if they are in the world boundaries.
+ * For now, dead objects still move.
+ */
 public class MovementHandler implements PositionBoundaryObserver {
 
     protected final Model model;

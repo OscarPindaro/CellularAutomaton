@@ -75,7 +75,7 @@ public class PreyBehaviour extends AbstractBehaviour {
                     break;
                 case 3:
                     action = new RewardFunc(new VelocityFunc(new BasicAction(0, prey), prey, 0,0),
-                            prey,5);
+                            prey,2);
                     break;
                 default:
                     throw new RuntimeException("Error with the index calculated for the actions");

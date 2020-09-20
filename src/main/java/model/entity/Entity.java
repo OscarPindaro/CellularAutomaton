@@ -17,7 +17,7 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
 
     private final int SIZE = 40;
     private float size = SIZE;
-    private float STARTING_ENERGY = 100;
+    private float STARTING_ENERGY = 900;
 
 
     private final PVector position;

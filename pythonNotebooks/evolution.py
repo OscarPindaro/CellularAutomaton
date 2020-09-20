@@ -55,7 +55,7 @@ def evaluateIndividual(individual, fitnessDictionary):
 class GeneticAlgorithm:
     MAX_HEIGHT = 30
 
-    def __init__(self, cxpb, mutpb):
+    def __init__(self, cxpb, mutpb, popSize):
         self.toolbox = base.Toolbox()
         self.pset = None
         #probably they will be a dictionary
@@ -65,6 +65,7 @@ class GeneticAlgorithm:
         self.mutpb = mutpb
         self.stats = None
         self.fitnessDictionary = {}
+        self.populationSize = popSize
 
     def createPrimitiveSet(self, nOfArguments):
         self.pset = gp.PrimitiveSet(name="decisionTree", arity=nOfArguments)
@@ -82,7 +83,7 @@ class GeneticAlgorithm:
         pool = Pool()
         self.toolbox.register("map", pool.map)
 
-    def registerGeneratorFunctions(self, nOfFunctions, minHeight=1, maxHeight = 3):
+    def registerGeneratorFunctions(self, nOfFunctions, minHeight=1, maxHeight = 5):
         self.toolbox.register("expr", gp.genFull, pset=self.pset, min_=minHeight, max_=maxHeight)
         self.toolbox.register("tree", tools.initIterate, creator.DecisionFunction, self.toolbox.expr)
         self.toolbox.register("trees", tools.initRepeat, list, self.toolbox.tree, n = nOfFunctions)
@@ -119,7 +120,14 @@ class GeneticAlgorithm:
             ind.fitness.values = fit
 
     def selectIndividuals(self):
-        self.population = self.toolbox.select(self.population, k=len(self.population))
+        self.population = [ind for ind in population if ind.fitness.values[0] > 0]
+        # if (len(positiveIndividuals)/len(self.population) >0.2 ):
+        #     print("special riproduction")
+        #     self.population = positiveIndividuals
+
+        if not self.population:
+            self.population = self.toolbox.population(self.populationSize)
+        self.population = self.toolbox.select(self.population, k=self.populationSize)
         self.population = [self.toolbox.clone(ind) for ind in self.population]
 
 
@@ -161,14 +169,15 @@ if __name__ == "__main__":
     parser = JsonParser()
     params = com.readParameters()
     params = parser.parseInputParams(params)
-    ga = GeneticAlgorithm(params["cxpb"], params["mutpb"])
+    ga = GeneticAlgorithm(params["cxpb"], params["mutpb"], params["populationSize"])
+    print(params["populationSize"])
     print(params["nameOfEntity"])
     ga.setCreator()
 
 
 
     ga.createPrimitiveSet(params["numberOfInputs"])
-    ga.enableMultiprocessing()
+    #ga.enableMultiprocessing()
     ga.registerGeneratorFunctions(params["nOfFunctions"], minHeight=1, maxHeight = 3)
     ga.registerEvolutionFunctions()
     ga.setStatistics()
