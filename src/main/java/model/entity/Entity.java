@@ -1,5 +1,6 @@
 package model.entity;
 
+import model.interfaces.cinematic.PositionObserver;
 import model.interfaces.energy.EnergyDependent;
 import model.interfaces.cinematic.Cinematic;
 import model.interfaces.cinematic.PositionBoundaryObserver;
@@ -29,6 +30,7 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
 
     private final List<PositionBoundaryObserver> positionObservers = new LinkedList<>();
     private final List<EnergyObserver> energyObservers = new LinkedList<>();
+    private final List<PositionObserver> positionObservables = new LinkedList<>();
 
     private Color color;
 
@@ -213,5 +215,15 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     @Override
     public void remove(EnergyObserver observer) {
         energyObservers.remove(observer);
+    }
+
+    @Override
+    public void attach(PositionObserver observer) {
+        positionObservables.add(observer);
+    }
+
+    @Override
+    public void remove(PositionObserver observer) {
+        positionObservables.add(observer);
     }
 }

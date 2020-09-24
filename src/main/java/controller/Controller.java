@@ -15,6 +15,8 @@ import model.entity.Predator;
 import model.entity.Prey;
 import model.genetic.Function;
 import model.genetic.Node;
+import model.interfaces.cinematic.PositionObserver;
+import model.interfaces.energy.EnergyObserver;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -52,6 +54,7 @@ public class Controller {
     private GeneticInterface preyGeneticInterface;
     private GeneticInterface predatorGeneticInterface;
     private List<GeneticInterface> geneticInterfaces = new LinkedList<>();
+    private EntityStatistics<Entity> statisticModule = new EntityStatistics<>();
 
     private final static Logger logger = Logger.getLogger(Controller.class.getName());
     //modo stupido per controllare il tempo
@@ -118,6 +121,10 @@ public class Controller {
             predator.attach(movementHandler);
             if (this.deathController != null)
                 predator.attach(deathController);
+            //predator statistics
+            statisticModule.addEntity(predator);
+            predator.attach((PositionObserver) statisticModule);
+            predator.attach((EnergyObserver) statisticModule);
         }
     }
 
@@ -133,6 +140,11 @@ public class Controller {
             prey.attach(movementHandler);
             if (this.deathController != null)
                 prey.attach(deathController);
+
+            //statistics module
+            statisticModule.addEntity(prey);
+            prey.attach((PositionObserver) statisticModule);
+            prey.attach((PositionObserver) statisticModule);
         }
     }
 
@@ -189,6 +201,11 @@ public class Controller {
             executor.runActions();
             movementHandler.moveAll();
             iterations++;
+
+            Prey prey = model.getPreys().get(0);
+            Map<String, Float> map = statisticModule.getStatistics(prey);
+            //System.out.println(map);
+
         }
         else{
             logger.log(Level.INFO, "End of generation " + ngen);
@@ -199,6 +216,7 @@ public class Controller {
             //python calcola i nuovi individui e me li invia
             //modifico gli individui esistenti
             modifyIndividuals();
+            statisticModule.resetStatistics();
         }
 
     }
