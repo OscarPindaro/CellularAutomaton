@@ -189,6 +189,7 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
     @Override
     public void setDeath(boolean isDead) {
         this.isDead = isDead;
+        this.setSpeedMagnitude(0f);
     }
 
     @Override
