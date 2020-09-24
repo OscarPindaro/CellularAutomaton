@@ -18,6 +18,10 @@ public class EntityStatistics<T> implements PositionObserver, EnergyObserver {
     private final Map<Cinematic, PVector> lastPosition = new HashMap<>();
 
     private final String DISTANCE_KEY = "distanceCovered";
+    private final String ENERGY = "energy";
+    private final String MAX_ENERGY = "maxEnergy";
+    private final String MIN_ENERGY = "minEnergy";
+    private final String MEAN_ENERGY = "meanEnergy";
 
     public void addEntity(T e){
         if (!statistics.containsKey(e)){
@@ -83,13 +87,56 @@ public class EntityStatistics<T> implements PositionObserver, EnergyObserver {
      */
     @Override
     public void checkEnergy(EnergyDependent e) {
-        if( !statistics.containsKey(e))
+        if( !statistics.containsKey(e) )
             throw new RuntimeException("This object is not registered in the statistic module");
-        if(!e.isDead()){
-            checkCurrentEnergy();
-            checkMaxEnergy();
-            checkMinEnergy();
-            checkMeanEnergy();
+        if( !e.isDead() ){
+            checkCurrentEnergy(e);
+            checkMaxEnergy(e);
+            checkMinEnergy(e);
+            checkMeanEnergy(e);
         }
     }
+
+    private void checkCurrentEnergy(EnergyDependent e){
+        Map<String, Float> dict = statistics.get(e);
+        dict.put(ENERGY, e.getEnergy());
+    }
+
+    private void checkMaxEnergy(EnergyDependent e){
+        Map<String, Float> dict = statistics.get(e);
+        if(!dict.containsKey(MAX_ENERGY)){
+            dict.put(MAX_ENERGY, e.getEnergy());
+            return;
+        }
+        if(dict.get(MAX_ENERGY) < e.getEnergy()){
+            dict.put(MAX_ENERGY, e.getEnergy());
+        }
+    }
+
+    private void checkMinEnergy(EnergyDependent e){
+        Map<String, Float> dict = statistics.get(e);
+        if(!dict.containsKey(MIN_ENERGY)){
+            dict.put(MIN_ENERGY, e.getEnergy());
+            return;
+        }
+        if(dict.get(MIN_ENERGY) > e.getEnergy()){
+            dict.put(MIN_ENERGY, e.getEnergy());
+        }
+    }
+
+    private void checkMeanEnergy(EnergyDependent e){
+        Map<String, Float> dict = statistics.get(e);
+        if(!dict.containsKey(MEAN_ENERGY)){
+            dict.put(MEAN_ENERGY, e.getEnergy());
+            dict.put("n", 1f);
+            return;
+        }
+        float oldMean = dict.get(MEAN_ENERGY);
+        float n = dict.get("n");
+        n = n+1;
+        float newMean = (oldMean*n + e.getEnergy())/n;
+        dict.put(MEAN_ENERGY, newMean);
+        dict.put("n", n);
+    }
+
 }
