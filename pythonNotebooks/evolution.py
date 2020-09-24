@@ -120,11 +120,6 @@ class GeneticAlgorithm:
             ind.fitness.values = fit
 
     def selectIndividuals(self):
-        self.population = [ind for ind in population if ind.fitness.values[0] > 0]
-        # if (len(positiveIndividuals)/len(self.population) >0.2 ):
-        #     print("special riproduction")
-        #     self.population = positiveIndividuals
-
         if not self.population:
             self.population = self.toolbox.population(self.populationSize)
         self.population = self.toolbox.select(self.population, k=self.populationSize)
