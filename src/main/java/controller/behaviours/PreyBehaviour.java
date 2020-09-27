@@ -74,7 +74,7 @@ public class PreyBehaviour extends AbstractBehaviour {
                     action = new VelocityFunc(new BasicAction(1, prey), prey, 0.5f, -0.02f);
                     break;
                 case 3:
-                    action = new RewardFunc(new VelocityFunc(new BasicAction(0, prey), prey, 0,0),
+                    action = new RewardFunc(new VelocityFunc(new BasicAction(0, prey), prey, 0.000001f,0),
                             prey,2);
                     break;
                 default:
