@@ -28,9 +28,9 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
 
     protected int id=-1;
 
-    private final List<PositionBoundaryObserver> positionObservers = new LinkedList<>();
+    private final List<PositionBoundaryObserver> positionBoundaryObservers = new LinkedList<>();
     private final List<EnergyObserver> energyObservers = new LinkedList<>();
-    private final List<PositionObserver> positionObservables = new LinkedList<>();
+    private final List<PositionObserver> positionObservers = new LinkedList<>();
 
     private Color color;
 
@@ -145,23 +145,26 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
 
     @Override
     public void attach(PositionBoundaryObserver observer) {
-        synchronized (positionObservers){
-            if(!positionObservers.contains(observer))
-                positionObservers.add(observer);
+        synchronized (positionBoundaryObservers){
+            if(!positionBoundaryObservers.contains(observer))
+                positionBoundaryObservers.add(observer);
         }
     }
 
     @Override
     public void remove(PositionBoundaryObserver observer) {
-        synchronized (positionObservers){
-            positionObservers.remove(observer);
+        synchronized (positionBoundaryObservers){
+            positionBoundaryObservers.remove(observer);
         }
     }
 
     @Override
     public void notifyPositionChange() {
-        for(PositionBoundaryObserver observer : positionObservers)
+        for(PositionBoundaryObserver observer : positionBoundaryObservers){
             observer.checkBoundary(this, getEntityRadius());
+        }
+        for(PositionObserver observer: positionObservers)
+            observer.checkPosition(this);
     }
 
     /************** Energy dependent ************/
@@ -219,11 +222,11 @@ public abstract class Entity implements Cinematic, PositionObservable, EnergyDep
 
     @Override
     public void attach(PositionObserver observer) {
-        positionObservables.add(observer);
+        positionObservers.add(observer);
     }
 
     @Override
     public void remove(PositionObserver observer) {
-        positionObservables.add(observer);
+        positionObservers.add(observer);
     }
 }

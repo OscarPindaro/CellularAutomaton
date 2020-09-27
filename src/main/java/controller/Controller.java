@@ -204,7 +204,7 @@ public class Controller {
 
             Prey prey = model.getPreys().get(0);
             Map<String, Float> map = statisticModule.getStatistics(prey);
-            System.out.println(map);
+            //System.out.println(map);
 
         }
         else{

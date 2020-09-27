@@ -7,9 +7,7 @@ import model.interfaces.energy.EnergyDependent;
 import model.interfaces.energy.EnergyObserver;
 import processing.core.PVector;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class EntityStatistics<T> implements PositionObserver, EnergyObserver {
 
@@ -45,7 +43,8 @@ public class EntityStatistics<T> implements PositionObserver, EnergyObserver {
 
     public void resetStatistics(){
         statistics.replaceAll((t, v) -> new HashMap<>());
-        for(Cinematic c: lastPosition.keySet())
+        List<Cinematic> keySet = new LinkedList<>(lastPosition.keySet());
+        for(Cinematic c: keySet)
             lastPosition.remove(c);
 
     }
